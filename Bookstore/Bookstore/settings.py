@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storeApp',
 ]
 
 MIDDLEWARE = [
@@ -75,9 +76,14 @@ WSGI_APPLICATION = 'Bookstore.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+    # todo 修改数据库名称
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'bookstore',
+        'USER': 'root',
+        'PASSWORD': 'dd64251018',
+        'HOST': '127.0.0.1',
+        'PORT': 3306
     }
 }
 
