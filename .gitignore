@@ -1,0 +1,5 @@
+.vscode/
+*.pyc
+Bookstore/Bookstore/__pycache__/
+Bookstore/storeApp/__pycache__/
+Bookstore/storeApp/migrations/__pycache__/
