@@ -34,7 +34,7 @@ def register(request):
 
 
 def login(request):
-    
+
 
 
 def logout(request):
