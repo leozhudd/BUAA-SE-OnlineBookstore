@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth import settings
 
 
 class Migrationhistory(models.Model):
@@ -62,18 +63,9 @@ class Orderheaders(models.Model):
         db_table = 'orderheaders'
 
 
-class Roles(models.Model):
-    id = models.CharField(db_column='Id', primary_key=True, max_length=128)  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=256)  # Field name made lowercase.
-
-    class Meta:
-        managed = True
-        db_table = 'roles'
-
-
 class Userclaims(models.Model):
     id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    userid = models.ForeignKey('Users', models.DO_NOTHING, db_column='UserId')  # Field name made lowercase.
+    userid = models.ForeignKey(settings.AUTH_USER_MODEL, models.DO_NOTHING, db_column='UserId')  # Field name made lowercase.
     claimtype = models.CharField(db_column='ClaimType', max_length=1000, blank=True, null=True)  # Field name made lowercase.
     claimvalue = models.CharField(db_column='ClaimValue', max_length=1000, blank=True, null=True)  # Field name made lowercase.
 
@@ -85,32 +77,9 @@ class Userclaims(models.Model):
 class Userlogins(models.Model):
     loginprovider = models.CharField(db_column='LoginProvider', primary_key=True, max_length=128)  # Field name made lowercase.
     providerkey = models.CharField(db_column='ProviderKey', max_length=128)  # Field name made lowercase.
-    userid = models.ForeignKey('Users', models.DO_NOTHING, db_column='UserId')  # Field name made lowercase.
+    userid = models.ForeignKey(settings.AUTH_USER_MODEL, models.DO_NOTHING, db_column='UserId')  # Field name made lowercase.
 
     class Meta:
         managed = True
         db_table = 'userlogins'
         unique_together = (('loginprovider', 'providerkey', 'userid'),)
-
-
-class Userroles(models.Model):
-    userid = models.OneToOneField('Users', models.DO_NOTHING, db_column='UserId', primary_key=True)  # Field name made lowercase.
-    roleid = models.ForeignKey(Roles, models.DO_NOTHING, db_column='RoleId')  # Field name made lowercase.
-
-    class Meta:
-        managed = True
-        db_table = 'userroles'
-
-
-class Users(models.Model):
-    id = models.CharField(db_column='Id', primary_key=True, max_length=128)  # Field name made lowercase.
-    email = models.CharField(db_column='Email', max_length=256, blank=True, null=True)  # Field name made lowercase.
-    emailconfirmed = models.TextField(db_column='EmailConfirmed')  # Field name made lowercase. This field type is a guess.
-    passwordhash = models.CharField(db_column='PasswordHash', max_length=1000, blank=True, null=True)  # Field name made lowercase.
-    securitystamp = models.CharField(db_column='SecurityStamp', max_length=1000, blank=True, null=True)  # Field name made lowercase.
-    phonenumber = models.CharField(db_column='PhoneNumber', max_length=1000, blank=True, null=True)  # Field name made lowercase.
-    phonenumberconfirmed = models.TextField(db_column='PhoneNumberConfirmed')  # Field name made lowercase. This field type is a guess.
-
-    class Meta:
-        managed = True
-        db_table = 'users'
