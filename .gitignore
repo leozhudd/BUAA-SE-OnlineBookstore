@@ -3,3 +3,6 @@
 Bookstore/Bookstore/__pycache__/
 Bookstore/storeApp/__pycache__/
 Bookstore/storeApp/migrations/__pycache__/
+Bookstore/Bookstore/.DS_Store
+*/.DS_Store
+.gitignore
