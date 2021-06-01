@@ -79,7 +79,7 @@ DATABASES = {
     # todo 修改数据库名称
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bookstore',
+        'NAME': '小型网上书店',
         'USER': 'fmACG',
         'PASSWORD': '114514',
         'HOST': '127.0.0.1',
