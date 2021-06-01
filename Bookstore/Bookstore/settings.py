@@ -80,8 +80,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': '小型网上书店',
-        'USER': 'root',
-        'PASSWORD': 'csapp',
+        'USER': 'fmACG',
+        'PASSWORD': '114514',
         'HOST': '127.0.0.1',
         'PORT': 3306
     }
