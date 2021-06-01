@@ -80,8 +80,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bookstore',
-        'USER': 'root',
-        'PASSWORD': 'dd64251018',
+        'USER': 'fmACG',
+        'PASSWORD': '114514',
         'HOST': '127.0.0.1',
         'PORT': 3306
     }
