@@ -5,4 +5,5 @@ Bookstore/storeApp/__pycache__/
 Bookstore/storeApp/migrations/__pycache__/
 Bookstore/Bookstore/.DS_Store
 */.DS_Store
-.gitignore
+.DS_Store
+Bookstore/storeApp/.DS_Store

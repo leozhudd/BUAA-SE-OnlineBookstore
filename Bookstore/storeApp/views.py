@@ -5,6 +5,11 @@ from django.contrib import auth
 
 
 # Create your views here.
+from django.views.decorators.http import require_http_methods
+
+from storeApp.models import Books
+
+
 def index(request):
     return render(request, 'index.html')
 
@@ -67,3 +72,19 @@ def logout(request):
     return HttpResponse("登出成功！")
 
 
+# 图书管理模块
+@require_http_methods(["GET"])
+def add_book(request):
+    book_name = request.POST.get("book_name")
+    book_description = request.POST.get("book_description")
+    book_price = request.POST.get("book_price")
+    book_imgpath = request.POST.get("book_imgpath")
+    book_category = request.POST.get("book_category")
+    new_book = Books(name=book_name, description=book_description, price=book_price, imgpath=book_imgpath, bookcategory=book_category)
+    new_book.save()
+    return JsonResponse({message:'success', error_num:0})
+
+
+@require_http_methods(["GET"])
+def show_books(request):
+    boos

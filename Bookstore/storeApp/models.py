@@ -24,7 +24,6 @@ class Bookcategories(models.Model):
 
 
 class Books(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=60)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=1000)  # Field name made lowercase.
     price = models.IntegerField(db_column='Price')  # Field name made lowercase.
