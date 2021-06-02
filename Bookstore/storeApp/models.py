@@ -15,7 +15,6 @@ class Migrationhistory(models.Model):
 
 
 class Bookcategories(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=20)  # Field name made lowercase.
 
     class Meta:
@@ -28,7 +27,7 @@ class Books(models.Model):
     description = models.CharField(db_column='Description', max_length=1000)  # Field name made lowercase.
     price = models.IntegerField(db_column='Price')  # Field name made lowercase.
     imgpath = models.CharField(db_column='ImgPath', max_length=1000, blank=True, null=True)  # Field name made lowercase.
-    bookcategory = models.ForeignKey(Bookcategories, models.DO_NOTHING, db_column='BookCategory_Id')  # Field name made lowercase.
+    bookcategory = models.ForeignKey(Bookcategories, on_delete=models.CASCADE, db_column='BookCategory_Id')  # Field name made lowercase.
 
     class Meta:
         managed = True

@@ -1,5 +1,8 @@
+import json
+
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.core import serializers
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.contrib import auth
 
@@ -7,7 +10,7 @@ from django.contrib import auth
 # Create your views here.
 from django.views.decorators.http import require_http_methods
 
-from storeApp.models import Books
+from storeApp.models import Books, Bookcategories
 
 
 def index(request):
@@ -73,18 +76,25 @@ def logout(request):
 
 
 # 图书管理模块
-@require_http_methods(["GET"])
+@require_http_methods(["POST"])
 def add_book(request):
     book_name = request.POST.get("book_name")
     book_description = request.POST.get("book_description")
     book_price = request.POST.get("book_price")
     book_imgpath = request.POST.get("book_imgpath")
     book_category = request.POST.get("book_category")
-    new_book = Books(name=book_name, description=book_description, price=book_price, imgpath=book_imgpath, bookcategory=book_category)
+    book_category_obj = Bookcategories.objects.get(name=book_category)
+    new_book = Books(name=book_name, description=book_description, price=book_price, imgpath=book_imgpath, bookcategory=book_category_obj)
     new_book.save()
-    return JsonResponse({message:'success', error_num:0})
+
+    response = {'message': 'success', 'error_num': 0}
+    return JsonResponse(response)
 
 
 @require_http_methods(["GET"])
 def show_books(request):
-    boos
+    books = Books.objects.all()
+    # 此时books是QuerySet对象，若要要转成json格式返回，使用serialize
+    json_data = json.loads(serializers.serialize('json', books))
+    response = {'list': json_data, 'message': 'success', 'error_num': 0}
+    return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
