@@ -23,7 +23,7 @@ class Bookcategories(models.Model):
 
 
 class Books(models.Model):
-    name = models.CharField(db_column='Name', max_length=60)  # Field name made lowercase.
+    name = models.CharField(db_column='Name', max_length=60, unique=True)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=1000)  # Field name made lowercase.
     price = models.DecimalField(db_column='Price', max_digits=10, decimal_places=2)  # Field name made lowercase.
     imgpath = models.CharField(db_column='ImgPath', max_length=1000, blank=True, null=True)  # Field name made lowercase.
