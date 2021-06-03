@@ -25,7 +25,7 @@ class Bookcategories(models.Model):
 class Books(models.Model):
     name = models.CharField(db_column='Name', max_length=60)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=1000)  # Field name made lowercase.
-    price = models.IntegerField(db_column='Price')  # Field name made lowercase.
+    price = models.DecimalField(db_column='Price', max_digits=10, decimal_places=2)  # Field name made lowercase.
     imgpath = models.CharField(db_column='ImgPath', max_length=1000, blank=True, null=True)  # Field name made lowercase.
     bookcategory = models.ForeignKey(Bookcategories, on_delete=models.CASCADE, db_column='BookCategory_Id')  # Field name made lowercase.
 
@@ -70,14 +70,3 @@ class Userclaims(models.Model):
     class Meta:
         managed = True
         db_table = 'userclaims'
-
-
-class Userlogins(models.Model):
-    loginprovider = models.CharField(db_column='LoginProvider', primary_key=True, max_length=128)  # Field name made lowercase.
-    providerkey = models.CharField(db_column='ProviderKey', max_length=128)  # Field name made lowercase.
-    userid = models.ForeignKey(settings.AUTH_USER_MODEL, models.DO_NOTHING, db_column='UserId')  # Field name made lowercase.
-
-    class Meta:
-        managed = True
-        db_table = 'userlogins'
-        unique_together = (('loginprovider', 'providerkey', 'userid'),)
