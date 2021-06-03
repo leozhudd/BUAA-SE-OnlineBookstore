@@ -92,7 +92,7 @@ def add_book(request):
         new_book.save()
         response = {'message': 'success', 'error_num': 0}
     except Exception as e:
-        response = {'message': str(e), 'error_num': 1}
+        response = {'message': '图书已经存在！错误信息'+str(e), 'error_num': 1}
 
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
 
