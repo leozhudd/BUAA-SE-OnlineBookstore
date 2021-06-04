@@ -2,24 +2,17 @@ from django.db import models
 from django.contrib.auth import settings
 
 
-class Migrationhistory(models.Model):
-    migrationid = models.CharField(db_column='MigrationId', primary_key=True, max_length=150)  # Field name made lowercase.
-    contextkey = models.CharField(db_column='ContextKey', max_length=300)  # Field name made lowercase.
-    model = models.CharField(db_column='Model', max_length=1000)  # Field name made lowercase.
-    bookversion = models.CharField(db_column='BookVersion', max_length=32)  # Field name made lowercase.
-
-    class Meta:
-        managed = True
-        db_table = '_migrationhistory'
-        unique_together = (('migrationid', 'contextkey'),)
-
-
-class Bookcategories(models.Model):
+class BookCategory(models.Model):
     name = models.CharField(db_column='Name', max_length=20)  # Field name made lowercase.
 
     class Meta:
         managed = True
         db_table = 'bookcategories'
+        verbose_name = "图书分类"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
 
 
 class Books(models.Model):
@@ -27,11 +20,16 @@ class Books(models.Model):
     description = models.CharField(db_column='Description', max_length=1000)  # Field name made lowercase.
     price = models.DecimalField(db_column='Price', max_digits=10, decimal_places=2)  # Field name made lowercase.
     imgpath = models.CharField(db_column='ImgPath', max_length=1000, blank=True, null=True)  # Field name made lowercase.
-    bookcategory = models.ForeignKey(Bookcategories, on_delete=models.CASCADE, db_column='BookCategory_Id')  # Field name made lowercase.
+    category = models.ForeignKey(BookCategory, on_delete=models.CASCADE, db_column='BookCategory_Id')  # Field name made lowercase.
 
     class Meta:
         managed = True
         db_table = 'books'
+        verbose_name = "图书详情"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
 
 
 class Orderdetails(models.Model):

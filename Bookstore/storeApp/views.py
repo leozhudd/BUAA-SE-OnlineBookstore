@@ -10,7 +10,7 @@ from django.contrib import auth
 # Create your views here.
 from django.views.decorators.http import require_http_methods
 
-from storeApp.models import Books, Bookcategories
+from storeApp.models import Books, BookCategory
 
 
 def index(request):
@@ -87,7 +87,7 @@ def add_book(request):
         book_price = request.POST.get("book_price")
         book_imgpath = request.POST.get("book_imgpath")
         book_category = request.POST.get("book_category")
-        book_category_obj = Bookcategories.objects.get(name=book_category)
+        book_category_obj = BookCategory.objects.get(name=book_category)
         new_book = Books(name=book_name, description=book_description, price=book_price, imgpath=book_imgpath, bookcategory=book_category_obj)
         new_book.save()
         response = {'message': 'success', 'error_num': 0}
@@ -118,7 +118,7 @@ def update_book(request):
         target_book.description = request.POST.get("book_description")
         target_book.price = request.POST.get("book_price")
         target_book.imgpath = request.POST.get("book_imgpath")
-        target_book.bookcategory = Bookcategories.objects.get(name=request.POST.get("book_category"))
+        target_book.category = BookCategory.objects.get(name=request.POST.get("book_category"))
         target_book.save()
         response = {'message': 'success', 'error_num': 0}
     except Exception as e:

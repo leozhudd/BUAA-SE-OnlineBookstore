@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
                 ('description', models.CharField(db_column='Description', max_length=1000)),
                 ('price', models.IntegerField(db_column='Price')),
                 ('imgpath', models.CharField(blank=True, db_column='ImgPath', max_length=1000, null=True)),
-                ('bookcategory', models.ForeignKey(db_column='BookCategory_Id', on_delete=django.db.models.deletion.DO_NOTHING, to='storeApp.bookcategories')),
+                ('category', models.ForeignKey(db_column='BookCategory_Id', on_delete=django.db.models.deletion.DO_NOTHING, to='storeApp.bookcategories')),
             ],
             options={
                 'db_table': 'books',
