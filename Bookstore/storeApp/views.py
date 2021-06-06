@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
@@ -17,6 +18,7 @@ def index(request):
     return render(request, 'index.html')
 
 
+@require_http_methods(["POST"])
 def register(request):
     # 如果用户提交了注册表单：
     if request.method == 'POST':
@@ -40,7 +42,7 @@ def register(request):
             return JsonResponse({"message": "success", "error_num": 0})
     else:
         # 非POST请求，注册失败，重新注册
-        return JsonResponse({"message": "注册失败！请使用POST请求提交表单！", "error_num": 1})
+        return JsonResponse({"message": "注册失败！请使用POST请求提交表单！", "error_num": 1}, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
 @require_http_methods(["POST"])
@@ -55,7 +57,7 @@ def login(request):
     else:
         # Login failed...
         response = {"message": "用户名或密码错误！", "error_num": 1}
-    return JsonResponse(response)
+    return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
 @require_http_methods(["POST"])
@@ -69,13 +71,13 @@ def chg_pw(request):
         response = {'message': 'success', 'error_num': 0}
     else:
         response = {'message': '旧密码错误', 'error_num': 1}
-    return JsonResponse(response)
+    return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
 @require_http_methods(["GET"])
 def logout(request):
     auth.logout(request)
-    return JsonResponse({'message': 'success', 'error_num': 0})
+    return JsonResponse({'message': 'success', 'error_num': 0}, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
 # 图书管理模块
@@ -128,6 +130,7 @@ def update_book(request):
 
 
 @require_http_methods(["POST"])
+# @login_required(login_url='/api/login/')
 def delete_book(request):
     try:
         book_name = request.POST.get("book_name")
