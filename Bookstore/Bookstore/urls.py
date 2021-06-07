@@ -17,16 +17,19 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.static import serve
 
+from storeApp import urls as storeApp_urls
+from trade import urls as trade_urls
 from Bookstore.settings import MEDIA_ROOT
-from storeApp.views import *
-from storeApp import urls
+from storeApp.views import index
+
 
 urlpatterns = [
-    path('api/', include(urls)),
+    path('api/', include(storeApp_urls)),
+    path('trade/', include(trade_urls)),
 
     path('admin/', admin.site.urls),
     path('', index),
 
     # 设置 通过url的方式访问用户上传的图片/文件/视频
-    path('media/<path:path>', serve, {'document_root': MEDIA_ROOT}),
+    # path('media/<path:path>', serve, {'document_root': MEDIA_ROOT}),
 ]
