@@ -20,7 +20,7 @@ class ShoppingCart(models.Model):
 
 class OrderInfo(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="用户")
-    amount_price = models.DecimalField(verbose_name="订单总金额", max_digits=10, decimal_places=2)
+    amount_price = models.DecimalField(verbose_name="订单总金额", max_digits=10, decimal_places=2, default=0)
     is_payed = models.BooleanField(verbose_name="支付状态", default=False)
     is_signed = models.BooleanField(verbose_name="签收状态", default=False)
     memo = models.CharField(verbose_name="订单备注", max_length=255, null=True, blank=True)
