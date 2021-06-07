@@ -6,17 +6,16 @@ from django.views.decorators.http import require_http_methods
 
 from storeApp.models import Books
 from trade.models import ShoppingCart, OrderInfo, OrderBooks
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 
 
 # Create your views here.
 @require_http_methods(["GET"])
-@login_required(login_url='/api/login/')
+@login_required(login_url='/api/account/login/')
 def show_shoppingcart(request):
-    """返回购物车中全部商品
-    :param book_id
-    :param book_count
-    :return JSON
+    """返回当前用户的购物车中的全部商品
+    :param None
+    :return data, message, error_num
     :author 朱穆清
     """
     try:
@@ -29,12 +28,12 @@ def show_shoppingcart(request):
 
 
 @require_http_methods(["POST"])
-@login_required(login_url='/api/login/')
+@login_required(login_url='/api/account/login/')
 def add_to_shoppingcart(request):
     """添加某本书到购物车，若该书已经存在则修改购买数量
     :param book_id
     :param book_count
-    :return JSON
+    :return message, error_num
     :author 朱穆清
     """
     try:
@@ -55,11 +54,11 @@ def add_to_shoppingcart(request):
 
 
 @require_http_methods(["POST"])
-@login_required(login_url='/api/login/')
+@login_required(login_url='/api/account/login/')
 def del_from_shoppingcart(request):
     """从当前用户的购物车中删除选定的图书
     :param book_id
-    :return JSON
+    :return message, error_num
     :author 朱穆清
     """
     book_id = request.POST.get('book_id')
@@ -73,12 +72,12 @@ def del_from_shoppingcart(request):
 
 
 @require_http_methods(["POST"])
-@login_required(login_url='/api/login/')
+@login_required(login_url='/api/account/login/')
 def edit_shoppingcart(request):
     """编辑购物车内某本图书的购买数量
     :param book_id
     :param book_count
-    :return JSON
+    :return message, error_num
     :author 朱穆清
     """
     book_id = request.POST.get('book_id')
@@ -94,12 +93,12 @@ def edit_shoppingcart(request):
 
 
 @require_http_methods(["POST"])
-@login_required(login_url='/api/login/')
+@login_required(login_url='/api/account/login/')
 def selected_books_preview(request):
     """在购物车选取要下单的书后在订单预览页面调用此函数，返回所有的书的信息
-    :param request:
-    :param book_list: 图书id的列表
-    :return 包含每个书的id和count的列表
+    :param book_list: 所选择的图书id的列表
+    :return message, error_num
+    :return data: 包含每个书的id和count的列表
     todo: 是否需要返回这本书的所有详细信息？包括书名和图片
     :author 朱穆清
     """
@@ -121,10 +120,11 @@ def selected_books_preview(request):
 
     
 @require_http_methods(["GET"])
-@login_required(login_url='/api/login/')
-def ret_allorders(request):
+@login_required(login_url='/api/account/login/')
+def ret_all_orders(request):
     """返回当前用户所有订单
-    :return JSON
+    :return data: 用户所有订单
+    :return message, error_num
     :author 宋子龙
     """
     try:
@@ -137,16 +137,17 @@ def ret_allorders(request):
 
 
 @require_http_methods(["POST"])
-@login_required(login_url='/api/login/')
+@login_required(login_url='/api/account/login/')
 def creat_new_order(request):
     """把所选图书从购物车删除并创建新订单
-    :param book_list:
-    :param memo:
-    :param address:
-    :param contact_name:
-    :param contact_phone:
-    :return JSON
+    :param book_list: 所选图书列表
+    :param memo: 订单备注
+    :param address: 收货地址
+    :param contact_name: 联系人
+    :param contact_phone: 联系电话
+    :return message, error_num
     :author 朱穆清
+    todo 库存减少的问题
     """
     try:
         book_list = request.POST.getlist("book_list")
@@ -160,7 +161,6 @@ def creat_new_order(request):
             new_order = OrderInfo(user=request.user, memo=memo, address=address, contact_name=contact_name,
                                   contact_phone=contact_phone)
             new_order.save()
-            amount = 0
             for book_id in book_list:
                 item = ShoppingCart.objects.get(book_id=book_id)
                 book = Books.objects.get(id=book_id)  # 根据id取出图书的购物车项和详情项
@@ -176,10 +176,11 @@ def creat_new_order(request):
 
 
 @require_http_methods(["GET"])
-@login_required(login_url='/api/login/')
-def ret_unreceivedorders(request):
+@login_required(login_url='/api/account/login/')
+def ret_unreceived_orders(request):
     """返回当前用户未收货的订单
-    :return JSON
+    :param None
+    :return message, error_num
     :author 宋子龙
     """
     try:
@@ -189,4 +190,3 @@ def ret_unreceivedorders(request):
     except Exception as e:
         response = {"message": str(e), "error_num": 1}
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
-
