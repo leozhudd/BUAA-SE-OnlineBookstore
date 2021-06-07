@@ -119,6 +119,22 @@ def selected_books_preview(request):
         response = {"message": str(e), "error_num": 1}
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
 
+    
+@require_http_methods(["GET"])
+@login_required(login_url='/api/login/')
+def ret_allorders(request):
+    """返回当前用户所有订单
+    :return JSON
+    :author 宋子龙
+    """
+    try:
+        orders = OrderInfo.objects.filter(user=request.user)
+        json_data = json.loads(serializers.serialize("json", orders))
+        response = {"data": json_data, "message": "success", "error_num": 0}
+    except Exception as e:
+        response = {"message": str(e), "error_num": 1}
+    return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
+
 
 @require_http_methods(["POST"])
 @login_required(login_url='/api/login/')
@@ -154,6 +170,22 @@ def creat_new_order(request):
                 item.delete()  # 把生成了订单的这些书从购物车中删除
             new_order.save()
             response = {"message": "success", "error_num": 0}
+    except Exception as e:
+        response = {"message": str(e), "error_num": 1}
+    return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
+@require_http_methods(["GET"])
+@login_required(login_url='/api/login/')
+def ret_unreceivedorders(request):
+    """返回当前用户未收货的订单
+    :return JSON
+    :author 宋子龙
+    """
+    try:
+        order = OrderInfo.objects.filter(user=request.user, is_signed=False)
+        json_data = json.loads(serializers.serialize("json", order))
+        response = {"data": json_data, "message": "success", "error_num": 0}
     except Exception as e:
         response = {"message": str(e), "error_num": 1}
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
