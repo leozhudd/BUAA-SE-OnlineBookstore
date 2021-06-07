@@ -9,8 +9,8 @@ urlpatterns = [
     path('edit_shoppingcart/', views.edit_shoppingcart),
     path('selected_books_preview/', views.selected_books_preview),
     path('creat_new_order/', views.creat_new_order),
-    path('ret_allorders/', views.ret_allorders),
-    path('ret_unreceivedorders/', views.ret_unreceivedorders),
     path('set_order_received/', views.set_order_received),
     path('ret_order_details/', views.ret_order_details),
+    path('ret_all_orders/', views.ret_all_orders),
+    path('ret_unreceived_orders/', views.ret_unreceived_orders)
 ]
