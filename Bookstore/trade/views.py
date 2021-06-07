@@ -190,3 +190,40 @@ def ret_unreceivedorders(request):
         response = {"message": str(e), "error_num": 1}
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
 
+
+@require_http_methods(["POST"])
+@login_required(login_url='/api/login/')
+def set_order_received(request):
+    """修改某订单状态为已收货
+    :param id:
+    :return JSON
+    :author 宋子龙
+    """
+    try:
+        id = request.POST.get("id")
+        order = OrderInfo.objects.get(id=id)
+        order.update(is_signed=True)
+        response = {"message": "success", "error_num": 0}
+    except Exception as e:
+        response = {"message": str(e), "error_num": 1}
+    return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
+@require_http_methods(["POST"])
+@login_required(login_url='/api/login/')
+def ret_order_details(request):
+    """返回当前订单详情
+    :param order_id:
+    :return JSON
+    :author 宋子龙
+    """
+    try:
+        order_id = request.POST.get("order_id")
+        orderbooks = OrderBooks.objects.filter(order_id=order_id)
+        json_data1 = json.loads(serializers.serialize("json", orderbooks))
+        order = OrderInfo.objects.filter(id=order_id)
+        json_data2 = json.loads(serializers.serialize("json", order))
+        response = {"data1": json_data1, "data2": json_data2, "message": "success", "error_num": 0}
+    except Exception as e:
+        response = {"message": str(e), "error_num": 1}
+    return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
