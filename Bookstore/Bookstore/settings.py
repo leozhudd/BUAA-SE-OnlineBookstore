@@ -83,7 +83,6 @@ WSGI_APPLICATION = 'Bookstore.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    # todo 修改数据库名称
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': '小型网上书店',
