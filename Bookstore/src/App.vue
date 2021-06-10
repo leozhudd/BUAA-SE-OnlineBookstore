@@ -1,9 +1,12 @@
 <template>
   <div id="app">
     <div id="nav">
+      <span id="menu-left">
       <router-link to="/">主页</router-link> |
-      <router-link to="/login">登录</router-link> |
-      <router-link to="/signin">注册</router-link>
+      <router-link to="/shoppingcart">购物车</router-link> |
+      <router-link to="/order">订单</router-link> |
+      </span>
+      <span id="menu-right"><router-link to="/login">登录/注册</router-link></span>
     </div>
     <router-view/>
   </div>
@@ -16,6 +19,10 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+#menu-right {
+  padding-right: 24px;
 }
 
 #nav {

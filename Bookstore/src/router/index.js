@@ -19,9 +19,9 @@ const routes = [
     component: () => import('../views/login')
   },
   {
-    path: '/register',
-    name: 'Register',
-    component: () => import('../views/register')
+    path: '/shoppingcart',
+    name: 'Shoppingcart',
+    component: () => import('../views/shoppingcart')
   }
 ]
 

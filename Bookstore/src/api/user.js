@@ -1,7 +1,14 @@
-import request from '@/utils/request'
+import {request} from '../network/request'
+import Vue from 'vue'
+
+Vue.config.productionTip = false
 
 export function login(){
-    return request({
-        url: '/'
+    request({
+        url: ''
+    }).then(res => {
+
+    }).catch(err => {
+
     })
 }
