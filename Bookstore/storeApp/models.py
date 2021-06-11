@@ -20,7 +20,7 @@ class Books(models.Model):
     price = models.DecimalField(verbose_name="价格", db_column='Price', max_digits=10, decimal_places=2)  # Field name made lowercase.
     sold_count = models.IntegerField(verbose_name="销量", default=0)
     image = models.ImageField(verbose_name="封面图", upload_to="resources/book_image", null=True, blank=True)
-    click_count = models.IntegerField(verbose_name="点击量", default=0)
+    # click_count = models.IntegerField(verbose_name="点击量", default=0)
     stock_count = models.IntegerField(verbose_name="库存量", default=100)
 
     # 商品分类:商品: 1:N
@@ -36,4 +36,4 @@ class Books(models.Model):
         return self.name
 
 
-# todo: 用户收货地址模型
+# todo: 用户收货地址模型，暂时先不设计这个功能，用户每次都需要手动填地址。
