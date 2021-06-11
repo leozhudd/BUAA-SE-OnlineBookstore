@@ -67,6 +67,7 @@ export default {
               book_count: item.book_count
             }
             request({
+              method: 'post',
               url: '/api/trade/edit_shoppingcart/',
               data: sendData
             }).then(res => {
@@ -84,6 +85,7 @@ export default {
                 book_count: item.book_count
                 }
                 request({
+                  method: 'post',
                   url: '/api/trade/edit_shoppingcart/',
                   data: sendData
                 }).then(res => {
@@ -95,6 +97,7 @@ export default {
         },
         moveBookOut(bookid) {
             request({
+              method: 'post',
               url: '/api/trade/del_from_shoppingcart/',
               data: {book_id: bookid}
             }).then(res => {
