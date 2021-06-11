@@ -8,7 +8,7 @@ class BooksAdmin(admin.ModelAdmin):
     # fields 属性定义了新建对象时要显示的字段。
     fields = ('name', 'description', 'price', 'category', 'image', 'stock_count')
     # list_display 定义在列表中显示更多的栏目
-    list_display = ('name', 'description', 'price', 'category', 'sold_count', 'click_count', 'stock_count')
+    list_display = ('name', 'description', 'price', 'category', 'sold_count', 'stock_count')
     # 显示搜索栏
     search_fields = ('name',)
     # 可以直接在列表编辑

@@ -9,6 +9,7 @@ class ShoppingCart(models.Model):
     book = models.ForeignKey(Books, on_delete=models.CASCADE, verbose_name="图书")
     book_count = models.IntegerField(verbose_name="购买数量", default=1)
     add_time = models.DateTimeField(default=datetime.now, verbose_name="加入购物车时间")
+    now_available = models.BooleanField(verbose_name="现在库存量充足", default=True)
 
     class Meta:
         verbose_name = "购物车"
@@ -19,6 +20,7 @@ class ShoppingCart(models.Model):
 
 
 class OrderInfo(models.Model):
+    order_sn = models.CharField(verbose_name="订单编号", max_length=20)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="用户")
     amount_price = models.DecimalField(verbose_name="订单总金额", max_digits=10, decimal_places=2, default=0)
     is_payed = models.BooleanField(verbose_name="支付状态", default=False)
