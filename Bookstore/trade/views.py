@@ -1,4 +1,5 @@
 import json
+import time
 
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
@@ -13,13 +14,20 @@ from django.http import JsonResponse
 @require_http_methods(["GET"])
 @login_required(login_url='/api/account/login/')
 def show_shoppingcart(request):
-    """返回当前用户的购物车中的全部商品
+    """返回当前用户的购物车中的全部商品，并根据库存量更新状态
     :param None
     :return data, message, error_num
     :author 朱穆清
     """
     try:
         carts = ShoppingCart.objects.filter(user=request.user)
+        # 更新每本书的库存量是否充足
+        for item in carts:
+            if Books.objects.get(id=item.book_id).stock_count < item.book_count:
+                item.now_available = False
+            else:
+                item.now_available = True
+            item.save()
         json_data = json.loads(serializers.serialize('json', carts))
         response = {"data": json_data, "message": "success", "error_num": 0}
     except Exception as e:
@@ -111,6 +119,8 @@ def selected_books_preview(request):
             # 把list中每一本书的实例加入要返回的列表book_objs中
             for book_id in book_list:
                 item = ShoppingCart.objects.get(book_id=book_id)
+                # if Books.objects.get(id=book_id).stock_count < item.book_count:
+                #     raise Exception("库存量不足，无法下单！")
                 book_objs.append(item)
             json_data = json.loads(serializers.serialize('json', book_objs))
             response = {"data": json_data, "message": "success", "error_num": 0}
@@ -139,7 +149,7 @@ def ret_all_orders(request):
 @require_http_methods(["POST"])
 @login_required(login_url='/api/account/login/')
 def creat_new_order(request):
-    """把所选图书从购物车删除并创建新订单
+    """创建新订单并把所选图书从购物车删除（调用即下单成功，销售量++，库存量--）
     :param book_list: 所选图书列表
     :param memo: 订单备注
     :param address: 收货地址
@@ -147,7 +157,6 @@ def creat_new_order(request):
     :param contact_phone: 联系电话
     :return message, error_num
     :author 朱穆清
-    todo 库存减少的问题
     """
     try:
         book_list = request.POST.getlist("book_list")
@@ -155,15 +164,26 @@ def creat_new_order(request):
         address = request.POST.get("address")
         contact_name = request.POST.get("contact_name")
         contact_phone = request.POST.get("contact_phone")
+        # 生成订单唯一编号
+        # 当前时间 + userid + 随机数(2位)
+        import random
+        # 当前时间，eg: '20200329152308'
+        now_time = time.strftime("%Y%m%d%H%M%S")
+        userid = request.user.id
+        ranstr = "%.3d" % (random.randint(1, 99))
+        order_sn = "{time_str}{userid}{ranstr}".format(time_str=now_time, userid=userid, ranstr=ranstr)
         if not book_list:
             response = {"message": "前端传来的列表中没有图书，不能预览！", "error_num": 1}
         else:
             new_order = OrderInfo(user=request.user, memo=memo, address=address, contact_name=contact_name,
-                                  contact_phone=contact_phone)
+                                  contact_phone=contact_phone, order_sn=order_sn)
             new_order.save()
             for book_id in book_list:
                 item = ShoppingCart.objects.get(book_id=book_id)
                 book = Books.objects.get(id=book_id)  # 根据id取出图书的购物车项和详情项
+                book.stock_count -= item.book_count  # 下单后库存量--
+                book.sold_count += item.book_count  # 下单后销售量++
+                book.save()
                 new_order.amount_price += book.price*item.book_count  # 统计订单总金额
                 order_books = OrderBooks(order=new_order, book=book, book_count=item.book_count)
                 order_books.save()
@@ -171,7 +191,7 @@ def creat_new_order(request):
             new_order.save()
             response = {"message": "success", "error_num": 0}
     except Exception as e:
-        response = {"message": str(e), "error_num": 1}
+        response = {"message": "所选的图书id不存在于购物车！"+str(e), "error_num": 1}
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
@@ -228,3 +248,5 @@ def ret_order_details(request):
     except Exception as e:
         response = {"message": str(e), "error_num": 1}
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
+
+

@@ -16,7 +16,7 @@ class ShoppingCartAdmin(admin.ModelAdmin):
 
 
 class OrderInfoAdmin(admin.ModelAdmin):
-    list_display = ("user", "id", "is_payed", "is_signed", "memo", "amount_price",
+    list_display = ("order_sn", "user", "address", "is_payed", "is_signed", "memo", "amount_price",
                     "add_time")
     # search_fields = ('user',)
 
