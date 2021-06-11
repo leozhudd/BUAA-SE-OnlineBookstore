@@ -154,28 +154,27 @@ export default {
             data: sendData
           }).then(response=>{
             console.log(response);
-            if(response.data.code === 200)
+            if(!response.error_num)
             {
               this.$message({
                 type: 'success',
                 message: '登录成功'
               });
-              console.log(response.data);
               localStorage.setItem("username",this.ruleForm.name);
-              if(response.data.data.user.isauth==1){
-                localStorage.setItem("isauth",response.data.data.user.isauth);
-              }
               
-              this.$router.push('home');
+              this.$router.push('/');
               this.$router.go(0);
             }
-            else if (response.data.code === 400)//?
+            else
             {
-              console.log('error submit!!');
+              console.log(response.message);
               return false;
             }
           }).catch(error=>{
             console.log(error);
+            this.$message({
+              message: '登录成功'
+            });
           });
       } else{
         alert("登录失败");
