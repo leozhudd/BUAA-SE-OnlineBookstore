@@ -52,39 +52,42 @@ export default {
         },
         getBooks() {
             request({
-              method: 'get',
               url: '/api/trade/show_shoppingcart/',
-              data: {'username':$store.state.onlineuser}
             }).then(res => {
               console.log(res);
-              let books = JSON.parse(res); //试验中
+              books = res.data; //试验中
             }).catch(err => {
               console.log(error);
             })
         },
         countAdd(item) {
             item.book_count++;
+            let sendData = {
+              book_id: item.book_id,
+              book_count: item.book_count
+            }
             request({
-              method: 'get',
               url: '/api/trade/edit_shoppingcart/',
-              data: {'username':$store.state.onlineuser, 'book_id':item.book_id, 'book_count':item.book_count}
+              data: sendData
             }).then(res => {
-              console.log(res);
-             
+              console.log(res.message);
             }).catch(err => {
               console.log(error);
+
             })
         },
         countSub(item) {
             if (item.book_count>1){
                 item.book_count--;
+                let sendData = {
+                book_id: item.book_id,
+                book_count: item.book_count
+                }
                 request({
-                  method: 'get',
                   url: '/api/trade/edit_shoppingcart/',
-                  data: {'username':$store.state.onlineuser, 'book_id':item.book_id, 'book_count':item.book_count}
+                  data: sendData
                 }).then(res => {
-                  console.log(res);
-             
+                  console.log(res.message);
                 }).catch(err => {
                   console.log(error);
                 })
@@ -92,14 +95,15 @@ export default {
         },
         moveBookOut(bookid) {
             request({
-              method: 'get',
               url: '/api/trade/del_from_shoppingcart/',
-              data: {'username':$store.state.onlineuser, 'book_id':bookid}
+              data: {book_id: bookid}
             }).then(res => {
               console.log(res);
+             //刷新
              
             }).catch(err => {
               console.log(error);
+              //提示信息
             })
         },
        /* updateCount(item, counter) {

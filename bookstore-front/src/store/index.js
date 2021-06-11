@@ -5,14 +5,14 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    onlineuser: '',
+    isLogin: false,
   },
   mutations: {
     login(name) {
-      state.onlineuser = name;
+      state.isLogin = true;
     },
     logout() {
-      state.onlineuser = '';
+      state.isLogin = false;
     }
   },
   actions: {

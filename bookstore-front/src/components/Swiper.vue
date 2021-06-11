@@ -33,6 +33,7 @@
           showIndicator: {
               type: Boolean,
               default: true
+              //required: true
           }
       },
       data: function() {
