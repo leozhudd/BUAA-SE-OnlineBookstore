@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import {request} from '@/network/request.js'
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -69,10 +69,16 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          axios({
-            method:"post",
-            url:'/api/user/register/',
-            data:{'username':this.ruleForm.name,'password':this.ruleForm.pass,'email':this.ruleForm.email}
+          let sendData = {
+            username: this.ruleForm.name,
+          password1: this.ruleForm.pass,
+          password2: this.ruleForm.checkPass,
+          email: this.ruleForm.email
+          }
+          request({
+            method:'post',
+            url:'/api/base/register/',
+            data: sendData
           }).then(
             response=>{
               console.log(response);

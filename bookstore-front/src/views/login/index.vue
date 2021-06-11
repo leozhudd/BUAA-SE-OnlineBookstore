@@ -77,7 +77,7 @@ import {request} from "@/network/request.js";
 
 export default {
   name: "forgetpwd",
-  props: ["centerDialogVisibleSecond"],
+  //props: ["centerDialogVisibleSecond"],
   data() {
     var validatePass = (rule, value, callback) => {
       if (value === '') {
@@ -144,10 +144,14 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          let sendData = {
+            username: this.ruleForm.name,
+            password: this.ruleForm.pass
+          }
           request({
-            //method:"post",
+            method: 'post',
             url:'/api/base/login/',
-            data:{'username':this.ruleForm.name,'password':this.ruleForm.pass}
+            data: sendData
           }).then(response=>{
             console.log(response);
             if(response.data.code === 200)
@@ -165,7 +169,7 @@ export default {
               this.$router.push('home');
               this.$router.go(0);
             }
-            else if (response.data.code === 400)
+            else if (response.data.code === 400)//?
             {
               console.log('error submit!!');
               return false;
@@ -174,7 +178,7 @@ export default {
             console.log(error);
           });
       } else{
-        alert("登陆失败");
+        alert("登录失败");
         return false;
       }
       });
