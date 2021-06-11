@@ -36,4 +36,4 @@ class Books(models.Model):
         return self.name
 
 
-# todo: 用户收货地址模型
+# todo: 用户收货地址模型，暂时先不设计这个功能，用户每次都需要手动填地址。

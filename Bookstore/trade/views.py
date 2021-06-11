@@ -157,7 +157,6 @@ def creat_new_order(request):
     :param contact_phone: 联系电话
     :return message, error_num
     :author 朱穆清
-    todo 库存减少的问题
     """
     try:
         book_list = request.POST.getlist("book_list")
