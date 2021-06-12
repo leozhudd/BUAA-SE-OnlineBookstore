@@ -1,6 +1,7 @@
 <template>
     <div id="shopping-cart" class="page-shopping-cart">
         <h4 class="cart-title">购物车</h4>
+        <span>收货地址：<button>更改</button></span>
         <!-- 标题 -->
         <div class="cart-product-title clearfix">
             <div class="td-check fl">
@@ -17,7 +18,7 @@
         </div>
     
         <!-- 内容 -->
-        <div class="cart-product clearfix">
+        <div v-if="!emptylist" class="cart-product clearfix">
           <table>
             <tbody>
               <tr v-for="(item, index) in BookList" :key="item.book_id">
@@ -42,10 +43,10 @@
                     </div>
                 </td>
                 <td class="td-price">
-                  <p class="red-text">￥<span class="price-text">{{item.book_price.toFixed(2)}}</span></p>
+                  <p class="red-text"><span class="price-text">{{item.book_price | showPrice}}</span></p>
                 </td>
                 <td class="td-total">
-                  <p class="red-text">￥<span class="price-text">{{item.book_price*item.book_count}}</span></p>
+                  <p class="red-text"><span class="price-text">{{item.book_price*item.book_count | showPrice}}</span></p>
                 </td>
                 <td class="td-do">
                   <a href="javascript:;"  class="product-delete" @click='delBook(index,item)'>删除</a>
@@ -55,13 +56,15 @@
             </tbody>
           </table>
         </div>
+        <div v-else class="empty-list">您的购物车里没有商品，<router-link to="/">去选购</router-link></div>
+        <router-view/>
     
         <!-- 最后一行统计 -->
         <div class="cart-product-info">
             <a href="javascript:;" class="delete-product" @click='deleteBooks'><span></span>删除所选商品</a>
             <a href="#" class="keep-shopping"><span></span>继续购物</a>
-            <a href="javascript:;" class="fr btn-buy">去结算</a>
-            <a href="javascript:;" class="fr product-total">￥<span>{{getTotal.totalPrice}}</span></a>
+            <a href="javascript:;" class="fr btn-buy" @click='orderBooks'>去结算</a>
+            <a href="javascript:;" class="fr product-total"><span>{{getTotal.totalPrice | showPrice}}</span></a>
             <a href="javascript:;" class="fr check-num"><span>{{getTotal.totalNum}}</span>件商品总计（不含运费）:</a>
         </div>
     
@@ -80,6 +83,7 @@ import {request} from "@/network/request.js";
         name:'shoppingcart',
         data() {
           return {
+            emptylist: false, 
             BookList:[
             {
               'book_id':'1',
@@ -131,19 +135,26 @@ import {request} from "@/network/request.js";
     
         // 获取总价和产品总数
           getTotal() {
-            // 获取list中select为true的数据
-            let _proList = this.BookList.filter(val =>{
-              return val.select;
-            }),
-            totalPrice = 0;
-            for (let i = 0; i < _proList.length; i++) {
+            let totalprice = 0, itemcount = 0;
+            for (let i = 0; i < this.BookList.length; i++) {
               // 总价累加
-              totalPrice += _proList[i].book_count * _proList[i].book_price;
+              if (this.BookList[i].select) {
+                totalprice += this.BookList[i].book_count * this.BookList[i].book_price;
+                itemcount++;
+              }
             }
-            // 选择产品的件数就是_proList.lenth，总价就是totalPrice
-            return{totalNum:_proList.length, totalPrice:totalPrice}
+            // 选择产品的件数，总价
+            return{totalNum:itemcount, totalPrice:totalprice}
           }
     
+        },
+        filters: {
+          showPrice(price) {
+            if (!price) {
+              return '';
+            }
+            return '￥' + price.toFixed(2);
+          }
         },
         methods:{
           getBooks() {
@@ -152,7 +163,20 @@ import {request} from "@/network/request.js";
               url: '/api/trade/show_shoppingcart/',
             }).then(res => {
               console.log(res);
-              books = res.data;
+              if (!res.error_num) {
+                this.BookList = res;
+                if (this.BookList.length === 0) {
+                  this.emptylist = true;
+                } else {
+                  this.emptylist = false;
+                }
+                console.log(this.emptylist);
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: '获取商品信息失败'+res.message
+                });
+              }
             }).catch(err => {
               console.log(err);
             })
@@ -169,7 +193,10 @@ import {request} from "@/network/request.js";
             }).then(res => {
               console.log(res.message);
             }).catch(err => {
-              console.log(error);
+              this.$message({
+                type: 'error',
+                message: err.message
+              });
             })
           },
           countAdd(item) {
@@ -183,38 +210,77 @@ import {request} from "@/network/request.js";
             }
           },
           delBook(index, item) {
-            
+            let sendData = new FormData()
+            sendData.append('book_id', item.book_id);
             request({
               method: 'post',
               url: '/api/trade/del_from_shoppingcart/',
-              data: {book_id: item.book_id}
+              data: sendData
             }).then(res => {
               console.log(res);
-              //刷新
+              if (!res.error_num) {
+                //刷新
               this.BookList.splice(index,1);
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.message
+                });
+              }
             }).catch(err => {
-              console.log(error);
-              //提示信息
+              console.log(err);
+              this.$message({
+                type: 'error',
+                message: '删除失败'
+              });
             })
           },
           // 全选与取消全选
           selectItem(_isSelect){
             //遍历BookList,全部取反
-            this.BookList.forEach(item => {
-              item.select = !_isSelect;
-            })
+            for (let i = 0; i < this.BookList.length; i++) {
+              this.BookList[i].select = !_isSelect;
+            }
           },
           //删除选中的产品
           deleteBooks(){
             this.BookList = this.BookList.filter(item => {return !item.select});
           },
+          //下单选中的产品
+          orderBooks(){
+            let orderlist = [];
+            for (let i = 0; i < this.BookList.length; i++) {
+              if (this.BookList[i].select) {
+                orderlist.push(this.BookList[i]);
+              }
+            }
+            let sendData = new FormData()
+            sendData.append(orderlist);
+            console.log(sendData);
+
+            request({
+              method: 'post',
+              url: '/api/trade/selected_books_preview/',
+              data: sendData
+            }).then(res => {
+              console.log(res);
+              //跳转到订单页面并显示信息
+            }).catch(err => {
+              console.log(err);
+              this.$message({
+                type: 'error',
+                message: '下单失败'
+              });
+            })
+
+          },
         },
         mounted() {
-          //为BookList添加select（是否选中字段，初始值为true）
+          //为BookList添加select属性（是否选中字段）默认为false
           let _this=this;
-          this.BookList.forEach((item) => {
-            _this.$set(item,'select',true)      //往item添加select属性，默认为true
-          })
+          for (let i = 0; i < this.BookList.length; i++) {
+              _this.$set(this.BookList[i],'select',false);
+            }
         }
     }
 </script>
