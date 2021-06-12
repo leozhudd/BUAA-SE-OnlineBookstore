@@ -67,8 +67,6 @@ def login(request):
         response = {"message": "success", "error_num": 0}
         json_res = JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
 
-        json_res.set_cookie('wowusername', 'username')
-        request.session['mykey'] = 'myval'
         print(request.COOKIES)
         return json_res
     except Exception as e:
@@ -110,23 +108,6 @@ def logout(request):
 
 
 # 图书管理模块
-@require_http_methods(["POST"])
-def add_book(request):
-    try:
-        book_name = request.POST.get("book_name")
-        book_description = request.POST.get("book_description")
-        book_price = request.POST.get("book_price")
-        book_imgpath = request.POST.get("book_imgpath")
-        book_category = request.POST.get("book_category")
-        book_category_obj = BookCategory.objects.get(name=book_category)
-        new_book = Books(name=book_name, description=book_description, price=book_price, imgpath=book_imgpath, bookcategory=book_category_obj)
-        new_book.save()
-        response = {'message': 'success', 'error_num': 0}
-    except Exception as e:
-        response = {'message': str(e), 'error_num': 1}
-
-    return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
-
 
 @require_http_methods(["GET"])
 def show_books(request):
@@ -140,6 +121,56 @@ def show_books(request):
         # 此时books是QuerySet对象，若要要转成json格式返回，使用serialize
         json_data = json.loads(serializers.serialize('json', books))
         response = {'data': json_data, 'message': 'success', 'error_num': 0}
+    except Exception as e:
+        response = {'message': str(e), 'error_num': 1}
+
+    return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
+@require_http_methods(["POST"])
+def keywords_search(request):
+    """书名/作者/出版社关键字搜索
+    :param option 选择按哪种方式搜索
+    :param bookname
+    :param author
+    :param publisher
+    :return book_list
+    :author 朱穆清
+    """
+    try:
+        option = request.POST.get("option")
+        if option == "bookname":
+            bookname = request.POST.get("bookname")
+            books = Books.objects.filter(name__icontains=bookname)
+        elif option == "author":
+            author = request.POST.get("author")
+            books = Books.objects.filter(author__icontains=author)
+        elif option == "publisher":
+            publisher = request.POST.get("publisher")
+            books = Books.objects.filter(publisher__icontains=publisher)
+
+        json_data = json.loads(serializers.serialize('json', books))
+        response = {'data': json_data, 'message': 'success', 'error_num': 0}
+
+    except Exception as e:
+        response = {'message': str(e), 'error_num': 1}
+
+    return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
+"""
+@require_http_methods(["POST"])
+def add_book(request):
+    try:
+        book_name = request.POST.get("book_name")
+        book_description = request.POST.get("book_description")
+        book_price = request.POST.get("book_price")
+        book_imgpath = request.POST.get("book_imgpath")
+        book_category = request.POST.get("book_category")
+        book_category_obj = BookCategory.objects.get(name=book_category)
+        new_book = Books(name=book_name, description=book_description, price=book_price, imgpath=book_imgpath, bookcategory=book_category_obj)
+        new_book.save()
+        response = {'message': 'success', 'error_num': 0}
     except Exception as e:
         response = {'message': str(e), 'error_num': 1}
 
@@ -175,3 +206,4 @@ def delete_book(request):
         response = {'message': str(e), 'error_num': 1}
 
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
+"""
