@@ -109,9 +109,8 @@ export default {
           repeatpassword: ""
       },
       rules: {
-          name: [{ required: true, message: '请输入您的名称', trigger: 'blur' }, { min: 2, max: 15, message: '长度在 2 到 5 个字符', trigger: 'blur' }],
+          name: [{ required: true, message: '请输入您的名称', trigger: 'blur' }],
           pass: [{ required: true, validator: validatePass, trigger: 'blur' }],
-
 
           email: [
               {required: true, message: "邮箱不能为空", trigger: "blur"}
@@ -144,15 +143,17 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          let sendData = {
-            username: this.ruleForm.name,
-            password: this.ruleForm.pass
-          }
+          let sendData = new FormData()
+          sendData.append('username',this.ruleForm.name)
+          sendData.append('password', this.ruleForm.pass)
+          console.log(sendData);
+
           request({
             method: 'post',
-            url:'/api/base/login/',
+            url: '/api/base/login/',
             data: sendData
-          }).then(response=>{
+          })
+          .then(response=>{
             console.log(response);
             if(!response.error_num)
             {
@@ -161,23 +162,31 @@ export default {
                 message: '登录成功'
               });
               localStorage.setItem("username",this.ruleForm.name);
-              
-              this.$router.push('/');
-              this.$router.go(0);
+              this.$store.commit('login');
+              console.log(this.$store.state.isLogin);
+              //this.$router.push('/');
+              //this.$router.go(0);
             }
             else
             {
-              console.log(response.message);
+              this.$message({
+              type: 'error',
+              message: response.message,
+              });
               return false;
             }
           }).catch(error=>{
             console.log(error);
             this.$message({
-              message: '登录成功'
+              type: 'error',
+              message: error.message
             });
           });
       } else{
-        alert("登录失败");
+            this.$message({
+              type: 'error',
+              message: '输入格式不正确'
+            });
         return false;
       }
       });

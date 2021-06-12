@@ -1,10 +1,5 @@
 <template> 
   <div id="shoppingcart">
-    <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-      <div style="margin: 15px 0;"></div>
-      <el-checkbox-group v-model="checkedBooks" @change="handleCheckedBooksChange">
-        <el-checkbox v-for="book in books" :key="book.book_id">{{book.book_name}}</el-checkbox>
-      </el-checkbox-group>
       <div v-for="item in books" :key="item.book_name">
         <shopitem :id="item.book_id"
                   :name="item.book_name" 
@@ -26,9 +21,6 @@ export default {
     name: "Shoppingcart",
     data() {
         return { 
-            checkAll: false,
-            checkedBooks: [],
-            isIndeterminate: true,
 
             books: [{
                 book_id: '',
@@ -46,53 +38,50 @@ export default {
         }
     },
     
+    created() {
+      //if (store.state.isLogin) else{this.$router.push('/login')}
+      this.getBooks();
+    },
     methods:{
-        created() {
-            getBooks();
-        },
         getBooks() {
-            request({
+          let sendData = new FormData()
+          console.log(sessionStorage.getItem("username"));
+          sendData.append('username',sessionStorage.getItem("username"));
+          request({
+              method: 'get',
               url: '/api/trade/show_shoppingcart/',
-            }).then(res => {
+              data: sendData
+          }).then(res => {
               console.log(res);
-              books = res.data; //试验中
-            }).catch(err => {
-              console.log(error);
-            })
+              this.books = res.data;
+          }).catch(err => {
+              console.log(err);
+          })
         },
+        updateCount(item) {
+          let sendData = new FormData()
+          sendData.append('book_id', item.book_id)
+          sendData.append('book_count', item.book_count)
+
+          request({
+            method: 'post',
+            url: '/api/trade/edit_shoppingcart/',
+            data: sendData
+          }).then(res => {
+            console.log(res.message);
+          }).catch(err => {
+            console.log(error);
+          })
+        },
+
         countAdd(item) {
             item.book_count++;
-            let sendData = {
-              book_id: item.book_id,
-              book_count: item.book_count
-            }
-            request({
-              method: 'post',
-              url: '/api/trade/edit_shoppingcart/',
-              data: sendData
-            }).then(res => {
-              console.log(res.message);
-            }).catch(err => {
-              console.log(error);
-
-            })
+            updateCount(item);
         },
         countSub(item) {
             if (item.book_count>1){
                 item.book_count--;
-                let sendData = {
-                book_id: item.book_id,
-                book_count: item.book_count
-                }
-                request({
-                  method: 'post',
-                  url: '/api/trade/edit_shoppingcart/',
-                  data: sendData
-                }).then(res => {
-                  console.log(res.message);
-                }).catch(err => {
-                  console.log(error);
-                })
+                updateCount(item);
             }
         },
         moveBookOut(bookid) {
@@ -109,20 +98,6 @@ export default {
               //提示信息
             })
         },
-       /* updateCount(item, counter) {
-            console.log(item);
-            item.book_count = counter;
-            request({
-              method: 'get',
-              url: '/api/trade/edit_shoppingcart/',
-              data: {'username':$store.state.onlineuser, 'book_id':item.book_id, 'book_count':item.book_count}
-            }).then(res => {
-              console.log(res);
-             
-            }).catch(err => {
-              console.log(error);
-            })
-        }*/
         handleCheckAllChange(val) {
           this.checkedBooks = val ? books : [];
           this.isIndeterminate = false;
@@ -135,7 +110,7 @@ export default {
     },
     components: {
         shopitem,
-    }
+    },
 }
 </script>
 

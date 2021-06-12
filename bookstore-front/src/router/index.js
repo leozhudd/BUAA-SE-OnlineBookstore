@@ -21,7 +21,7 @@ const routes = [
   {
     path: '/shoppingcart',
     name: 'Shoppingcart',
-    component: () => import('../views/shoppingcart')
+    component: () => import('../views/shoppingcart/start.vue')
   }
 ]
 
