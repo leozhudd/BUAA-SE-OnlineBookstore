@@ -11,7 +11,7 @@ Vue.use(ElementUI);
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 axios.defaults.withCredentials = true;
-axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+//axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 new Vue({
   router,

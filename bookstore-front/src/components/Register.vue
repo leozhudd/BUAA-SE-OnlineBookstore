@@ -56,7 +56,7 @@ export default {
         checkPass: ''
       },
       rules: {
-        name: [{ required: true, message: '请输入您的名称', trigger: 'blur' }, { min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }],
+        name: [{ required: true, message: '请输入您的名称', trigger: 'blur' }],
         email: [{ required: true,message:'请输入邮箱地址' ,trigger: 'blur'},
         {type:'email', message:'请输入正确的邮箱地址', trigger:['blur','change']}],
         pass: [{ required: true, validator: validatePass, trigger: 'blur' }],
@@ -69,12 +69,13 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          let sendData = {
-            username: this.ruleForm.name,
-          password1: this.ruleForm.pass,
-          password2: this.ruleForm.checkPass,
-          email: this.ruleForm.email
-          }
+          let sendData = new FormData()
+          sendData.append('username',this.ruleForm.name)
+          sendData.append('password1', this.ruleForm.pass)
+          sendData.append('password2', this.ruleForm.checkPass)
+          sendData.append('email', this.ruleForm.email)
+          console.log(sendData);
+
           request({
             method:'post',
             url:'/api/base/register/',
@@ -82,26 +83,28 @@ export default {
           }).then(
             response=>{
               console.log(response);
-              if(response.data.code === 200)
+              if(!response.error_num)
               {
                 this.$message({
                   type: 'success',
                   message: '注册成功'
                 });
-                alert(response.data.msg);
-                this.$router.push('/login')
+
+                this.$router.push('/');
               }
-              else if(response.data.code === 400)
+              else
               {
                 this.$message({
-                  type:'fail',
-                  message:'用户名已存在'
+                  type:'error',
+                  message: response.message
                 });
-                alert(response.data.msg);
               }
             }
-          ).catch(error=>{
-            console.log(error);
+          ).catch(error => {
+            this.$message({
+              type:'error',
+              message: error.message
+            });
             return false;
           })
         } else {
@@ -110,6 +113,48 @@ export default {
         }
       });
     },
+    toLogin() {
+          let sendData = new FormData()
+          sendData.append('username',this.ruleForm.name)
+          sendData.append('password', this.ruleForm.pass)
+          console.log(sendData);
+          
+          request({
+            method: 'post',
+            url: '/api/base/login/',
+            data: sendData
+          })
+          .then(response=>{
+            console.log(response);
+            if(!response.error_num)
+            {
+              this.$message({
+                type: 'success',
+                message: '登录成功'
+              });
+              localStorage.setItem("username",this.ruleForm.name);
+              this.$store.commit('login');
+              console.log(this.$store.state.isLogin);
+              
+              this.$router.push('/');
+              this.$router.go(0);
+            }
+            else
+            {
+              this.$message({
+              type: 'error',
+              message: response.message,
+              });
+              return false;
+            }
+            }).catch(error=>{
+            console.log(error);
+            this.$message({
+              type: 'error',
+              message: error.message
+            });
+          });
+    }
   }
 };
 </script>
