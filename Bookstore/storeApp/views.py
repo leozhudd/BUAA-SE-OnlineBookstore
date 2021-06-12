@@ -58,13 +58,18 @@ def login(request):
     :author 朱穆清
     """
     try:
+        print(request.user)
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = auth.authenticate(username=username, password=password)
         auth.login(request, user)
+        print(request.user)
         response = {"message": "success", "error_num": 0}
         json_res = JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
-        # json_res.set_cookie('username', username)
+
+        json_res.set_cookie('wowusername', 'username')
+        request.session['mykey'] = 'myval'
+        print(request.COOKIES)
         return json_res
     except Exception as e:
         # Login failed...

@@ -26,9 +26,6 @@ SECRET_KEY = 'django-insecure-k9lb&q_m^*339@aopoy+-$y0px4fu#m3gd_fz_$qay3xnk$1q_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
 
 ALLOWED_HOSTS = ['*']
 
@@ -90,8 +87,8 @@ ROOT_URLCONF = 'Bookstore.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        # 'DIRS': [BASE_DIR / 'templates']
+        'DIRS': ['dist'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -158,6 +155,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static"),
+# ]
+# 修改为Vue的静态文件
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'dist/static'),
+]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
