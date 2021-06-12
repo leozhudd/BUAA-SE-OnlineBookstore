@@ -63,10 +63,13 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         auth.login(request, user)
         response = {"message": "success", "error_num": 0}
+        json_res = JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
+        # json_res.set_cookie('username', username)
+        return json_res
     except Exception as e:
         # Login failed...
         response = {"message": "用户名或密码错误！ - "+str(e), "error_num": 1}
-    return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
+        return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
 @require_http_methods(["POST"])

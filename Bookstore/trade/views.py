@@ -12,7 +12,6 @@ from django.http import JsonResponse
 
 # Create your views here.
 @require_http_methods(["GET"])
-@login_required(login_url='/api/account/login/')
 def show_shoppingcart(request):
     """返回当前用户的购物车中的全部商品，并根据库存量更新状态
     :param None
@@ -20,7 +19,10 @@ def show_shoppingcart(request):
     :author 朱穆清
     """
     try:
+        # username = request.POST.get("username")
+        # print(username)
         carts = ShoppingCart.objects.filter(user=request.user)
+        # print(request.user)
         # 更新每本书的库存量是否充足
         for item in carts:
             if Books.objects.get(id=item.book_id).stock_count < item.book_count:
@@ -36,7 +38,7 @@ def show_shoppingcart(request):
 
 
 @require_http_methods(["POST"])
-@login_required(login_url='/api/account/login/')
+# @login_required(login_url='/api/account/login/')
 def add_to_shoppingcart(request):
     """添加某本书到购物车，若该书已经存在则修改购买数量
     :param book_id
@@ -62,7 +64,7 @@ def add_to_shoppingcart(request):
 
 
 @require_http_methods(["POST"])
-@login_required(login_url='/api/account/login/')
+# @login_required(login_url='/api/account/login/')
 def del_from_shoppingcart(request):
     """从当前用户的购物车中删除选定的图书
     :param book_id
@@ -80,7 +82,7 @@ def del_from_shoppingcart(request):
 
 
 @require_http_methods(["POST"])
-@login_required(login_url='/api/account/login/')
+# @login_required(login_url='/api/account/login/')
 def edit_shoppingcart(request):
     """编辑购物车内某本图书的购买数量
     :param book_id
@@ -101,7 +103,7 @@ def edit_shoppingcart(request):
 
 
 @require_http_methods(["POST"])
-@login_required(login_url='/api/account/login/')
+# @login_required(login_url='/api/account/login/')
 def selected_books_preview(request):
     """在购物车选取要下单的书后在订单预览页面调用此函数，返回所有的书的信息
     :param book_list: 所选择的图书id的列表
@@ -130,7 +132,7 @@ def selected_books_preview(request):
 
     
 @require_http_methods(["GET"])
-@login_required(login_url='/api/account/login/')
+# @login_required(login_url='/api/account/login/')
 def ret_all_orders(request):
     """返回当前用户所有订单
     :return data: 用户所有订单
@@ -147,7 +149,7 @@ def ret_all_orders(request):
 
 
 @require_http_methods(["POST"])
-@login_required(login_url='/api/account/login/')
+# @login_required(login_url='/api/account/login/')
 def creat_new_order(request):
     """创建新订单并把所选图书从购物车删除（调用即下单成功，销售量++，库存量--）
     :param book_list: 所选图书列表
@@ -196,7 +198,7 @@ def creat_new_order(request):
 
 
 @require_http_methods(["GET"])
-@login_required(login_url='/api/account/login/')
+# @login_required(login_url='/api/account/login/')
 def ret_unreceived_orders(request):
     """返回当前用户未收货的订单
     :param None
@@ -213,7 +215,7 @@ def ret_unreceived_orders(request):
 
 
 @require_http_methods(["POST"])
-@login_required(login_url='/api/login/')
+# @login_required(login_url='/api/login/')
 def set_order_received(request):
     """修改某订单状态为已收货
     :param id:
@@ -231,7 +233,7 @@ def set_order_received(request):
 
 
 @require_http_methods(["POST"])
-@login_required(login_url='/api/login/')
+# @login_required(login_url='/api/login/')
 def ret_order_details(request):
     """返回当前订单详情
     :param order_id:
