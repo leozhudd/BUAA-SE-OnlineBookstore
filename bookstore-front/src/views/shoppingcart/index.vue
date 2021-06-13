@@ -21,7 +21,7 @@
         <div v-if="!emptylist" class="cart-product clearfix">
           <table>
             <tbody>
-              <tr v-for="(item, index) in BookList" :key="item.book_id">
+              <tr v-for="(item, index) in BookList" :key="item.book">
                 <td class="td-check">
                   <span class="check-span" @click="item.select=!item.select" :class="{'check-true':item.select}">选择</span>
                 </td>
@@ -29,8 +29,8 @@
                     <img :src="item.book_img" width="98" height="98" @click="toDetails(item)">
                     <div class="product-info">
                       <h6>{{item.book_name}}</h6>
-                      <p>作者：{{item.book_brand}}</p>
-                      <p>出版社:{{item.book_pro}}</p>
+                      <p>作者：{{item.book_author}}</p>
+                      <p>出版社:</p>
                       <p>简介：{{item.book_intro}}</p>
                     </div>
                     <div class="clearfix"></div>
@@ -43,10 +43,10 @@
                     </div>
                 </td>
                 <td class="td-price">
-                  <p class="red-text"><span class="price-text">{{item.book_price | showPrice}}</span></p>
+                  <p class="red-text"><span class="price-text">{{parseFloat(item.book_price) | showPrice}}</span></p>
                 </td>
                 <td class="td-total">
-                  <p class="red-text"><span class="price-text">{{item.book_price*item.book_count | showPrice}}</span></p>
+                  <p class="red-text"><span class="price-text">{{parseFloat(item.book_price)*item.book_count | showPrice}}</span></p>
                 </td>
                 <td class="td-do">
                   <button class="product-delete" @click='delBook(index,item)'>删除</button>
@@ -164,13 +164,14 @@ import {request} from "@/network/request.js";
             }).then(res => {
               console.log(res);
               if (!res.error_num) {
-                this.BookList = res;
+                this.BookList = res.data;
                 if (this.BookList.length === 0) {
                   this.emptylist = true;
                 } else {
                   this.emptylist = false;
                 }
                 console.log(this.emptylist);
+                console.log(this.BookList);
               } else {
                 this.$message({
                   type: 'error',
