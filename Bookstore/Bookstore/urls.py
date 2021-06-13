@@ -14,19 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from django.views.static import serve
-from Bookstore.settings import MEDIA_ROOT
-from storeApp.views import index
+from django.urls import path, include, re_path
+from django.views.generic import TemplateView
 
 
 urlpatterns = [
     path('api/base/', include('storeApp.urls')),
     path('api/trade/', include('trade.urls')),
-
     path('admin/', admin.site.urls),
-    path('', index),
 
-    # 设置 通过url的方式访问用户上传的图片/文件/视频
-    # path('media/<path:path>', serve, {'document_root': MEDIA_ROOT}),
+    # Vue
+    path('', TemplateView.as_view(template_name='index.html')),
+
 ]
