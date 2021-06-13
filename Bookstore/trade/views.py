@@ -19,19 +19,31 @@ def show_shoppingcart(request):
     :author 朱穆清
     """
     try:
-        # username = request.POST.get("username")
-        # print(username)
         carts = ShoppingCart.objects.filter(user=request.user)
-        # print(request.user)
-        # 更新每本书的库存量是否充足
+        carts_ret = []  # 返回给前端的购物车，添加一些信息
         for item in carts:
+            # 更新每本书的库存量是否充足
             if Books.objects.get(id=item.book_id).stock_count < item.book_count:
                 item.now_available = False
             else:
                 item.now_available = True
             item.save()
-        json_data = json.loads(serializers.serialize('json', carts))
-        response = {"data": json_data, "message": "success", "error_num": 0}
+            # 补充图书详情信息到carts_ret
+            book = Books.objects.get(id=item.book_id)
+            # print("url: "+book.image.url)
+            # print("name: "+book.image.name)
+            info = {'book_id': book.id,
+                    'book_name': book.name,
+                    'book_author': book.author,
+                    'book_price': book.price,
+                    'book_count': item.book_count,
+                    'book_available': item.now_available,
+                    'book_img': book.image.url,
+                    'book_intro': book.description}
+            carts_ret.append(info)
+
+        # json_data = json.loads(serializers.serialize('json', carts))
+        response = {"data": carts_ret, "message": "success", "error_num": 0}
     except Exception as e:
         response = {"message": str(e), "error_num": 1}
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
@@ -97,35 +109,6 @@ def edit_shoppingcart(request):
         item.book_count = book_count
         item.save()
         response = {"message": "success", "error_num": 0}
-    except Exception as e:
-        response = {"message": str(e), "error_num": 1}
-    return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
-
-
-@require_http_methods(["POST"])
-# @login_required(login_url='/api/account/login/')
-def selected_books_preview(request):
-    """在购物车选取要下单的书后在订单预览页面调用此函数，返回所有的书的信息
-    :param book_list: 所选择的图书id的列表
-    :return message, error_num
-    :return data: 包含每个书的id和count的列表
-    todo: 是否需要返回这本书的所有详细信息？包括书名和图片
-    :author 朱穆清
-    """
-    try:
-        book_list = request.POST.getlist("book_list")
-        if not book_list:
-            response = {"message": "前端传来的列表中没有图书，不能预览！", "error_num": 1}
-        else:
-            book_objs = []
-            # 把list中每一本书的实例加入要返回的列表book_objs中
-            for book_id in book_list:
-                item = ShoppingCart.objects.get(book_id=book_id)
-                # if Books.objects.get(id=book_id).stock_count < item.book_count:
-                #     raise Exception("库存量不足，无法下单！")
-                book_objs.append(item)
-            json_data = json.loads(serializers.serialize('json', book_objs))
-            response = {"data": json_data, "message": "success", "error_num": 0}
     except Exception as e:
         response = {"message": str(e), "error_num": 1}
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
@@ -196,7 +179,7 @@ def creat_new_order(request):
         response = {"message": "所选的图书id不存在于购物车！"+str(e), "error_num": 1}
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
 
-
+# todo 这个api没有必要，返回所有订单就行
 @require_http_methods(["GET"])
 # @login_required(login_url='/api/account/login/')
 def ret_unreceived_orders(request):
@@ -231,7 +214,7 @@ def set_order_received(request):
         response = {"message": str(e), "error_num": 1}
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
 
-
+# todo 只需要能返回所有订单
 @require_http_methods(["POST"])
 # @login_required(login_url='/api/login/')
 def ret_order_details(request):
@@ -250,5 +233,3 @@ def ret_order_details(request):
     except Exception as e:
         response = {"message": str(e), "error_num": 1}
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
-
-
