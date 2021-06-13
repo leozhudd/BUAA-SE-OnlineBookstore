@@ -21,32 +21,31 @@
         <div v-if="!emptylist" class="cart-product clearfix">
           <table>
             <tbody>
-              <tr v-for="(item, index) in BookList" :key="item.book_id">
+              <tr v-for="(item, index) in BookList" :key="item.fields.book_id">
                 <td class="td-check">
                   <span class="check-span" @click="item.select=!item.select" :class="{'check-true':item.select}">选择</span>
                 </td>
                 <td class="td-product">
-                    <img :src="item.book_img" width="98" height="98" @click="toDetails(item)">
+                    <img :src="item.fields.book_img" width="98" height="98" @click="toDetails(item)">
                     <div class="product-info">
-                      <h6>{{item.book_name}}</h6>
-                      <p>作者：{{item.book_brand}}</p>
-                      <p>出版社:{{item.book_pro}}</p>
-                      <p>简介：{{item.book_intro}}</p>
+                      <h6>{{item.fields.book_name}}</h6>
+                      <p>作者：{{item.fields.book_author}}</p>
+                      <p>简介：{{item.fields.book_intro}}</p>
                     </div>
                     <div class="clearfix"></div>
                 </td>
                 <td class="td-num">
                     <div class="product-num">
-                      <a href="javascript:;" class="num-reduce num-do fl" @click='item.book_count--'><span>-</span></a>
-                      <input type="text" class="num-input" v-model="item.book_count">
-                      <a href="javascript:;" class="num-add num-do fr" @click='item.book_count++'><span>+</span></a>
+                      <a href="javascript:;" class="num-reduce num-do fl" @click='item.fields.book_count--'><span>-</span></a>
+                      <input type="text" class="num-input" v-model="item.fields.book_count">
+                      <a href="javascript:;" class="num-add num-do fr" @click='item.fields.book_count++'><span>+</span></a>
                     </div>
                 </td>
                 <td class="td-price">
-                  <p class="red-text"><span class="price-text">{{item.book_price | showPrice}}</span></p>
+                  <p class="red-text"><span class="price-text">{{item.fields.book_price | showPrice}}</span></p>
                 </td>
                 <td class="td-total">
-                  <p class="red-text"><span class="price-text">{{item.book_price*item.book_count | showPrice}}</span></p>
+                  <p class="red-text"><span class="price-text">{{item.fields.book_price*item.fields.book_count | showPrice}}</span></p>
                 </td>
                 <td class="td-do">
                   <button class="product-delete" @click='delBook(index,item)'>删除</button>
@@ -87,17 +86,15 @@ import {request} from "@/network/request.js";
             BookList:[
             {
               'book_id':'1',
-              'book_name':'scapp',
+              'book_name':'csapp',
               'book_author':'Author',
               'book_price':39.00,
               'book_count':2,
-              'book_intro':'深入理解计算机系统',
               'book_img':'',
-              'book_category': '计算机'
             },
             {
               'book_id':'2',
-              'book_name':'scapp',
+              'book_name':'csapp',
               'book_author':'Author',
               'book_price':39.00,
               'book_count':2,
@@ -107,7 +104,7 @@ import {request} from "@/network/request.js";
             },
             {
               'book_id':'3',
-              'book_name':'scapp',
+              'book_name':'csapp',
               'book_author':'Author',
               'book_price':39.00,
               'book_count':2,
@@ -119,8 +116,11 @@ import {request} from "@/network/request.js";
         },
 
         created() {
-          //if (store.state.isLogin) else{this.$router.push('/login')}
-          this.getBooks();
+          if (this.$store.state.isLogin) {
+            this.getBooks();
+          }else{
+            this.$router.push('/login');
+          }
         },
         computed:{
           // 检测是否全选
