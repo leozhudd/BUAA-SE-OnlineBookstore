@@ -6,8 +6,8 @@
         <div class="cart-product-title clearfix">
             <div class="td-check fl">
                 <!-- 当切换到check-true类名时就调用全选函数 -->
-                <span class="check-span fl check-all" :class="{'check-true':isSelectAll}"
-                  @click="selectItem(isSelectAll)"></span>  <!-- 选择框 -->
+                <button class="check-span fl check-all" :class="{'check-true':isSelectAll}"
+                  @click="selectItem(isSelectAll)"></button>  <!-- 选择框 -->
                 全选
             </div>
             <div class="td-product fl">商品</div>
@@ -21,31 +21,30 @@
         <div v-if="!emptylist" class="cart-product clearfix">
           <table>
             <tbody>
-              <tr v-for="(item, index) in BookList" :key="item.fields.book_id">
+              <tr v-for="(item, index) in BookList" :key="item.book_id">
                 <td class="td-check">
-                  <span class="check-span" @click="item.select=!item.select" :class="{'check-true':item.select}">选择</span>
+                  <button class="check-span" @click="item.select=!item.select" :class="{'check-true':item.select}">选择</button>
                 </td>
                 <td class="td-product">
-                    <img :src="item.fields.book_img" width="98" height="98" @click="toDetails(item)">
+                    <img :src="item.book_img" width="98" height="98" @click="toDetails(item)">
                     <div class="product-info">
-                      <h6>{{item.fields.book_name}}</h6>
-                      <p>作者：{{item.fields.book_author}}</p>
-                      <p>简介：{{item.fields.book_intro}}</p>
+                      <h6>{{item.book_name}}</h6>
+                      <p>作者：{{item.book_author}}</p>
                     </div>
                     <div class="clearfix"></div>
                 </td>
                 <td class="td-num">
                     <div class="product-num">
-                      <a href="javascript:;" class="num-reduce num-do fl" @click='item.fields.book_count--'><span>-</span></a>
-                      <input type="text" class="num-input" v-model="item.fields.book_count">
-                      <a href="javascript:;" class="num-add num-do fr" @click='item.fields.book_count++'><span>+</span></a>
+                      <a href="javascript:;" class="num-reduce num-do fl" @click='item.book_count--'><span>-</span></a>
+                      <input type="text" class="num-input" v-model="item.book_count">
+                      <a href="javascript:;" class="num-add num-do fr" @click='item.book_count++'><span>+</span></a>
                     </div>
                 </td>
                 <td class="td-price">
-                  <p class="red-text"><span class="price-text">{{item.fields.book_price | showPrice}}</span></p>
+                  <p class="red-text"><span class="price-text">{{parseFloat(item.book_price) | showPrice}}</span></p>
                 </td>
                 <td class="td-total">
-                  <p class="red-text"><span class="price-text">{{item.fields.book_price*item.fields.book_count | showPrice}}</span></p>
+                  <p class="red-text"><span class="price-text">{{parseFloat(item.book_price)*item.book_count | showPrice}}</span></p>
                 </td>
                 <td class="td-do">
                   <button class="product-delete" @click='delBook(index,item)'>删除</button>
@@ -98,9 +97,7 @@ import {request} from "@/network/request.js";
               'book_author':'Author',
               'book_price':39.00,
               'book_count':2,
-              'book_intro':'深入理解计算机系统',
               'book_img':'',
-              'book_category': '计算机'
             },
             {
               'book_id':'3',
@@ -110,7 +107,6 @@ import {request} from "@/network/request.js";
               'book_count':2,
               'book_intro':'深入理解计算机系统',
               'book_img':'',
-              'book_category': '计算机'
             }]
           }
         },
@@ -119,7 +115,11 @@ import {request} from "@/network/request.js";
           if (this.$store.state.isLogin) {
             this.getBooks();
           }else{
-            this.$router.push('/login');
+            this.$message({
+              type: "info",
+              message: "请先登录",
+            })
+            //this.$router.push('/login');
           }
         },
         computed:{
@@ -136,7 +136,7 @@ import {request} from "@/network/request.js";
         // 获取总价和产品总数
           getTotal() {
             let totalprice = 0, itemcount = 0;
-            for (let i = 0; i < this.BookList.length; i++) {
+            for (let i in this.BookList) {
               // 总价累加
               if (this.BookList[i].select) {
                 totalprice += this.BookList[i].book_count * this.BookList[i].book_price;
@@ -238,7 +238,7 @@ import {request} from "@/network/request.js";
           // 全选与取消全选
           selectItem(_isSelect){
             //遍历BookList,全部取反
-            for (let i = 0; i < this.BookList.length; i++) {
+            for (let i in this.BookList) {
               this.BookList[i].select = !_isSelect;
             }
           },
@@ -249,33 +249,15 @@ import {request} from "@/network/request.js";
           //下单选中的产品
           orderBooks(){
             let orderlist = [];
-            for (let i = 0; i < this.BookList.length; i++) {
+            for (let i in this.BookList) {
               if (this.BookList[i].select) {
-                orderlist.push(this.BookList[i].book_id);
+                orderlist.push(this.BookList[i]);
               }
             }
-            let sendData = new FormData()
-            sendData.append(orderlist);
-            console.log(sendData);
-
-            request({
-              method: 'post',
-              url: '/api/trade/selected_books_preview/',
-              data: sendData
-            }).then(res => {
-              console.log(res);
-              //跳转到订单页面并显示信息
-            }).catch(err => {
-              console.log(err);
-              this.$message({
-                type: 'error',
-                message: '下单失败'
-              });
-            })
-
+            this.$router.push({name:'Order', params:{orderlist: orderlist}});
           },
           toDetails(item) {
-            this.$router.push({name: 'Details', params: item});
+            this.$router.push({name: 'Details', params: {book:item}});
           },
 
         },
@@ -347,9 +329,9 @@ import {request} from "@/network/request.js";
     }
     
     /* 点击时改变勾选 */
-    /* .page-shopping-cart .check-span.check-true{
-      background: url('cartBg.png') no-repeat 0 -22px;
-    } */
+    .page-shopping-cart .check-span.check-true{
+      background-color: #42b983;
+    } 
     .page-shopping-cart .td-check{
       width:70px;
     }

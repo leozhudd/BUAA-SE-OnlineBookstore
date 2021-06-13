@@ -138,27 +138,51 @@ div {
 }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
 }
-
-#menu-right {
-  padding-right: 24px;
+blockquote, dd, div, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, img, input, li, ol, p, table, td, textarea, th, ul {
+  margin: 0;
+  padding: 0;
+}
+.fl{
+      float: left;
+}
+.fr{
+      float: right;
+}
+.clearfix{
+      zoom: 1;
+}
+.clearfix:after {
+      clear: both;
+}
+.clearfix:after {
+  content: '.';
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  font-size: 0;
+  line-height: 0;
+  width: 0;
+  height: 0;
+}
+ul{
+  list-style:none;
+}
+a{
+  text-decoration:none;
 }
 
-#nav {
-  padding: 30px;
+em{
+  font-style:normal;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+img{
+  border:0px;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+h1,h2,h3,h4,h5,h6{
+  font-size:100%;
 }
 </style>
