@@ -42,7 +42,14 @@ export default{
     name: "",
     data() {
         return {
-            book: {}
+            book: {
+              'book_id':'1',
+              'book_name':'csapp',
+              'book_author':'Author',
+              'book_price':39.00,
+              'book_count':2,
+              'book_img':'',
+            }
         }
     },
     created() {
@@ -51,25 +58,8 @@ export default{
     },
     methods:{
         orderIt() {
-            let orderlist = [this.book.book_id]
-            let sendData = new FormData()
-            sendData.append(orderlist);
-            console.log(sendData);
-
-            request({
-              method: 'post',
-              url: '/api/trade/selected_books_preview/',
-              data: sendData
-            }).then(res => {
-              console.log(res);
-              //跳转到订单页面并显示信息
-            }).catch(err => {
-              console.log(err);
-              this.$message({
-                type: 'error',
-                message: '下单失败'
-              });
-            })
+            let orderlist = [this.book];
+            this.$router.push({name:'Order', params:{orderlist: orderlist}});
         },
         addtoCart() {
           let sendData = new FormData()

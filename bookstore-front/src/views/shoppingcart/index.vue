@@ -7,7 +7,7 @@
             <div class="td-check fl">
                 <!-- 当切换到check-true类名时就调用全选函数 -->
                 <button class="check-span fl check-all" :class="{'check-true':isSelectAll}"
-                  @click="selectItem(isSelectAll)"></button>  <!-- 选择框 -->
+                  @click="selectAll(isSelectAll)"></button>  <!-- 选择框 -->
                 全选
             </div>
             <div class="td-product fl">商品</div>
@@ -21,9 +21,10 @@
         <div v-if="!emptylist" class="cart-product clearfix">
           <table>
             <tbody>
-              <tr v-for="(item, index) in BookList" :key="item.book">
+              <tr v-for="(item, index) in BookList" :key="item.book_id">
                 <td class="td-check">
-                  <button class="check-span" @click="item.select=!item.select" :class="{'check-true':item.select}">选择</button>
+                  <button v-if="item.now_avaliable" class="check-span" @click="item.select=!item.select" :class="{'check-true':item.select}">选择</button>
+                  <button v-else>库存不足</button>
                 </td>
                 <td class="td-product">
                     <img :src="item.book_img" width="98" height="98" @click="toDetails(item)">
@@ -90,6 +91,7 @@ import {request} from "@/network/request.js";
               'book_price':39.00,
               'book_count':2,
               'book_img':'',
+              'now_avaliable':true
             },
             {
               'book_id':'2',
@@ -98,6 +100,7 @@ import {request} from "@/network/request.js";
               'book_price':39.00,
               'book_count':2,
               'book_img':'',
+              'now_avaliable':false
             },
             {
               'book_id':'3',
@@ -105,8 +108,8 @@ import {request} from "@/network/request.js";
               'book_author':'Author',
               'book_price':39.00,
               'book_count':2,
-              'book_intro':'深入理解计算机系统',
               'book_img':'',
+              'now_avaliable':true
             }]
           }
         },
@@ -126,8 +129,8 @@ import {request} from "@/network/request.js";
           // 检测是否全选
           isSelectAll() {
               //如果BookList中每一条数据的select都为true,就返回true,否则返回false
-            for (let i = 0; i < this.BookList.length; i++) {
-              if (this.BookList[i].select === false)
+            for (let i in this.BookList) {
+              if (this.BookList[i].now_avaliable && !this.BookList[i].select)
                 return false;
             }
             return true;
@@ -237,10 +240,11 @@ import {request} from "@/network/request.js";
             })
           },
           // 全选与取消全选
-          selectItem(_isSelect){
+          selectAll(_isSelect){
             //遍历BookList,全部取反
             for (let i in this.BookList) {
-              this.BookList[i].select = !_isSelect;
+              if (this.BookList[i].now_avaliable)
+                this.BookList[i].select = !_isSelect;
             }
           },
           //删除选中的产品
@@ -258,14 +262,15 @@ import {request} from "@/network/request.js";
             this.$router.push({name:'Order', params:{orderlist: orderlist}});
           },
           toDetails(item) {
-            this.$router.push({name: 'Details', params: {book:item}});
+            //发送id，在详情页加载信息
+            this.$router.push({name: 'Details', params: {book_id: item.book_id}});
           },
 
         },
         mounted() {
           //为BookList添加select属性（是否选中字段）默认为false
           let _this=this;
-          for (let i = 0; i < this.BookList.length; i++) {
+          for (let i in this.BookList) {
               _this.$set(this.BookList[i],'select',false);
             }
         }
