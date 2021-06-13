@@ -16,9 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
-from django.views.static import serve
-from Bookstore.settings import MEDIA_ROOT
-from storeApp.views import index
 
 
 urlpatterns = [
