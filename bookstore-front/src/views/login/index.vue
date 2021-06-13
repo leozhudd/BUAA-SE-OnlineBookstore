@@ -297,6 +297,6 @@ export default {
   margin: 10px auto; /* 上下间距160px，左右自动居中*/
   background-color: rgb(255, 255, 255, 0.8); /* 透明背景色 */
   padding: 30px;
-  border-radius: 10px; /* 圆角 */
+  border-radius: 2px; /* 圆角 */
 }
 </style>

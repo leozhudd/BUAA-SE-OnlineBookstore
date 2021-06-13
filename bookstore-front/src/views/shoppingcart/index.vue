@@ -26,7 +26,7 @@
                   <span class="check-span" @click="item.select=!item.select" :class="{'check-true':item.select}">选择</span>
                 </td>
                 <td class="td-product">
-                    <img :src="item.book_img" width="98" height="98" alt="">
+                    <img :src="item.book_img" width="98" height="98" @click="toDetails(item)">
                     <div class="product-info">
                       <h6>{{item.book_name}}</h6>
                       <p>作者：{{item.book_brand}}</p>
@@ -49,7 +49,7 @@
                   <p class="red-text"><span class="price-text">{{item.book_price*item.book_count | showPrice}}</span></p>
                 </td>
                 <td class="td-do">
-                  <a href="javascript:;"  class="product-delete" @click='delBook(index,item)'>删除</a>
+                  <button class="product-delete" @click='delBook(index,item)'>删除</button>
                 </td>
               </tr>
     
@@ -251,7 +251,7 @@ import {request} from "@/network/request.js";
             let orderlist = [];
             for (let i = 0; i < this.BookList.length; i++) {
               if (this.BookList[i].select) {
-                orderlist.push(this.BookList[i]);
+                orderlist.push(this.BookList[i].book_id);
               }
             }
             let sendData = new FormData()
@@ -274,6 +274,10 @@ import {request} from "@/network/request.js";
             })
 
           },
+          toDetails(item) {
+            this.$router.push({name: 'Details', params: item});
+          },
+
         },
         mounted() {
           //为BookList添加select属性（是否选中字段）默认为false

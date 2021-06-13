@@ -13,16 +13,28 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import('../views/login')
   },
   {
     path: '/shoppingcart',
     name: 'Shoppingcart',
     component: () => import('../views/shoppingcart')
-  }
+  },
+  {
+    path: '/details',
+    name: 'Details',
+    component: () => import('../views/details')
+  },
+  {
+    path: '/order',
+    name: 'Order',
+    component: () => import('../views/order')
+  },
+  {
+    path: '/myorders',
+    name: 'Myorders',
+    component: () => import('../views/myorders')
+  },
 ]
 
 const router = new VueRouter({
