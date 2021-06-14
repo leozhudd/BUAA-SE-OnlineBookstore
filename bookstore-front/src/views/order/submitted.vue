@@ -21,15 +21,19 @@
       </tbody>
     </table>
     <div>
-      收件人姓名：<input v-model="contact_name">
-      电话：<input v-model="contact_phone">
-      收货地址：<input v-model="address">
-      备注：<input v-model="memo">
-      <span>总金额：{{totalPrice}}</span>
+      <ul>
+        <li>订单编号：{{order_sn}}</li>
+        <li>收件人姓名：{{contact_name}}</li>
+        <li>电话：{{contact_phone}}</li>
+        <li>收货地址：{{address}}</li>
+        <li>备注：{{memo}}</li>
+        <li>总金额：{{totalPrice}}</li>
+      </ul>
     </div>
     <div>
-      <button @click="cancelOrder">取消订单</button>
-      <button @click="submitOrder">提交订单</button>
+      <button v-if="!is_signed" @click="getReceived">确认收货</button>
+      <button v-else>已完成</button>
+      <button @click="goBack">返回</button>
     </div>
   </div>
 </template>
@@ -38,7 +42,7 @@
 import {request} from "@/network/request.js";
 
 export default{
-    name: 'Order',
+    name: 'subOrder',
     data() {
         return {
           books:[],
@@ -46,8 +50,24 @@ export default{
           address: '',
           contact_name: '',
           contact_phone: '',
+          is_signed: false,
+          order_id: '',
           totalPrice: 0.00
         }
+    },
+    props:{
+      books: Array,
+      memo: String,
+      address: String,
+      contact_name: String,
+      contact_phone: String,
+      is_signed: Boolean,
+      order_id: Number,
+      order_sn: String,
+      totalPrice: Number,
+      add_time: String,
+      is_signed: Boolean,
+      is_paid: Boolean,
     },
     created() {
       this.books=this.$route.params.orderlist;
@@ -60,59 +80,41 @@ export default{
         return '￥' + price.toFixed(2);
       }
     },
-    computed: {
-        getTotal() {
-            let totalprice = 0;
-            for (let i in this.books) {
-              // 总价累加
-                totalprice += this.books[i].count * this.book[i].price;
-            }
-            this.totalPrice = totalprice
-          }
-    },
+    
     methods: {
-      submitOrder() {
-        let booklist = [];
-        for (let i in this.books) {
-            booklist.push(this.books[i].book_id);
-        }
-        console.log(booklist);
+      getReceived() {
         let sendData = new FormData()
-        sendData.append('book_list', booklist);
-        sendData.append('memo', this.memo);
-        sendData.append('address', this.address);
-        sendData.append('contact_name', this.contact_name);
-        sendData.append('contact_phone', this.contact_phone);
+        sendData.append('id', order_id);
 
         request({
           method: 'post',
-          url: '/api/trade/selected_books_preview/',
+          url: '/api/trade/set_order_received/',
           data: sendData
         }).then(res => {
           console.log(res);
           if (!res.error_num) {
+            this.is_signed = true;
             this.$message({
               type: 'success',
-              message: '订单提交成功'
+              message: '确认收货成功'
             });
-            //布局相同的确认收货页面，不可编辑
           } else {
             this.$message({
               type: 'error',
-              message: '订单提交失败'+res.message
+              message: '确认收货失败'+res.message
             });
           }
         }).catch(err => {
           console.log(err);
           this.$message({
             type: 'error',
-            message: '订单提交失败'
+            message: '确认收货失败'
           });
         })
       },
-      cancelOrder() {
-        //返回上一页
-        this.$router.go(-1);
+      goBack() {
+        //返回
+        this.$router.go(-2);
       },
     }
 

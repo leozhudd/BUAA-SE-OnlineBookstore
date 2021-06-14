@@ -45,9 +45,16 @@
     <div class="search_bar clearfix">
 		  <a href="#" class="logo fl"><img src=""></a>
 		  <div class="search_con fl">
-			  <input type="text" class="input_text fl" placeholder="输入关键字搜索商品">
+			  <input type="text" class="input_text fl" placeholder="输入关键字搜索商品" v-model="keyword">
 			  <button class="input_btn fr" @click="searchIndexOf">搜索</button>
 		  </div>
+      <div>
+        <select v-model="searchkey" @change="selectKey($event)">
+          <option value="bookname">书名</option>
+          <option value="author">作者</option>
+          <option value="publisher">出版社</option>
+        </select>
+      </div>
 	  </div>
     <router-view></router-view>
   </div>
@@ -59,12 +66,46 @@ export default {
   data() {
     return {
       user_name: localStorage.getItem("username"),
+      searchkey: 'bookname',
+      keyword: '',
+      bookname: '',
+      author: '',
+      publisher: ''
     }
   },
   methods: {
     searchIndexOf() {
+      let sendData = new FormData()
+      sendData.append('option', searchkey)
+      sendData.append('bookname', bookname)
+      sendData.append('author', author)
+      sendData.append('publisher', publisher)
 
-    }
+      request({
+          method: 'post',
+          url: '/api/base/keywords_search/',
+          data: sendData
+        }).then(res => {
+          console.log(res);
+          if (!res.error_num) {
+            this.$router.push({name:'Srchresult', params: res.data});
+          }
+        }).catch(err => {
+          console.log(err);
+      })
+    },
+
+    selectKey(event){
+      this.searchkey = event.target.value; //获取option对应的value值
+      if (this.searchkey === 'bookname'){
+        this.bookname = this.keyword;
+      } else if(this.searchkey === 'author') {
+        this.author = this.keyword;
+      } else if(this.searchkey === 'publisher') {
+        this.publisher = this.keyword;
+      }
+    },
+
   }
 }
 </script>
