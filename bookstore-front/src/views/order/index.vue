@@ -83,6 +83,7 @@ export default{
               type: 'success',
               message: '订单提交成功'
             });
+            //布局相同的确认收货页面，不可编辑
           } else {
             this.$message({
               type: 'error',
@@ -98,7 +99,8 @@ export default{
         })
       },
       cancelOrder() {
-
+        //返回上一页
+        this.$router.go(-1);
       },
     }
 
