@@ -35,6 +35,11 @@ const routes = [
     name: 'Myorders',
     component: () => import('../views/myorders')
   },
+  {
+    path: '/srchresult',
+    name: 'Srchresult',
+    component: () => import('../views/srchresult')
+  },
 ]
 
 const router = new VueRouter({

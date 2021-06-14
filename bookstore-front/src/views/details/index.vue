@@ -5,29 +5,29 @@
 	<div class="submena clearfix">
 		<router-link to="/">首页</router-link>
 		<span>></span>
-		<router-link to="/">{{book.book_category}}</router-link>
+		<router-link to="/">{{book.category}}</router-link>
 		<span>></span>
 		<span>商品详情</span>
 	</div>
 	<div class="center_con clearfix">
-		<div class="main_menu fl"><img :src="book.book_img"></div>
+		<div class="main_menu fl"><img :src="book.image"></div>
 		<div class="goods_detail_list fr">
-			<h3>{{book.book_name}}</h3>
-            <h6>作者：<p @click="searchAuthor">{{book.book_author}}</p></h6> <h6>出版社：{{book.book_pub}}</h6>
-			<p>{{book.book_intro}}</p>
+			<h3>{{book.name}}</h3>
+            <h6>作者：<p @click="searchAuthor">{{book.author}}</p></h6> <h6>出版社：{{book.pub}}</h6>
+			<p>{{book.intro}}</p>
 			<div class="prize_bar">
-				<div class="show_prize fl">￥<em>{{book.book_price}}</em></div>
+				<div class="show_prize fl">￥<em>{{book.price}}</em></div>
 				<div class="show_unit fl">
                   <td class="td-num">
                     <div class="product-num">
-                      <a href="javascript:;" class="num-reduce num-do fl" @click='book.book_count--'>-</a>
-                      <input type="text" class="num-input" v-model="book.book_count">
-                      <a href="javascript:;" class="num-add num-do fr" @click='book.book_count++'>+</a>
+                      <a href="javascript:;" class="num-reduce num-do fl" @click='countSub'>-</a>
+                      <input type="text" class="num-input" v-model="book.count">
+                      <a href="javascript:;" class="num-add num-do fr" @click='countAdd'>+</a>
                     </div>
                   </td>
                 </div>
 			</div>
-			<div class="total">总价：<em>{{book.book_price * book.book_count}}</em></div>
+			<div class="total">总价：<em>{{book.price * book.count}}</em></div>
 			<div class="operate_btn">
 				<button class="buy_btn" @click="orderIt">立即购买</button>
 				<button class="add_cart" @click="addtoCart">加入购物车</button>
@@ -43,28 +43,38 @@ export default{
     data() {
         return {
             book: {
-              'book_id':'1',
-              'book_name':'csapp',
-              'book_author':'Author',
-              'book_price':39.00,
-              'book_count':2,
-              'book_img':'',
+                id: '1',
+                name: '魔理沙的魔法书',
+                description: 'daze',
+                price: 39.99,
+                sold_count: 999,
+                image: '',
+                stock_count: 99,
+                author: '雾雨魔理沙',
+                publisher: '雾雨魔法店',
+                category: '魔导书',
             }
         }
     },
     created() {
         //获取传入的参数
-        book = this.$route.params;
+        let _this = this;
+        this.book = this.$route.params.book;
+        //给book添加count属性
+        _this.$set(this.book,'count', 1);
     },
     methods:{
+        //立即下单
         orderIt() {
-            let orderlist = [this.book];
+            let orderlist = [];
+            orderlist.push(this.book);
             this.$router.push({name:'Order', params:{orderlist: orderlist}});
         },
+        //加购
         addtoCart() {
           let sendData = new FormData()
-          sendData.append('book_id',this.book.book_id)
-          sendData.append('book_count',this.book.book_count)
+          sendData.append('book_id',this.book.id)
+          sendData.append('book_count',this.book.count)
           console.log(sendData);
 
           request({
@@ -95,6 +105,13 @@ export default{
               message: error.message
             });
           });
+        },
+        countAdd() {
+          this.book.count++;
+        },
+        countSub() {
+          if (this.book.count>1)
+            this.book.count--;
         },
         searchAuthor() {
             this.$router.push({name: 'Search', params:{book_author: this.book.book_author} })
