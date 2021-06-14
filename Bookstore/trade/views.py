@@ -179,22 +179,22 @@ def creat_new_order(request):
         response = {"message": "所选的图书id不存在于购物车！"+str(e), "error_num": 1}
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
 
-# todo 这个api没有必要，返回所有订单就行
-@require_http_methods(["GET"])
-# @login_required(login_url='/api/account/login/')
-def ret_unreceived_orders(request):
-    """返回当前用户未收货的订单
-    :param None
-    :return message, error_num
-    :author 宋子龙
-    """
-    try:
-        order = OrderInfo.objects.filter(user=request.user, is_signed=False)
-        json_data = json.loads(serializers.serialize("json", order))
-        response = {"data": json_data, "message": "success", "error_num": 0}
-    except Exception as e:
-        response = {"message": str(e), "error_num": 1}
-    return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
+
+# @require_http_methods(["GET"])
+# # @login_required(login_url='/api/account/login/')
+# def ret_unreceived_orders(request):
+#     """返回当前用户未收货的订单
+#     :param None
+#     :return message, error_num
+#     :author 宋子龙
+#     """
+#     try:
+#         order = OrderInfo.objects.filter(user=request.user, is_signed=False)
+#         json_data = json.loads(serializers.serialize("json", order))
+#         response = {"data": json_data, "message": "success", "error_num": 0}
+#     except Exception as e:
+#         response = {"message": str(e), "error_num": 1}
+#     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
 @require_http_methods(["POST"])
@@ -214,22 +214,62 @@ def set_order_received(request):
         response = {"message": str(e), "error_num": 1}
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
 
-# todo 只需要能返回所有订单
-@require_http_methods(["POST"])
-# @login_required(login_url='/api/login/')
-def ret_order_details(request):
-    """返回当前订单详情
-    :param order_id:
-    :return JSON
-    :author 宋子龙
+
+# @require_http_methods(["POST"])
+# # @login_required(login_url='/api/login/')
+# def ret_order_details(request):
+#     """返回当前订单详情
+#     :param order_id:
+#     :return JSON
+#     :author 宋子龙
+#     """
+#     try:
+#         order_id = request.POST.get("order_id")
+#         orderbooks = OrderBooks.objects.filter(order_id=order_id)
+#         json_data1 = json.loads(serializers.serialize("json", orderbooks))
+#         order = OrderInfo.objects.filter(id=order_id)
+#         json_data2 = json.loads(serializers.serialize("json", order))
+#         response = {"data1": json_data1, "data2": json_data2, "message": "success", "error_num": 0}
+#     except Exception as e:
+#         response = {"message": str(e), "error_num": 1}
+#     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
+@require_http_methods(["GET"])
+def all_orders_with_details(request):
+    """返回当前用户所有订单的所有详情
+        :param None
+        :return data, message, error_num
+        :author 朱穆清
     """
     try:
-        order_id = request.POST.get("order_id")
-        orderbooks = OrderBooks.objects.filter(order_id=order_id)
-        json_data1 = json.loads(serializers.serialize("json", orderbooks))
-        order = OrderInfo.objects.filter(id=order_id)
-        json_data2 = json.loads(serializers.serialize("json", order))
-        response = {"data1": json_data1, "data2": json_data2, "message": "success", "error_num": 0}
+        # 调用自定义SQL语句实现多表查询
+        # 失败：不能返回list+dict+list+dict的形式
+        # orders_with_details = OrderInfo.diy_objects.order_full_info(request.user.id)
+
+        orders = OrderInfo.objects.filter(user_id=request.user.id)
+        orders_with_details = []
+        for order in orders:
+            # 把订单所有信息从两个表中封装到一个dict里面
+            book_list = order.orderbooks_set.all()
+            book_info_list = []
+            for book in book_list:
+                book_full = Books.objects.get(id=book.book_id)  # 从Books表中找到包含这本书的全部信息的对象，并转化存在dict中
+                book_info = {'book_name': book_full.name, 'book_price': book_full.price, 'book_image': book_full.image.url}
+                # 或使用python自带的对象转字典的方法__dict__
+                book_info_list.append(book_info)
+            order_full = {'id': order.id, 'order_sn': order.order_sn, 'address': order.address,
+                          'add_time': order.add_time, 'amount_price': order.amount_price,
+                          'contact_name': order.contact_name, 'contact_phone': order.contact_phone,
+                          'is_payed': order.is_payed, 'is_signed': order.is_signed, 'memo': order.memo,
+                          'book_list': book_info_list}
+            orders_with_details.append(order_full)
+        response = {"data": orders_with_details, "message": "success", "error_num": 0}
+
     except Exception as e:
         response = {"message": str(e), "error_num": 1}
+
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
+# @require_http_methods(["GET"])

@@ -128,6 +128,24 @@ def show_books(request):
 
 
 @require_http_methods(["POST"])
+def book_info(request):
+    """获得某本书的信息
+    :param book_id
+    :return data, message, error_num
+    :author 朱穆清
+    """
+    try:
+        book_id = request.POST.get("book_id")
+        book = Books.objects.filter(id=book_id)
+        response = {'data': json.loads(serializers.serialize('json', book)), 'message': 'success', 'error_num': 0}
+
+    except Exception as e:
+        response = {'message': str(e), 'error_num': 1}
+
+    return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
+@require_http_methods(["POST"])
 def keywords_search(request):
     """书名/作者/出版社关键字搜索
     :param option 选择按哪种方式搜索
