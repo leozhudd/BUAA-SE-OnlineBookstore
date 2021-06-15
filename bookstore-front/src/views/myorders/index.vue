@@ -87,7 +87,7 @@ export default {
       }
     },
     created() {
-      //this.getOrders();
+      this.getOrders();
       this.display = this.allorders;
     },
     methods: {

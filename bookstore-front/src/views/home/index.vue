@@ -12,15 +12,15 @@
     <div>
       <table>
         <tbody>
-          <tr v-for="item in Allbooks" :key="item.id">
+          <tr v-for="item in Allbooks" :key="item.fields.id">
             <td class="td-product">
-              <img :src="item.image" width="120" height="150" @click="toDetails(item)">
+              <img :src="item.fields.image" width="120" height="150" @click="toDetails(item)">
               <div class="product-info">
-                <h6>{{item.name}}</h6>
-                <p>作者：{{item.author}}</p>
-                <p>出版社：{{item.publisher}}</p>
-                <p>单价：￥{{parseFloat(item.price)}}</p>
-                <p>分类：{{item.category}}</p>
+                <h6>{{item.fields.name}}</h6>
+                <p>作者：{{item.fields.author}}</p>
+                <p>出版社：{{item.fields.publisher}}</p>
+                <p>单价：￥{{parseFloat(item.fields.price)}}</p>
+                <p>分类：{{item.fields.category}}</p>
               </div>
               <div class="clearfix"></div>
             </td>
@@ -68,7 +68,7 @@ export default {
     }
   },
   created() {
-    //this.getBooks();
+    this.getBooks();
   },
   methods: {
     getBooks() {
@@ -78,7 +78,7 @@ export default {
       }).then(res =>{
       console.log(res);
       if(!res.error_num) {
-        this.Allbooks = res;
+        this.Allbooks = res.data;
       } else {
         this.$message({
           type: 'error',
@@ -94,7 +94,7 @@ export default {
     },
     toDetails(item) {
       //发送id，在详情页加载信息
-      this.$router.push({path: '/details', query: {book_id: item.id}});
+      this.$router.push({path: '/details', query: {book_id: item.fields.id}});
     },
   },
   components: {

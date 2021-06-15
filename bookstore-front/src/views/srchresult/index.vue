@@ -54,7 +54,7 @@ export default {
       }
     },
     created() {
-     // this.resultlist = JSON.parse(this.$route.query.resultlist);
+      this.resultlist = JSON.parse(this.$route.query.resultlist);
     },
     methods: {
         toDetails(item) {
