@@ -40,6 +40,11 @@ const routes = [
     name: 'Srchresult',
     component: () => import('../views/srchresult')
   },
+  {
+    path: '/chgps',
+    name: 'Chgps',
+    component: () => import('../components/Changepass.vue')
+  },
 ]
 
 const router = new VueRouter({

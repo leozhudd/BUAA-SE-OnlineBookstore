@@ -4,10 +4,10 @@
       <tbody>
         <tr v-for="item in books" :key="item.book_id">
           <td class="td-product">
-            <img :src="item.book_img" width="98" height="98">
+            <img :src="item.book_image" width="98" height="98">
             <div class="product-info">
               <h6>{{item.book_name}}</h6>
-              <p>作者：{{item.book_author}}</p>
+              <!-- <p>作者：{{item.book_author}}</p> -->
             </div>
             <div class="clearfix"></div>
           </td>
@@ -27,7 +27,7 @@
         <li>电话：{{contact_phone}}</li>
         <li>收货地址：{{address}}</li>
         <li>备注：{{memo}}</li>
-        <li>总金额：{{totalPrice}}</li>
+        <li>总金额：{{amount_price}}</li>
       </ul>
     </div>
     <div>
@@ -42,17 +42,9 @@
 import {request} from "@/network/request.js";
 
 export default{
-    name: 'subOrder',
+    name: 'suborder',
     data() {
         return {
-          books:[],
-          memo: '',
-          address: '',
-          contact_name: '',
-          contact_phone: '',
-          is_signed: false,
-          order_id: '',
-          totalPrice: 0.00
         }
     },
     props:{
@@ -61,10 +53,9 @@ export default{
       address: String,
       contact_name: String,
       contact_phone: String,
-      is_signed: Boolean,
       order_id: Number,
       order_sn: String,
-      totalPrice: Number,
+      amount_price: String,
       add_time: String,
       is_signed: Boolean,
       is_paid: Boolean,
@@ -84,7 +75,7 @@ export default{
     methods: {
       getReceived() {
         let sendData = new FormData()
-        sendData.append('id', order_id);
+        sendData.append('id', this.order_id);
 
         request({
           method: 'post',

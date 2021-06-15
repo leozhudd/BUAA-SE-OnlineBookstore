@@ -223,7 +223,7 @@ import {request} from "@/network/request.js";
             }).then(res => {
               console.log(res);
               if (!res.error_num) {
-                //刷新
+                //在数组中删除 不行的话重新请求
               this.BookList.splice(index,1);
               } else {
                 this.$message({
@@ -259,11 +259,11 @@ import {request} from "@/network/request.js";
                 orderlist.push(this.BookList[i]);
               }
             }
-            this.$router.push({name:'Order', params:{orderlist: orderlist}});
+            this.$router.push({path:'/order', query:{orderlist: JSON.stringify(orderlist)}});
           },
           toDetails(item) {
             //发送id，在详情页加载信息
-            this.$router.push({name: 'Details', params: {book_id: item.book_id}});
+            this.$router.push({path: '/details', query: {book_id: item.book_id}});
           },
 
         },

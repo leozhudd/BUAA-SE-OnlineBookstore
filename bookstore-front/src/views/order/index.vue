@@ -50,7 +50,7 @@ export default{
         }
     },
     created() {
-      this.books=this.$route.params.orderlist;
+      this.books=JSON.parse(this.$route.query.orderlist);
     },
     filters: {
       showPrice(price) {

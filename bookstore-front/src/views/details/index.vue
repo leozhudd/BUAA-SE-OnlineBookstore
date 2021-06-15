@@ -1,7 +1,5 @@
 <template>
   <div id="details">
-	<!-- 分割线 -->
-	<div class="navbar_con"></div>
 	<div class="submena clearfix">
 		<router-link to="/">首页</router-link>
 		<span>></span>
@@ -13,8 +11,8 @@
 		<div class="main_menu fl"><img :src="book.image"></div>
 		<div class="goods_detail_list fr">
 			<h3>{{book.name}}</h3>
-            <h6>作者：<p @click="searchAuthor">{{book.author}}</p></h6> <h6>出版社：{{book.pub}}</h6>
-			<p>{{book.intro}}</p>
+            <h6>作者：<a @click="searchAuthor">{{book.author}}</a></h6> <h6>出版社：{{book.publisher}}</h6>
+			<p>{{book.description}}</p>
 			<div class="prize_bar">
 				<div class="show_prize fl">￥<em>{{book.price}}</em></div>
 				<div class="show_unit fl">
@@ -27,7 +25,7 @@
                   </td>
                 </div>
 			</div>
-			<div class="total">总价：<em>{{book.price * book.count}}</em></div>
+			<div class="total">总价：<em>￥{{book.price * book.count}}</em></div>
 			<div class="operate_btn">
 				<button class="buy_btn" @click="orderIt">立即购买</button>
 				<button class="add_cart" @click="addtoCart">加入购物车</button>
@@ -38,6 +36,7 @@
 </template>
 
 <script>
+import {request} from "@/network/request.js";
 export default{
     name: "",
     data() {
@@ -53,22 +52,66 @@ export default{
                 author: '雾雨魔理沙',
                 publisher: '雾雨魔法店',
                 category: '魔导书',
+                count: 1,
             }
         }
     },
     created() {
         //获取传入的参数
         let _this = this;
-        this.book = this.$route.params.book;
-        //给book添加count属性
-        _this.$set(this.book,'count', 1);
+        this.book.id = this.$route.query.book_id;
+        // console.log(this.book.id);
+        this.getTheBook();
     },
     methods:{
+        getTheBook() {
+          let sendData = new FormData()
+          sendData.append('book_id',this.book.id);
+          request({
+            method: 'get',
+            url: '/api/base/book_info/',
+            data: sendData
+          }).then(res => {
+            if (!res.error_num) {
+              let thebook = res.fields;
+              this.book.name = thebook.name;
+              this.book.description = thebook.description;
+              this.book.price = thebook.price;
+              this.book.sold_count = thebook.sold_count;
+              this.book.image = thebook.image;
+              this.book.stock_count = thebook.stock_count;
+              this.book.author = thebook.author;
+              this.book.publisher = thebook.publisher;
+              this.book.category = thebook.category;
+              //给book添加count属性
+              this.$set(this.book,'count', 1);
+            } else {
+              this.$message({
+                type: 'error',
+                message: '获取图书信息失败'
+              })
+            }
+          }).catch(err => {
+            console.log(err);
+            this.$message({
+                type: 'error',
+                message: '获取图书信息失败'
+              })
+          })
+        },
         //立即下单
         orderIt() {
             let orderlist = [];
-            orderlist.push(this.book);
-            this.$router.push({name:'Order', params:{orderlist: orderlist}});
+            let thisbook = {
+              book_id: this.book.id,
+              book_name: this.book.name,
+              book_price: this.book.price,
+              book_img: this.book.image,
+              book_author: this.book.author,
+              book_count: this.book.count,
+            }
+            orderlist.push(thisbook);
+            this.$router.push({path:'/order', query:{orderlist: JSON.stringify(orderlist)}});
         },
         //加购
         addtoCart() {
@@ -114,7 +157,7 @@ export default{
             this.book.count--;
         },
         searchAuthor() {
-            this.$router.push({name: 'Search', params:{book_author: this.book.book_author} })
+            this.$router.push({name: 'Search', query:{book_author: this.book.author} })
         }
     }
 }
@@ -149,11 +192,7 @@ export default{
     text-align:center;
     color:#fff;
 }
-.navbar_con{
-	height:40px;
-    border-bottom:2px solid #37ab30;
-    /*background: red;*/
-}
+
 .navbar{
 	width:1200px;
     height:40px;

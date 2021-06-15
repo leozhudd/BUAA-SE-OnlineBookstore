@@ -5,8 +5,13 @@
 		    <ul id="SiteNavBdL" class="site-nav-bd-l">
 			    <li id="LoginInfo" class="menu">
 				    <div class="menu-hd" v-if="!this.$store.state.isLogin"><router-link to ="/login">登录/注册</router-link></div>
-            <div v-else>{{user_name}}</div>  
+            <div v-else>{{user_name}} | <a herf="javascript:;" @click="Logout">注销</a></div>  
 			    </li>
+          <li class="menu">
+            <div class="menu-hd">
+					    <router-link to ="/chgps">修改密码</router-link>
+				    </div>  
+          </li>
 		    </ul>
 		    <ul id="SiteNavBdR" class="site-nav-bd-r">
           <li class="menu home">
@@ -56,11 +61,14 @@
         </select>
       </div>
 	  </div>
+    <!-- 分割线 -->
+    <div class="navbar_con"></div>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import {request} from "@/network/request.js";
 export default {
   name:'Head',
   data() {
@@ -75,11 +83,12 @@ export default {
   },
   methods: {
     searchIndexOf() {
+      console.log(this.searchkey);
       let sendData = new FormData()
-      sendData.append('option', searchkey)
-      sendData.append('bookname', bookname)
-      sendData.append('author', author)
-      sendData.append('publisher', publisher)
+      sendData.append('option', this.searchkey)
+      sendData.append('bookname', this.bookname)
+      sendData.append('author', this.author)
+      sendData.append('publisher', this.publisher)
 
       request({
           method: 'post',
@@ -88,7 +97,13 @@ export default {
         }).then(res => {
           console.log(res);
           if (!res.error_num) {
-            this.$router.push({name:'Srchresult', params: res.data});
+            let resultlist = JSON.stringify(res.data);
+            this.$router.push({
+              path:'/srchresult',
+              query:{
+                resultlist: resultlist
+              }
+            })
           }
         }).catch(err => {
           console.log(err);
@@ -105,7 +120,32 @@ export default {
         this.publisher = this.keyword;
       }
     },
-
+    Logout() {
+      request({
+        method: 'get',
+        url: '/api/base/logout/'
+      }).then(res => {
+        if(!res.error_num){
+          localStorage.setItem("username",'');
+          this.$store.commit('logout');
+          this.$message({
+            type: 'info',
+            message: '注销成功'
+          });
+          this.$router.push('/login');
+        }else {
+          this.$message({
+            type: 'error',
+            message: '注销失败'+res.message
+          });
+        }
+      }).catch(err => {
+        this.$message({
+          type: 'error',
+          message: '注销失败'+err.message
+        })
+      })
+    }
   }
 }
 </script>
@@ -114,21 +154,26 @@ export default {
 div {
 		display: block;
 	}
-	.site-nav{
+.navbar_con{
+	height:40px;
+    border-bottom:2px solid #37ab30;
+    /*background: red;*/
+}
+.site-nav{
 		z-index: 1000;
 		width: 100%;
 		background:#f5f5f5;
 		border-bottom: 1px solid #eee;
-	}
-	.site-nav .site-nav-bd{
+}
+.site-nav .site-nav-bd{
 		margin: 0 auto;
 		width: 990px;
 		height: 35px;
 		background:#f5f5f5;
-	}
-	.site-nav .site-nav-bd .site-nav-bd-l, .site-nav .site-nav-bd .site-nav-bd-l .menu{
+}
+.site-nav .site-nav-bd .site-nav-bd-l, .site-nav .site-nav-bd .site-nav-bd-l .menu{
 		float: left;
-	}
+}
   .site-nav .site-nav-bd .site-nav-bd-r .menu {
     float: right;
   }

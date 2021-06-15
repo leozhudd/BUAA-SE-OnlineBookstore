@@ -54,11 +54,11 @@ export default {
       }
     },
     created() {
-      //this.resultlist = this.$route.params.resultlist;
+     // this.resultlist = JSON.parse(this.$route.query.resultlist);
     },
     methods: {
         toDetails(item) {
-            this.$router.push({name:'Details', params:{book:item}});
+          this.$router.push({path: '/details', query: {book_id: item.book_id}});
         }
     }
 }
