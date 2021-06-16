@@ -135,7 +135,9 @@ def book_info(request):
     :author 朱穆清
     """
     try:
+        print("intoapi")
         book_id = request.POST.get("book_id")
+        print("id=")
         book = Books.objects.filter(id=book_id)
         response = {'data': json.loads(serializers.serialize('json', book)), 'message': 'success', 'error_num': 0}
 
