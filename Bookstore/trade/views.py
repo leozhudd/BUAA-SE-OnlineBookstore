@@ -11,6 +11,7 @@ from django.http import JsonResponse
 
 
 # Create your views here.
+# todo 前端点选择钮后能选择但图像没变化
 @require_http_methods(["GET"])
 def show_shoppingcart(request):
     """返回当前用户的购物车中的全部商品，并根据库存量更新状态
@@ -132,7 +133,7 @@ def ret_all_orders(request):
 
 
 @require_http_methods(["POST"])
-# @login_required(login_url='/api/account/login/')
+# todo 增加单独购买接口（不涉及购物车）
 def creat_new_order(request):
     """创建新订单并把所选图书从购物车删除（调用即下单成功，销售量++，库存量--）
     :param book_list: 所选图书列表
@@ -163,8 +164,11 @@ def creat_new_order(request):
             new_order = OrderInfo(user=request.user, memo=memo, address=address, contact_name=contact_name,
                                   contact_phone=contact_phone, order_sn=order_sn)
             new_order.save()
+            print("list:")
+            print(book_list)
             for book_id in book_list:
-                item = ShoppingCart.objects.get(book_id=book_id)
+                print(book_id)
+                item = ShoppingCart.objects.get(book_id=book_id, user_id=userid)
                 book = Books.objects.get(id=book_id)  # 根据id取出图书的购物车项和详情项
                 book.stock_count -= item.book_count  # 下单后库存量--
                 book.sold_count += item.book_count  # 下单后销售量++
