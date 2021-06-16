@@ -1,7 +1,6 @@
 <template>
     <div id="shopping-cart" class="page-shopping-cart">
         <h4 class="cart-title">购物车</h4>
-        <span>收货地址：<button>更改</button></span>
         <!-- 标题 -->
         <div class="cart-product-title clearfix">
             <div class="td-check fl">
@@ -22,9 +21,11 @@
           <table>
             <tbody>
               <tr v-for="(item, index) in BookList" :key="item.book_id">
-                <td class="td-check">
-                  <button v-if="item.now_avaliable" class="check-span" @click="item.select=!item.select" :class="{'check-true':item.select}">选择</button>
-                  <button v-else>库存不足</button>
+                <td v-if="item.now_avaliable" class="td-check">
+                  <button @click="item.select=!item.select" class="check-span" :class="{'check-true':item.select}"></button>选择
+                </td>
+                <td v-else class="td-check">
+                  <button class="check-span"></button>库存不足
                 </td>
                 <td class="td-product">
                     <img :src="item.book_img" width="98" height="98" @click="toDetails(item)">
@@ -60,7 +61,7 @@
     
         <!-- 最后一行统计 -->
         <div class="cart-product-info">
-            <a href="javascript:;" class="delete-product" @click='deleteBooks'><span></span>删除所选商品</a>
+            <!-- <a href="javascript:;" class="delete-product" @click='deleteBooks'><span></span>删除所选商品</a> -->
             <a href="#" class="keep-shopping"><span></span>继续购物</a>
             <a href="javascript:;" class="fr btn-buy" @click='orderBooks'>去结算</a>
             <a href="javascript:;" class="fr product-total"><span>{{getTotal.totalPrice | showPrice}}</span></a>
@@ -311,7 +312,7 @@ import {request} from "@/network/request.js";
     img{vertical-align: middle;}
     .page-shopping-cart{
       width: 1200px;
-      margin:50px auto;
+      margin:40px auto;
       font-size: 14px;
       border:1px solid #e3e3e3;
       border-top:2px solid #317ee7;
@@ -328,10 +329,11 @@ import {request} from "@/network/request.js";
     }
     .page-shopping-cart .check-span{
       display: block;
-      width: 24px;
+      width: 20px;
       height: 20px;
       margin-top: 9px;
-      /* background: url("cartBg.png") no-repeat 0 0; */
+      border-radius: 20px;
+      border: 1px solid #666;
     }
     
     /* 点击时改变勾选 */
@@ -340,6 +342,7 @@ import {request} from "@/network/request.js";
     } 
     .page-shopping-cart .td-check{
       width:70px;
+      text-align: left;
     }
     .page-shopping-cart .td-product{
       width:460px;

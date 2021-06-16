@@ -31,7 +31,7 @@
           </li>
           <li class="menu">
             <div class="menu-hd">
-					    <router-link to ="/chgpass">个人中心</router-link>
+					    <router-link to ="/myorders">个人中心</router-link>
 				    </div>  
           </li>
           <li class="menu">
@@ -50,16 +50,14 @@
     <div class="search_bar clearfix">
 		  <a href="#" class="logo fl"><img src=""></a>
 		  <div class="search_con fl">
-			  <input type="text" class="input_text fl" placeholder="输入关键字搜索商品" v-model="keyword">
-			  <button class="input_btn fr" @click="searchIndexOf">搜索</button>
-		  </div>
-      <div>
-        <select v-model="searchkey" @change="selectKey($event)">
+        <select class="input_select fl" v-model="searchkey" @change="selectKey($event)">
           <option value="bookname">书名</option>
           <option value="author">作者</option>
           <option value="publisher">出版社</option>
         </select>
-      </div>
+			  <input type="text" class="input_text fl" placeholder="输入关键字搜索商品" v-model="keyword">
+			  <button class="input_btn fr" @click="searchIndexOf">搜索</button>
+		  </div>
 	  </div>
     <!-- 分割线 -->
     <div class="navbar_con"></div>
@@ -199,28 +197,34 @@ div {
     margin:29px 0 0 17px;
 }
 .search_con{
-	width:616px;
+	width:660px;
     height:38px;
     border:1px solid #37ab40;
     margin:34px 0 0 123px;
     /* background:url(../images/icons.png) 10px -335px no-repeat; */
 }
 .search_con .input_text{
-    width:470px;
+    width:463px;
     height:37px;
     border:0px;
-    margin-left:37px;
+    margin-left:27px;
     outline:none;
 }
 .search_con .input_btn{
-    width:100px;
-    height:38px;
+    width:90px;
+    height:39px;
     background-color: #37ab40;
     border:0;
     font:14px/38px 'Microsoft YaHei UI';
     color:#fff;
     /*鼠标变成手*/
     cursor:pointer;
+}
+.input_select {
+  height:39px;
+  width:80px;
+  font-size:14px;
+  border:1px solid #37ab40;
 }
 
 #app {
@@ -232,13 +236,13 @@ blockquote, dd, div, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, img, input,
   padding: 0;
 }
 .fl{
-      float: left;
+  float: left;
 }
 .fr{
-      float: right;
+  float: right;
 }
 .clearfix{
-      zoom: 1;
+  zoom: 1;
 }
 .clearfix:after {
       clear: both;

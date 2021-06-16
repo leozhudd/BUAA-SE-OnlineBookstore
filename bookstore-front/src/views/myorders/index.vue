@@ -1,22 +1,43 @@
 <template>
-  <div id="myorders">
-    <button @click="displayWaiting">待收货订单</button>
-    <button @click="displayReceived">已完成订单</button>
-    <div v-for="item in display" :key="item.id">
-      <suborder 
-      :books="item.book_list"
-      :memo="item.memo"
-      :address="item.address"
-      :contact_name="item.contact_name"
-      :contact_phone="item.contact_phone"
-      :order_id="item.id"
-      :order_sn="item.order_sn"
-      :amount_price="item.amount_price"
-      :add_time="item.add_time"
-      :is_signed="item.is_signed"
-      :is_paid="item.is_paid"></suborder>
+<div id="myorders">
+  <div class="container clearfix">
+	  <div class="help-l fl">
+		  <div class="help-item">
+			  <div class="help-item-title">个人中心</div>
+			  <div class="help-item-list">
+				<ul>
+				  <li><router-link to="/chgps">修改密码</router-link></li>
+				</ul>
+				<ul>
+				  <li><router-link to="/myorders">订单管理</router-link></li>
+				</ul>
+			  </div>
+		  </div>
+	  </div>
+  <div class="help-r fr">
+    <div class="help-item-title">订单管理</div>
+		<div class="help-item-list">
+		  <span><a @click="displayAll">全部订单</a>|</span>
+		  <span><a @click="displayWaiting">待收货订单</a>|</span>
+  		<span><a @click="displayReceived">已完成订单</a>|</span>
+		</div>
+		<div v-for="item in display" :key="item.id">
+		  <suborder 
+      	:book_list="item.book_list"
+  			:memo="item.memo"
+    		:address="item.address"
+  			:contact_name="item.contact_name"
+      	:contact_phone="item.contact_phone"
+  			:order_id="item.id"
+  			:order_sn="item.order_sn"
+  			:amount_price="item.amount_price"
+  			:add_time="item.add_time"
+  			:is_signed="item.is_signed"
+  			:is_paid="item.is_paid"></suborder>
     </div>
   </div>
+  </div>
+</div>
 </template>
 
 <script>
@@ -65,7 +86,7 @@ export default {
           contact_phone: '155515156',
           amount_price: '999.00',
           add_time: '2021-06-15',
-          is_signed: false,
+          is_signed: true,
           is_paid: true,
           memo: '不要上山',
           book_list: [
@@ -87,7 +108,7 @@ export default {
       }
     },
     created() {
-      this.getOrders();
+      //this.getOrders();
       this.display = this.allorders;
     },
     methods: {
@@ -128,6 +149,9 @@ export default {
           this.waitings = list2;
           this.receiveds = list1;
         },
+        displayAll() {
+          this.display = this.allorders;
+        },
         displayReceived() {
           this.display = this.receiveds;
         },
@@ -142,4 +166,61 @@ export default {
 </script>
 
 <style>
+.help-item-title{
+	font-size: 16px;
+	font-weight: bold;
+	border-bottom: 1px solid #ddd;
+	height: 35px;
+	line-height: 35px;
+	background-color: #f7f7f7;
+	position: relative;
+}
+.help-item-list{
+	color: #666;
+	padding: 5px 0 5px 40px;
+	line-height: 30px;
+	font-size: 14px;
+	display: block;
+	height: 100%;
+}
+.help-item-list .router-link-exact-active{
+	color: #42b983;
+}
+blockquote, body, dd, div, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, img, input, li, ol, p, table, td, textarea, th, ul {
+  margin: 0;
+  padding: 0;
+}
+a{ text-decoration:none;  color: #666;}
+a:hover{ text-decoration:none; color:#46b448;} 
+li{ list-style:none;}
+i, em {
+	font-style: normal;
+}
+.fl{ float:left;}
+.fr{ float:right;}
+
+.abs{
+	position: absolute;
+}
+.clearfix:after{ content:""; clear:both; display:block;}
+.clearfix{ *zoom:1;}
+input{ outline:none; border:none;}
+.container{
+	width: 1200px;
+	margin: 0 auto;
+}
+.help-l{
+	width: 180px;
+	border-top: 4px solid #999;
+  margin-top: 40px;
+}
+.help-item{
+	border: 1px solid #ddd;
+	border-top: 0;
+}
+.help-r{
+	border: 1px solid #ddd;
+	width: 980px;
+  margin-top: 40px;
+}
 </style>

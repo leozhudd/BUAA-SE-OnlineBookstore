@@ -7,32 +7,59 @@
 		<span>></span>
 		<span>商品详情</span>
 	</div>
-	<div class="center_con clearfix">
-		<div class="main_menu fl"><img :src="book.image"></div>
-		<div class="goods_detail_list fr">
-			<h3>{{book.name}}</h3>
-            <h6>作者：<a @click="searchAuthor">{{book.author}}</a></h6> <h6>出版社：{{book.publisher}}</h6>
-			<p>{{book.description}}</p>
-			<div class="prize_bar">
-				<div class="show_prize fl">￥<em>{{book.price}}</em></div>
-				<div class="show_unit fl">
-                  <td class="td-num">
-                    <div class="product-num">
-                      <a href="javascript:;" class="num-reduce num-do fl" @click='countSub'>-</a>
-                      <input type="text" class="num-input" v-model="book.count">
-                      <a href="javascript:;" class="num-add num-do fr" @click='countAdd'>+</a>
-                    </div>
-                  </td>
-                </div>
-			</div>
-			<div class="total">总价：<em>￥{{book.price * book.count}}</em></div>
-			<div class="operate_btn">
-				<button class="buy_btn" @click="orderIt">立即购买</button>
-				<button class="add_cart" @click="addtoCart">加入购物车</button>
-			</div>
-		</div>
-	</div>
+	<div class="showall">
+	  <!--img -->
+	  <div class="showbot">
+		  <img :src="book.image" width="300" height="400" />
+    </div>
+    <div class="tb-property">
+      <div class="tr-nobdr">
+        <h3>{{book.name}}</h3>
+      </div>
+		  <div class="txt-h">
+        <span class="tex-o">作者&nbsp;&nbsp;&nbsp;{{book.author}}</span>
+			  <span class="tex-o">出版社&nbsp;&nbsp;&nbsp;{{book.publisher}}</span>
+      </div>
+      <div class="glist" id="glist" data-monitor="goodsdetails_fenlei_click">
+        <span>分类</span><a href="">{{book.category}}</a>
+      </div>
+      <div class="txt">
+        <span class="nowprice">￥<a>{{book.price}}</a></span>
+          <div class="cumulative">
+            <span class="number ty1">累计销量<br /><em id="add_sell_num_363">{{book.sold_count}}</em></span>
+          </div>
+      </div>
+      <div class="gcIpt">
+        <span class="guT">数量</span>
+        <input id="min" type="button" value="-" @click="countSub" />  
+        <input id="text_box" type="text" value="1" v-model="book.count" style="width:30px; text-align: center; color: #0F0F0F;"/>  
+        <input id="add"  type="button" value="+" @click="countAdd" />
+        <span class="Hgt">库存（{{book.stock_count}}）</span>
+      </div>
+      <div class="nobdr-btns">
+        <button class="addcart hu" @click="addtoCart"><img src="../../assets/images/shop.png" width="25" height="25"/>加入购物车</button>
+        <button class="addcart yh" @click="orderIt"><img src="../../assets/images/ht.png" width="25" height="25"/>立即购买</button>
+      </div>
+      <div class="guarantee">
+        <span>邮费：包邮&nbsp;&nbsp;支持货到付款</span>
+      </div>
+  	</div>       
+    <!-- 商品介紹 -->                
+      <div class="detail">
+        <div class="active_tab" id="outer">
+  			  <ul class="act_title_left act_active" id="tab">
+						  <a href="#">图书介绍</a>
+				  </ul>
+			  	<div class="clear"></div>
+			  </div>
+			  <div id="content" class="active_list"> 
+				  <div id="ui-a" class="ui-a">
+					  {{book.description}}
+				  </div>								  
+        </div>
+      </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -170,222 +197,267 @@ export default{
     font-size:12px;
 }
 
-.guest_card{
-	width:200px;
-    height:40px;
-    margin-top:34px;
-}
-.card_name{
-	width:158px;
-    height:38px;
-    border:1px solid #ddd;
-    font:14px/38px 'Microsoft YaHei UI';
-    color:#37ab40;
-    text-indent:56px;
-    /* background:url(../images/icons.png) 10px -300px no-repeat #f7f7f7; */
-}
-.goods_count{
-	width: 40px;
-    height:40px;
-    background-color:#f80;
-    font:bold 18px/40px 'Microsoft YaHei UI';
-    text-align:center;
-    color:#fff;
-}
-
-.navbar{
-	width:1200px;
-    height:40px;
-    margin:0 auto;
-    /*background: red;*/
-}
-.subnav_con h1{
-	width:200px;
-    height:40px;
-    background-color: #37ab40;
-    font:14px/40px 'Microsoft YaHei UI';
-    text-align:center;
-    color:#fff;
-}
-.subnav_con i{
-	width: 11px;
-	height: 7px;
-	/* background:url(../images/down.png) left center no-repeat; */
-	overflow: hidden;
-	display: inline-block;
-}
-.navlist{
-	overflow:hidden;
-}
-.navlist li{
-	float:left;
-    height:14px;
-    padding:0 25px;
-    border-left:1px solid #666;
-    margin-left:-2px;
-    margin-top:13px;
-}
 .submena{
     width: 1200px;
     height: 30px;
     margin: 0 auto;
-    /*background:yellow;*/
+    text-align: left;
 }
 .submena a{
     color:#37ab40;
     line-height: 30px;
 }
 
-.center_con{
-	width: 1200px;
-	height: 350px;
+.showall{
+	width: 1240px;
 	margin: 0 auto;
-	/*background: yellow;*/
+	margin-top: 15px;
 }
-.center_con .main_menu{
-	width:350px;
-    height:350px;
-    overflow:hidden;
+.tb-property{
+	width:530px;
+	height: 520px;
+	margin-left: 50px;
+	float: left;
 }
-.goods_detail_list{
-    width:730px;
-    height:350px;
+
+.showbot{float: left;}
+
+/* .tr-nobdr{
+	margin-top: 20px;
+	padding-bottom: 10px;
+} */
+.tr-nobdr h3{
+	color: #171717;
+	font-size: 28px;
+	font-weight:400;
+  text-align: left;
 }
-.goods_detail_list h3{
-    font-size:24px;
-    line-height:24px;
-    color:#666;
-    font-weight:normal;
+.txt{
+	width: 520px;
+	margin-top: 15px;
+	overflow: hidden;
+	background: #f8f8f8;
 }
-.goods_detail_list p{
-    color:#666;
-    line-height:40px;
+.nowprice{
+	display: block;
+	line-height: 100px;
+	color: #f73a3a;
+	font-size: 24px;
+	float: left;
 }
-.prize_bar{
-    height:72px;
-    background-color:#fff5f5;
-    line-height:72px;
+.nowprice a{
+	font-size: 36px;
+	color: #f73a3a;
 }
-.prize_bar .show_prize{
-    font-size:20px;
-    color:#ff3e3e;
-    padding-left:20px
+.nowprice a:hover{text-decoration: none;}
+.cumulative{
+	float: right;
+	
 }
-.prize_bar .show_pirze em{
-    font-style:normal;
-    font-size:36px;
-    padding-left:10px
+.number{
+	float: left;
+	margin-top: 30px;
+	padding: 0px 10px;
+	border-right: #e7e7e7 solid 1px;
+	font-size: 14px;
+	text-align: center;
+	color: #bfbfbf;
 }
-.prize_bar .show_unit{
-    padding-left: 150px;
+.number em{
+	color: #5885c6;
+	font-style:normal
 }
-.goods_num{
-    height: 52px;
-    margin-top: 19px;
-    /*background: yellow;*/
+.tyu{
+	border: none;
 }
-.goods_num .num_name{
-    width:70px;
-    height:52px;
-    line-height:52px;
+.txt-h{
+	width: 520px;
+	overflow: hidden;
 }
-.goods_num .num_add{
-    width:75px;
-    height:50px;
-    border:1px solid #dddddd;
+.tex-o{
+	float: left;
+	font-size: 14px;
+	line-height: 80px;
+	padding-right: 20px;
+	color: #848484;
+  height: 70px;
 }
-.goods_num .num_add .num_show{
-    width:49px;
-    height:50px;
-    text-align:center;
-    line-height:50px;
-    border:0px;
-    outline:none;
-    font-size:14px;
-    color:#666;
+
+#glist {padding-bottom:25px; width: 120px;}
+#glist span{
+	float: left;
+	padding-right: 10px;
+  font-size: 14px;
+  margin-top: 5px;
 }
-.goods_num .num_add .add,.goods_num .num_add .minus{
-    width:25px;
+#glist a{
+  float: right;
+	padding: 5px 8px;
+	color: #222222;
+	font-size: 14px;
+	border: #e3e3e3 solid 1px;
+	display: block;
+  width: 60px;
+}
+#glist a:hover{
+	border: #f73a3a solid 1px;
+	text-decoration: none;
+	color: #f73a3a;
+}
+.gcIpt{
+	height: 70px;
+  text-align: left;
+  padding-top: 15px;
+}
+.guT{
+	color: #848484;
+	font-size: 14px;
+	padding-right:18px;
+	line-height: 70px;
+}
+.gcIpt input{
+	border: #e3e3e3 solid 1px;
+	padding: 5px 8px;
+	color: #848484;
+	font-size: 16px;}
+.nobdr-btns{
+	padding-top: 10px;
+  text-align: left;
+}
+.Hgt{ color: #424242; font-size:14px; padding-left: 10px;}
+.addcart{
+	background: #fd532d;
+	padding: 0px 50px;
+  border: 0;
+	border-radius: 4px;
+	color: #FFFFFF;
+	margin-right: 10px;
+	font-size:16px;
+	line-height: 50px;
+}
+.yh{ background: #e60013;}
+.addcart img{
+  vertical-align:middle;
+  margin-bottom:3px;
+  padding-right: 5px;
+}
+.guarantee{
+	height: 50px;
+  text-align: left;
+}
+.guarantee span{
+	color: #666666;
+	font-size: 14px;
+	line-height: 50px;
+}
+
+/* 商品评价 */
+.gdetail{
+	width:1240px;
+	margin: 0 auto;
+	margin-top: 20px;
+	clear:both;
+}
+.ac-mod-list{
+	width: 200px;
+	margin: 0 auto;
+	margin-bottom: 15px;
+	text-align: center;
+}
+.ac-mod-list dt{
+	padding: 5px;
+}
+.ac-mod-list dt img{
+	width:180px;
+	height: 155px;
+}
+.ac-mod-list dd{
+	color: #424242;
+	font-size: 14px;
+}
+.ac-mod-list dd span{
+	display:block;
+	color: #e31939;
+	line-height: 2;
+}
+.detail{
+	float:right;
+	}
+.sticky {
+position: fixed;
+top: 0;
+} 
+
+.active_tab{
+	width:300px;
+	margin:0 auto;
+	margin-bottom: 20px;
+	border-bottom:#e4393c solid 1px;
+	height:37px;
+	line-height:37px;
+	background:#f7f7f7;	
+}
+.active_tab a{
+	color:#666666;font-size: 14px;
+	text-decoration:none;
+}
+.active_tab a:hover{
+	color:#ffffff;
+	text-decoration:none;
+}
+.act_title_left{
+	float:left;
+	width:100%;
+  text-align:center;
+  height:37px
+}
+
+.act_active{
+	background:#e4393c;
+	border-bottom:none !important;
+}
+.act_active a{color:#ffffff; font-size: 14px;}
+
+.mui-ac{
+	background: #e4393c none repeat scroll 0 0;
+	
+    float: left;
+    font-size: 14px;
+    height:25px;
+    margin-top: 10px;
     line-height:25px;
-    text-align:center;
-    border-left:1px solid #ddd;
-    border-bottom:1px solid #ddd;
-    color:#666;
-    font-size:14px;
+    margin-left: 20px;
+    padding: 0 8px;
 }
-.goods_num .num_add .minus{
-    border-bottom:0px;
+.mui-ac a{color: #ffffff;}
+.mui{
+	float: left;margin-top:2px;
 }
-.total{
-    height: 35px;
-    line-height: 35px;
-    margin-top: 25px;
-    /*background: yellow;*/
+#mui-a{
+	color: #666666;
 }
-.total em{
-    font-style:normal;
-    color:#ff3e3e;
-    font-size:18px
+#mui-a:hover{color: #666666;}
+
+.active_list{
+	width:300px;
+	margin:0 auto;
 }
-.operate_btn{
-    height:40px;
-    margin-top:35px;
-    font-size:0;
-    position:relative;
-}
-.operate_btn .buy_btn,.operate_btn .add_cart{
-    display:inline-block;
-    width:178px;
-    height:38px;
-    border:1px solid #c40000;
-    font-size:14px;
-    color:#c40000;
-    line-height:38px;
-    text-align:center;
-    background-color:#ffeded;
-}
-.operate_btn .add_cart{
-    background-color:#c40000;
-    color:#fff;
-    margin-left:10px;
-    position:relative;
-    z-index:10;
-}
-.details .td-num{
-      width:160px;
-}
-.product-num .num-do{
-      width: 24px;
-      height: 28px;
-      background: #fff5f5;
-      display: block;
-}
-.product-num .num-reduce a{
-      display: inline;
-      width: 6px;
-      height: 2px;
-      margin:13px auto 0 auto;
-      
-      /* background: url("cartBg.png") no-repeat -40px -22px; */
-}
-.product-num .num-add a{
-      display: inline;
-      width: 8px;
-      height: 8px;
-      margin:10px auto 0 auto;
-      /* background: url("cartBg.png") no-repeat -60px -22px; */
-}
-.product-num .num-input{
-      width: 42px;
-      height: 28px;
-      line-height:28px;
-      border:none;
-      text-align: center;
+.active_list a{text-decoration:none;}
+#ui-a{
+  width: 300px;
+	height: 100%;
+  color: #424242;
+	font-size: 14px;
+	line-height: 2;
+  text-align: left;
+	overflow: hidden;
+  padding: 10px;
 }
 
 p,h1,h2,h3,h4,h5,h6,ul,dl,dt,form,input{
   margin:0;
   padding:0;
+  border:0px;
 }
 
 ul{

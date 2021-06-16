@@ -77,7 +77,7 @@ import {request} from "@/network/request.js";
 
 export default {
   name: "forgetpwd",
-  //props: ["centerDialogVisibleSecond"],
+  props: ["centerDialogVisibleSecond"],
   data() {
     var validatePass = (rule, value, callback) => {
       if (value === '') {
@@ -164,8 +164,8 @@ export default {
               localStorage.setItem("username",this.ruleForm.name);
               this.$store.commit('login');
               console.log(this.$store.state.isLogin);
-              this.$router.push('/');
-              this.$router.go(0);
+              //this.$router.push('/');
+              //this.$router.go(0);
             }
             else
             {
