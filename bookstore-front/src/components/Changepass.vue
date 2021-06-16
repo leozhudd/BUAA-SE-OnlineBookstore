@@ -54,7 +54,7 @@ export default{
                 type: 'success',
                 message: '修改成功'
               });
-              this.$router.go(0);
+              this.$router.push('/chgps');
             }
             else
             {

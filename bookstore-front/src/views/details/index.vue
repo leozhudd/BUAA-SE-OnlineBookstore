@@ -95,12 +95,12 @@ export default{
           let sendData = new FormData()
           sendData.append('book_id',this.book.id);
           request({
-            method: 'get',
+            method: 'post',
             url: '/api/base/book_info/',
             data: sendData
           }).then(res => {
             if (!res.error_num) {
-              let thebook = res.fields;
+              let thebook = res.data[0].fields;
               this.book.name = thebook.name;
               this.book.description = thebook.description;
               this.book.price = thebook.price;
@@ -123,11 +123,12 @@ export default{
             this.$message({
                 type: 'error',
                 message: '获取图书信息失败'
-              })
+            })
           })
         },
         //立即下单
         orderIt() {
+          if (this.$store.state.isLogin){
             let orderlist = [];
             let thisbook = {
               book_id: this.book.id,
@@ -139,6 +140,13 @@ export default{
             }
             orderlist.push(thisbook);
             this.$router.push({path:'/order', query:{orderlist: JSON.stringify(orderlist)}});
+          } else {
+            this.$message({
+              type: 'info',
+              message: '请先登录'
+            })
+            this.$router.push({path:'/login', query:{route_bkid: this.book.id}});
+          }
         },
         //加购
         addtoCart() {
