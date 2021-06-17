@@ -105,6 +105,7 @@ export default{
               message: '确认收货成功'
             });
 			//刷新？
+			this.$router.go(0);
           } else {
             this.$message({
               type: 'error',
