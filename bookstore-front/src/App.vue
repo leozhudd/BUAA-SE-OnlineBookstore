@@ -81,7 +81,6 @@ export default {
   },
   methods: {
     searchIndexOf() {
-      console.log(this.keyword);
       if (this.searchkey === 'bookname'){
         this.bookname = this.keyword;
       } else if(this.searchkey === 'author') {
@@ -89,6 +88,7 @@ export default {
       } else if(this.searchkey === 'publisher') {
         this.publisher = this.keyword;
       }
+      console.log(this.keyword);
       let sendData = new FormData()
       sendData.append('option', this.searchkey)
       sendData.append('bookname', this.bookname)

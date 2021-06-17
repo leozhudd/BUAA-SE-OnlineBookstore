@@ -123,11 +123,12 @@ export default{
             this.$message({
                 type: 'error',
                 message: '获取图书信息失败'
-              })
+            })
           })
         },
         //立即下单
         orderIt() {
+          if (this.$store.state.isLogin){
             let orderlist = [];
             let thisbook = {
               book_id: this.book.id,
@@ -139,6 +140,13 @@ export default{
             }
             orderlist.push(thisbook);
             this.$router.push({path:'/order', query:{orderlist: JSON.stringify(orderlist)}});
+          } else {
+            this.$message({
+              type: 'info',
+              message: '请先登录'
+            })
+            this.$router.push({path:'/login', query:{route_bkid: this.book.id}});
+          }
         },
         //加购
         addtoCart() {

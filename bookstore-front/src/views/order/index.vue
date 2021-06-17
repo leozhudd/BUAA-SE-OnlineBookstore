@@ -87,7 +87,6 @@ export default{
         request({
           method: 'post',
           url: '/api/trade/creat_new_order/',
-          traditional:true,
           data: sendData
         }).then(res => {
           console.log(res);

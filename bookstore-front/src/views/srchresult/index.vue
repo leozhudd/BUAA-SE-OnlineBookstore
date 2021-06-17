@@ -7,10 +7,10 @@
             <img :src="item.fields.image" width="120" height="150" @click="toDetails(item)">
             <div class="product-info">
               <h6>{{item.fields.name}}</h6>
-              <p>作者：{{item.fields.author}}</p >
-              <p>出版社：{{item.fields.publisher}}</p >
-              <p>单价：￥{{parseFloat(item.fields.price)}}</p >
-              <p>分类：{{item.fields.category}}</p >
+              <p>作者：{{item.fields.author}}</p>
+              <p>出版社：{{item.fields.publisher}}</p>
+              <p>单价：￥{{parseFloat(item.fields.price)}}</p>
+              <p>分类：{{item.fields.category}}</p>
             </div>
             <div class="clearfix"></div>
           </td>
@@ -53,7 +53,7 @@ export default {
           ],
       }
     },
-    created() {
+    activated() {
       this.resultlist = JSON.parse(this.$route.query.resultlist);
     },
     methods: {

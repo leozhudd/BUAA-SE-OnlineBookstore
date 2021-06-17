@@ -104,6 +104,7 @@ export default{
               type: 'success',
               message: '确认收货成功'
             });
+			//刷新？
           } else {
             this.$message({
               type: 'error',
@@ -313,13 +314,10 @@ li.edit span p{
 	color: #777;
 	line-height: 20px;
 }
-li.edit span:first-child:hover{
-	background-color: #006DCC;
-}
 li.edit span:hover i,li.edit span:hover p{
 	color: white;
 }
-li.edit span:last-child:hover{
+/* li.edit span:last-child:hover{
 	background-color: #DA4F49;
-}
+} */
 </style>
