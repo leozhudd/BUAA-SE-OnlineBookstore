@@ -81,8 +81,8 @@ export default{
       },
     submitChange() {
       let sendData = new FormData()
-      sendData.append('password',this.oldpass)
-      sendData.append('new_password', this.newpass2)
+      sendData.append('password',this.ruleForm.oldpass)
+      sendData.append('new_password', this.ruleForm.newpass2)
 
           request({
             method: 'post',
