@@ -131,8 +131,7 @@ export default {
                 type: 'success',
                 message: '登录成功'
               });
-              localStorage.setItem("username",this.ruleForm.name);
-              this.$store.commit('login');              
+              this.$store.commit("login",this.ruleForm.name);              
               this.$router.push('/');
             }
             else

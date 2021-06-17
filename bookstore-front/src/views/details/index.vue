@@ -128,7 +128,7 @@ export default{
         },
         //立即下单
         orderIt() {
-          if (localStorage.getItem('isLogin')){
+          if (this.$store.state.isLogin){
             let orderlist = [];
             let thisbook = {
               book_id: this.book.id,
@@ -152,7 +152,7 @@ export default{
         },
         //加购
         addtoCart() {
-          if (localStorage.getItem('isLogin')){
+          if (this.$store.state.isLogin){
           let sendData = new FormData()
           sendData.append('book_id',this.book.id)
           sendData.append('book_count',this.book.count)

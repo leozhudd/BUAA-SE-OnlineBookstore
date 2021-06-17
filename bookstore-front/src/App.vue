@@ -4,14 +4,14 @@
 	    <div id="SiteNavBd" class="site-nav-bd">
 		    <ul id="SiteNavBdL" class="site-nav-bd-l">
 			    <li id="LoginInfo" class="menu">
-				    <div class="menu-hd" v-if="!isLogin"><router-link to ="/login">登录/注册</router-link></div>
+				    <div class="menu-hd" v-if="!this.$store.state.isLogin"><router-link to ="/login">登录/注册</router-link></div>
             <div class="menu-hd" v-else>{{user_name}} | <a herf="javascript:;" @click="Logout">注销</a></div>  
 			    </li>
-          <li class="menu">
+          <!-- <li class="menu">
             <div class="menu-hd">
 					    <router-link to ="/chgps">修改密码</router-link>
 				    </div>  
-          </li>
+          </li> -->
 		    </ul>
 		    <ul id="SiteNavBdR" class="site-nav-bd-r">
           <li class="menu home">
@@ -24,17 +24,17 @@
 					    <router-link to ="/shoppingcart">购物车</router-link>
 				    </div>  
           </li>
-          <li class="menu">
+          <!-- <li class="menu">
             <div class="menu-hd">
 					    <router-link to ="/myorders">我的订单</router-link>
 				    </div>  
-          </li>
+          </li> -->
           <li class="menu">
             <div class="menu-hd">
 					    <router-link to ="/myorders">个人中心</router-link>
 				    </div>  
           </li>
-          <li class="menu">
+          <!-- <li class="menu">
             <div class="menu-hd">
 					    <router-link to ="/order">订单</router-link>
 				    </div>  
@@ -43,7 +43,7 @@
             <div class="menu-hd">
 					    <router-link to ="/details">详情</router-link>
 				    </div>  
-          </li>
+          </li> -->
 		    </ul>
 	    </div>
 	  </div>	
@@ -71,8 +71,7 @@ export default {
   name:'Head',
   data() {
     return {
-      user_name: localStorage.getItem("username"),
-      isLogin: localStorage.getItem("isLogin"),
+      user_name: this.$store.state.user,
       searchkey: 'bookname',
       keyword: '',
       bookname: '',
@@ -125,7 +124,6 @@ export default {
         url: '/api/base/logout/'
       }).then(res => {
         if(!res.error_num){
-          localStorage.setItem("username",'');
           this.$store.commit('logout');
           this.$message({
             type: 'info',
@@ -154,7 +152,7 @@ div {
 		display: block;
 	}
 .navbar_con{
-	height:40px;
+	height:10px;
     border-bottom:2px solid #42b983;
     /*background: red;*/
 }

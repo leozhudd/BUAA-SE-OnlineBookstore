@@ -161,9 +161,8 @@ export default {
                 type: 'success',
                 message: '登录成功'
               });
-              localStorage.setItem("username",this.ruleForm.name);
               //修改登录状态
-              this.$store.commit('login');
+              this.$store.commit("login",this.ruleForm.name);
               console.log(localStorage.getItem('isLogin'));
               //若有正在浏览的商品，跳转回该页
               if (sessionStorage.getItem('browsing')){
@@ -288,7 +287,7 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgb(216, 132, 5);
+  background-color: #42b983;
 }
 
 .login {
