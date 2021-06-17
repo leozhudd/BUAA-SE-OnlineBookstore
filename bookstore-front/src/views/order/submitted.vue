@@ -43,9 +43,9 @@
         </ul>
         <ul class="fr">
           <li class="edit" style="width: 110px">
-						<span v-if="!is_signed" @click="getReceived" class="confirm"><a href="#">确认收货</a></span>
+			<span v-if="!is_signed" @click="getReceived" class="confirm"><a href="javascript:;">确认收货</a></span>
             <span v-else class="complete">已完成</span>
-					</li>
+		  </li>
         </ul>
       </div>
 	</div>
@@ -104,7 +104,8 @@ export default{
               type: 'success',
               message: '确认收货成功'
             });
-			//刷新？
+			//刷新
+			this.$router.go(0);
           } else {
             this.$message({
               type: 'error',

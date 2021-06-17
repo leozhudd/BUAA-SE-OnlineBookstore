@@ -66,22 +66,22 @@ export default{
     data() {
         return {
           books:[
-            {
-              book_id:'1',
-              book_name:'csapp',
-              book_author:'Author',
-              book_price:39.00,
-              book_count:2,
-              book_img:'',
-            },
-            {
-              book_id:'2',
-              book_name:'csapp',
-              book_author:'Author',
-              book_price:39.00,
-              book_count:2,
-              book_img:'',
-            },
+            // {
+            //   book_id:'1',
+            //   book_name:'csapp',
+            //   book_author:'Author',
+            //   book_price:39.00,
+            //   book_count:2,
+            //   book_img:'',
+            // },
+            // {
+            //   book_id:'2',
+            //   book_name:'csapp',
+            //   book_author:'Author',
+            //   book_price:39.00,
+            //   book_count:2,
+            //   book_img:'',
+            // },
           ],
           totalPrice: this.getTotal(),
           comefrom:'',
