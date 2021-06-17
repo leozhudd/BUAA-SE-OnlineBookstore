@@ -103,6 +103,7 @@ export default {
           console.log(res);
           if (!res.error_num) {
             let resultlist = JSON.stringify(res.data);
+            
             this.$router.push({
               path:'/srchresult',
               query:{

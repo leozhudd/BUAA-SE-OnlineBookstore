@@ -69,17 +69,17 @@ export default{
     data() {
         return {
             book: {
-                id: '1',
-                name: '魔理沙的魔法书',
-                description: 'daze',
-                price: 39.99,
-                sold_count: 999,
-                image: '',
-                stock_count: 99,
-                author: '雾雨魔理沙',
-                publisher: '雾雨魔法店',
-                category: '魔导书',
-                count: 1,
+                // id: '1',
+                // name: '魔理沙的魔法书',
+                // description: 'daze',
+                // price: 39.99,
+                // sold_count: 999,
+                // image: '',
+                // stock_count: 99,
+                // author: '雾雨魔理沙',
+                // publisher: '雾雨魔法店',
+                // category: '魔导书',
+                // count: 1,
             }
         }
     },

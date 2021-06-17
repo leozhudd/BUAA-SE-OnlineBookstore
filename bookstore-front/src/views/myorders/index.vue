@@ -52,58 +52,58 @@ export default {
         waitings:[],
         receiveds:[],
         allorders: [
-        {
-          id: 21,
-          order_sn: '151563133',
-          address: '妖怪之山',
-          contact_name: '射命丸文',
-          contact_phone: '155515156',
-          amount_price: '999.00',
-          add_time: '2021-06-15',
-          is_signed: false,
-          is_paid: true,
-          memo: '不要上山',
-          book_list: [
-            {
-              book_name: '写真',
-              book_price: '123',
-              book_image: '',
-              book_count: '2'
-            },
-            {
-              book_name: '传播学',
-              book_price: '123',
-              book_image: '',
-              book_count: '4'
-            }
-          ]
-        },
-        {
-          id: 22,
-          order_sn: '151563133',
-          address: '妖怪之山',
-          contact_name: '射命丸文',
-          contact_phone: '155515156',
-          amount_price: '999.00',
-          add_time: '2021-06-15',
-          is_signed: true,
-          is_paid: true,
-          memo: '不要上山',
-          book_list: [
-            {
-              book_name: '写真',
-              book_price: '123',
-              book_image: '',
-              book_count: '2'
-            },
-            {
-              book_name: '传播学',
-              book_price: '123',
-              book_image: '',
-              book_count: '4'
-            }
-          ]
-        },
+        // {
+        //   id: 21,
+        //   order_sn: '151563133',
+        //   address: '妖怪之山',
+        //   contact_name: '射命丸文',
+        //   contact_phone: '155515156',
+        //   amount_price: '999.00',
+        //   add_time: '2021-06-15',
+        //   is_signed: false,
+        //   is_paid: true,
+        //   memo: '不要上山',
+        //   book_list: [
+        //     {
+        //       book_name: '写真',
+        //       book_price: '123',
+        //       book_image: '',
+        //       book_count: '2'
+        //     },
+        //     {
+        //       book_name: '传播学',
+        //       book_price: '123',
+        //       book_image: '',
+        //       book_count: '4'
+        //     }
+        //   ]
+        // },
+        // {
+        //   id: 22,
+        //   order_sn: '151563133',
+        //   address: '妖怪之山',
+        //   contact_name: '射命丸文',
+        //   contact_phone: '155515156',
+        //   amount_price: '999.00',
+        //   add_time: '2021-06-15',
+        //   is_signed: true,
+        //   is_paid: true,
+        //   memo: '不要上山',
+        //   book_list: [
+        //     {
+        //       book_name: '写真',
+        //       book_price: '123',
+        //       book_image: '',
+        //       book_count: '2'
+        //     },
+        //     {
+        //       book_name: '传播学',
+        //       book_price: '123',
+        //       book_image: '',
+        //       book_count: '4'
+        //     }
+        //   ]
+        // },
         ]
       }
     },

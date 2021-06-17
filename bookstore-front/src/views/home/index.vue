@@ -38,146 +38,146 @@ export default {
       select_key: '',
 
       Allbooks: [
-        {
-          pk: '1',
-          fields:{
-            name: '魔理沙的魔法书',
-            description: 'daze',
-            price: 39.99,
-            sold_count: 999,
-            image: '',
-            stock_count: 99,
-            author: '雾雨魔理沙fvdaweyvdjwbra vbrwevryvebwfbewfbweb vfbewb',
-            publisher: '雾雨魔法店',
-            category: '魔导书',
-          }
-        },
-        {
-          pk: '2',
-          fields:{
-            name: '魔理沙的魔法书',
-            description: 'daze',
-            price: 39.99,
-            sold_count: 999,
-            image: '',
-            stock_count: 99,
-            author: '雾雨魔理沙bhbaschjgvwdjkuvwqykr',
-            publisher: '雾雨魔法店',
-            category: '魔导书',
-          }
-        },
-        {
-          pk: '2',
-          fields:{
-            name: '魔理沙的魔法书hjafueyvgWYEGFEWIF',
-            description: 'daze',
-            price: 39.99,
-            sold_count: 999,
-            image: '',
-            stock_count: 99,
-            author: '雾雨魔理沙',
-            publisher: '雾雨魔法店',
-            category: '魔导书',
-          }
-        },
-        {
-          pk: '2',
-          fields:{
-            name: '魔理沙的魔法书',
-            description: 'daze',
-            price: 39.99,
-            sold_count: 999,
-            image: '',
-            stock_count: 99,
-            author: '雾雨魔理沙',
-            publisher: '雾雨魔法店',
-            category: '魔导书',
-          }
-        },
-        {
-          pk: '2',
-          fields:{
-            name: '魔理沙的魔法书',
-            description: 'daze',
-            price: 39.99,
-            sold_count: 999,
-            image: '',
-            stock_count: 99,
-            author: '雾雨魔理沙',
-            publisher: '雾雨魔法店',
-            category: '魔导书',
-          }
-        },
-        {
-          pk: '2',
-          fields:{
-            name: '魔理沙的魔法书',
-            description: 'daze',
-            price: 39.99,
-            sold_count: 999,
-            image: '',
-            stock_count: 99,
-            author: '雾雨魔理沙',
-            publisher: '雾雨魔法店',
-            category: '魔导书',
-          }
-        },
-        {
-          pk: '2',
-          fields:{
-            name: '魔理沙的魔法书',
-            description: 'daze',
-            price: 39.99,
-            sold_count: 999,
-            image: '',
-            stock_count: 99,
-            author: '雾雨魔理沙',
-            publisher: '雾雨魔法店',
-            category: '魔导书',
-          }
-        },
-        {
-          pk: '2',
-          fields:{
-            name: '魔理沙的魔法书',
-            description: 'daze',
-            price: 39.99,
-            sold_count: 999,
-            image: '',
-            stock_count: 99,
-            author: '雾雨魔理沙',
-            publisher: '雾雨魔法店',
-            category: '魔导书',
-          }
-        },
-        {
-          pk: '2',
-          fields:{
-            name: '魔理沙的魔法书',
-            description: 'daze',
-            price: 39.99,
-            sold_count: 999,
-            image: '',
-            stock_count: 99,
-            author: '雾雨魔理沙',
-            publisher: '雾雨魔法店',
-            category: '魔导书',
-          }
-        },
-        {
-          pk: '2',
-          fields:{
-            name: '魔理沙的魔法书',
-            description: 'daze',
-            price: 39.99,
-            sold_count: 999,
-            image: '',
-            stock_count: 99,
-            author: '雾雨魔理沙',
-            publisher: '雾雨魔法店',
-            category: '魔导书',
-          }
-        },
+        // {
+        //   pk: '1',
+        //   fields:{
+        //     name: '魔理沙的魔法书',
+        //     description: 'daze',
+        //     price: 39.99,
+        //     sold_count: 999,
+        //     image: '',
+        //     stock_count: 99,
+        //     author: '雾雨魔理沙fvdaweyvdjwbra vbrwevryvebwfbewfbweb vfbewb',
+        //     publisher: '雾雨魔法店',
+        //     category: '魔导书',
+        //   }
+        // },
+        // {
+        //   pk: '2',
+        //   fields:{
+        //     name: '魔理沙的魔法书',
+        //     description: 'daze',
+        //     price: 39.99,
+        //     sold_count: 999,
+        //     image: '',
+        //     stock_count: 99,
+        //     author: '雾雨魔理沙bhbaschjgvwdjkuvwqykr',
+        //     publisher: '雾雨魔法店',
+        //     category: '魔导书',
+        //   }
+        // },
+        // {
+        //   pk: '2',
+        //   fields:{
+        //     name: '魔理沙的魔法书hjafueyvgWYEGFEWIF',
+        //     description: 'daze',
+        //     price: 39.99,
+        //     sold_count: 999,
+        //     image: '',
+        //     stock_count: 99,
+        //     author: '雾雨魔理沙',
+        //     publisher: '雾雨魔法店',
+        //     category: '魔导书',
+        //   }
+        // },
+        // {
+        //   pk: '2',
+        //   fields:{
+        //     name: '魔理沙的魔法书',
+        //     description: 'daze',
+        //     price: 39.99,
+        //     sold_count: 999,
+        //     image: '',
+        //     stock_count: 99,
+        //     author: '雾雨魔理沙',
+        //     publisher: '雾雨魔法店',
+        //     category: '魔导书',
+        //   }
+        // },
+        // {
+        //   pk: '2',
+        //   fields:{
+        //     name: '魔理沙的魔法书',
+        //     description: 'daze',
+        //     price: 39.99,
+        //     sold_count: 999,
+        //     image: '',
+        //     stock_count: 99,
+        //     author: '雾雨魔理沙',
+        //     publisher: '雾雨魔法店',
+        //     category: '魔导书',
+        //   }
+        // },
+        // {
+        //   pk: '2',
+        //   fields:{
+        //     name: '魔理沙的魔法书',
+        //     description: 'daze',
+        //     price: 39.99,
+        //     sold_count: 999,
+        //     image: '',
+        //     stock_count: 99,
+        //     author: '雾雨魔理沙',
+        //     publisher: '雾雨魔法店',
+        //     category: '魔导书',
+        //   }
+        // },
+        // {
+        //   pk: '2',
+        //   fields:{
+        //     name: '魔理沙的魔法书',
+        //     description: 'daze',
+        //     price: 39.99,
+        //     sold_count: 999,
+        //     image: '',
+        //     stock_count: 99,
+        //     author: '雾雨魔理沙',
+        //     publisher: '雾雨魔法店',
+        //     category: '魔导书',
+        //   }
+        // },
+        // {
+        //   pk: '2',
+        //   fields:{
+        //     name: '魔理沙的魔法书',
+        //     description: 'daze',
+        //     price: 39.99,
+        //     sold_count: 999,
+        //     image: '',
+        //     stock_count: 99,
+        //     author: '雾雨魔理沙',
+        //     publisher: '雾雨魔法店',
+        //     category: '魔导书',
+        //   }
+        // },
+        // {
+        //   pk: '2',
+        //   fields:{
+        //     name: '魔理沙的魔法书',
+        //     description: 'daze',
+        //     price: 39.99,
+        //     sold_count: 999,
+        //     image: '',
+        //     stock_count: 99,
+        //     author: '雾雨魔理沙',
+        //     publisher: '雾雨魔法店',
+        //     category: '魔导书',
+        //   }
+        // },
+        // {
+        //   pk: '2',
+        //   fields:{
+        //     name: '魔理沙的魔法书',
+        //     description: 'daze',
+        //     price: 39.99,
+        //     sold_count: 999,
+        //     image: '',
+        //     stock_count: 99,
+        //     author: '雾雨魔理沙',
+        //     publisher: '雾雨魔法店',
+        //     category: '魔导书',
+        //   }
+        // },
       ]
     }
   },
