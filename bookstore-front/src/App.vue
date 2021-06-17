@@ -4,7 +4,7 @@
 	    <div id="SiteNavBd" class="site-nav-bd">
 		    <ul id="SiteNavBdL" class="site-nav-bd-l">
 			    <li id="LoginInfo" class="menu">
-				    <div class="menu-hd" v-if="!this.$store.state.isLogin"><router-link to ="/login">登录/注册</router-link></div>
+				    <div class="menu-hd" v-if="!isLogin"><router-link to ="/login">登录/注册</router-link></div>
             <div v-else>{{user_name}} | <a herf="javascript:;" @click="Logout">注销</a></div>  
 			    </li>
           <li class="menu">
@@ -72,6 +72,7 @@ export default {
   data() {
     return {
       user_name: localStorage.getItem("username"),
+      isLogin: localStorage.getItem("isLogin"),
       searchkey: 'bookname',
       keyword: '',
       bookname: '',
@@ -117,13 +118,6 @@ export default {
 
     selectKey(event){
       this.searchkey = event.target.value; //获取option对应的value值
-      // if (this.searchkey === 'bookname'){
-      //   this.bookname = this.keyword;
-      // } else if(this.searchkey === 'author') {
-      //   this.author = this.keyword;
-      // } else if(this.searchkey === 'publisher') {
-      //   this.publisher = this.keyword;
-      // }
     },
     Logout() {
       request({
@@ -267,10 +261,9 @@ blockquote, dd, div, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, img, input,
 ul{
   list-style:none;
 }
-a{
-  text-decoration:none;
-}
 
+a{ text-decoration:none;  color: #666;}
+a:hover{ text-decoration:none; color:#46b448;} 
 em{
   font-style:normal;
 }

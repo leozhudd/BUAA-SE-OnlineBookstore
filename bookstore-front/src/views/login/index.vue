@@ -133,7 +133,7 @@ export default {
       }
 
 
-    };
+    }
   },
 
   methods: {
@@ -162,9 +162,15 @@ export default {
                 message: '登录成功'
               });
               localStorage.setItem("username",this.ruleForm.name);
+              //修改登录状态
               this.$store.commit('login');
-              console.log(this.$store.state.isLogin);
-              this.$router.push('/');
+              console.log(localStorage.getItem('isLogin'));
+              //若有正在浏览的商品，跳转回该页
+              if (sessionStorage.getItem('browsing')){
+                this.$router.push({path:'/details', query:{book_id:sessionStorage.getItem('browsingbook')}});
+              } else {
+                this.$router.push('/');
+              }
             }
             else
             {
