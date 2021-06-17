@@ -85,8 +85,9 @@ def chg_pw(request):
     """
     password = request.POST.get('password')
     new_password = request.POST.get('new_password')
+    print(password)
+    print(new_password)
     # 验证旧密码是否正确，如果错误就拒绝修改
-    # todo 两次密码不一致-验证（在前端）
     try:
         user = auth.authenticate(username=request.user.username, password=password)
         user.set_password(new_password)  # 验证成功，修改密码
@@ -136,9 +137,7 @@ def book_info(request):
     :author 朱穆清
     """
     try:
-        print("intoapi")
         book_id = request.POST.get("book_id")
-        print("id=")
         book = Books.objects.filter(id=book_id)
         response = {'data': json.loads(serializers.serialize('json', book)), 'message': 'success', 'error_num': 0}
 

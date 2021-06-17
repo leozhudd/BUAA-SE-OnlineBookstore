@@ -134,7 +134,51 @@ def ret_all_orders(request):
 
 
 @require_http_methods(["POST"])
-# todo 增加单独购买接口（不涉及购物车）
+def new_order_single_book(request):
+    """从商品详情页面创建新订单，不涉及购物车！
+    :param book_id: 所选图书
+    :param memo: 订单备注
+    :param address: 收货地址
+    :param contact_name: 联系人
+    :param contact_phone: 联系电话
+    :return message, error_num
+    :author 朱穆清
+    """
+    try:
+        book_id = request.POST.get("book_id")
+        book_count = int(request.POST.get("book_count"))
+        memo = request.POST.get("memo")
+        address = request.POST.get("address")
+        contact_name = request.POST.get("contact_name")
+        contact_phone = request.POST.get("contact_phone")
+        # 生成订单唯一编号
+        # 当前时间 + userid + 随机数(2位)
+        import random
+        # 当前时间，eg: '20200329152308'
+        now_time = time.strftime("%Y%m%d%H%M%S")
+        userid = request.user.id
+        ranstr = "%.3d" % (random.randint(1, 99))
+        order_sn = "{time_str}{userid}{ranstr}".format(time_str=now_time, userid=userid, ranstr=ranstr)
+        new_order = OrderInfo(user=request.user, memo=memo, address=address, contact_name=contact_name,
+                              contact_phone=contact_phone, order_sn=order_sn)
+        new_order.save()
+
+        book = Books.objects.get(id=book_id)  # 根据id取出图书详情项
+        book.stock_count -= book_count  # 下单后库存量--
+        book.sold_count += book_count  # 下单后销售量++
+        book.save()
+
+        new_order.amount_price = book.price*book_count  # 统计订单总金额
+        order_books = OrderBooks(order=new_order, book=book, book_count=book_count)
+        order_books.save()
+        new_order.save()
+        response = {"message": "success", "error_num": 0}
+    except Exception as e:
+        response = {"message": "所选的图书id不存在于购物车！"+str(e), "error_num": 1}
+    return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
+@require_http_methods(["POST"])
 def creat_new_order(request):
     """创建新订单并把所选图书从购物车删除（调用即下单成功，销售量++，库存量--）
     :param book_list: 所选图书列表
@@ -146,7 +190,6 @@ def creat_new_order(request):
     :author 朱穆清
     """
     try:
-        # todo 传递list的方法：转换成json传递，接收了再转回去
         book_list = request.POST.get("book_list")
         book_list = json.loads(book_list)
         memo = request.POST.get("memo")
@@ -167,11 +210,7 @@ def creat_new_order(request):
             new_order = OrderInfo(user=request.user, memo=memo, address=address, contact_name=contact_name,
                                   contact_phone=contact_phone, order_sn=order_sn)
             new_order.save()
-            print("list:")
-            print(book_list)
             for book_id in book_list:
-                print(book_id)
-                print(book_id)
                 item = ShoppingCart.objects.get(book_id=book_id, user_id=userid)
                 book = Books.objects.get(id=book_id)  # 根据id取出图书的购物车项和详情项
                 book.stock_count -= item.book_count  # 下单后库存量--
