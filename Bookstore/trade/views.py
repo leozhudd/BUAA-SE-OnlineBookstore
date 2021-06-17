@@ -63,13 +63,14 @@ def add_to_shoppingcart(request):
         book_id = request.POST.get('book_id')
         book_count = request.POST.get('book_count')
         # 判断这本书是否已经存在于购物车，如果已经有了，就不新建条目，而是直接修改数量
-        item_exist = ShoppingCart.objects.get(user=request.user, book=Books.objects.get(id=book_id))
-        if not item_exist:
+        # 查询存不存在必须用filter方法，因为get如果不存在会报错！
+        item_exist = ShoppingCart.objects.filter(user=request.user, book=Books.objects.get(id=book_id))
+        if not item_exist.exists():
             sc_new = ShoppingCart(user=request.user, book=Books.objects.get(id=book_id), book_count=book_count)
             sc_new.save()
         else:
-            item_exist.book_count += int(book_count)
-            item_exist.save()
+            item_exist[0].book_count += int(book_count)
+            item_exist[0].save()
         response = {"message": "success", "error_num": 0}
     except Exception as e:
         response = {"message": str(e), "error_num": 1}
@@ -145,7 +146,9 @@ def creat_new_order(request):
     :author 朱穆清
     """
     try:
-        book_list = request.POST.getlist("book_list")
+        # todo 传递list的方法：转换成json传递，接收了再转回去
+        book_list = request.POST.get("book_list")
+        book_list = json.loads(book_list)
         memo = request.POST.get("memo")
         address = request.POST.get("address")
         contact_name = request.POST.get("contact_name")
@@ -167,6 +170,7 @@ def creat_new_order(request):
             print("list:")
             print(book_list)
             for book_id in book_list:
+                print(book_id)
                 print(book_id)
                 item = ShoppingCart.objects.get(book_id=book_id, user_id=userid)
                 book = Books.objects.get(id=book_id)  # 根据id取出图书的购物车项和详情项
@@ -212,7 +216,8 @@ def set_order_received(request):
     try:
         id = request.POST.get("id")
         order = OrderInfo.objects.get(id=id)
-        order.update(is_signed=True)
+        order.is_signed = True
+        order.save()
         response = {"message": "success", "error_num": 0}
     except Exception as e:
         response = {"message": str(e), "error_num": 1}
@@ -259,7 +264,7 @@ def all_orders_with_details(request):
             book_info_list = []
             for book in book_list:
                 book_full = Books.objects.get(id=book.book_id)  # 从Books表中找到包含这本书的全部信息的对象，并转化存在dict中
-                book_info = {'book_name': book_full.name, 'book_price': book_full.price, 'book_image': book_full.image.url}
+                book_info = {'book_id':book.book_id, 'book_count': book.book_count, 'book_name': book_full.name, 'book_price': book_full.price, 'book_image': book_full.image.url}
                 # 或使用python自带的对象转字典的方法__dict__
                 book_info_list.append(book_info)
             order_full = {'id': order.id, 'order_sn': order.order_sn, 'address': order.address,

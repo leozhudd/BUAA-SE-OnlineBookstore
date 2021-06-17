@@ -86,6 +86,7 @@ def chg_pw(request):
     password = request.POST.get('password')
     new_password = request.POST.get('new_password')
     # 验证旧密码是否正确，如果错误就拒绝修改
+    # todo 两次密码不一致-验证（在前端）
     try:
         user = auth.authenticate(username=request.user.username, password=password)
         user.set_password(new_password)  # 验证成功，修改密码
@@ -161,6 +162,7 @@ def keywords_search(request):
         option = request.POST.get("option")
         if option == "bookname":
             bookname = request.POST.get("bookname")
+            print(request.POST)
             books = Books.objects.filter(name__icontains=bookname)
         elif option == "author":
             author = request.POST.get("author")
@@ -227,3 +229,5 @@ def delete_book(request):
 
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
 """
+# todo 第二次搜索不显示
+# todo 找回密码 发邮箱
