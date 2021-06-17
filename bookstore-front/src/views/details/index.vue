@@ -87,7 +87,7 @@ export default{
         //获取传入的参数
         let _this = this;
         this.book.id = this.$route.query.book_id;
-        // console.log(this.book.id);
+         console.log(this.book.id);
         this.getTheBook();
     },
     methods:{
@@ -95,12 +95,12 @@ export default{
           let sendData = new FormData()
           sendData.append('book_id',this.book.id);
           request({
-            method: 'get',
+            method: 'post',
             url: '/api/base/book_info/',
             data: sendData
           }).then(res => {
             if (!res.error_num) {
-              let thebook = res.fields;
+              let thebook = res.data[0].fields;
               this.book.name = thebook.name;
               this.book.description = thebook.description;
               this.book.price = thebook.price;

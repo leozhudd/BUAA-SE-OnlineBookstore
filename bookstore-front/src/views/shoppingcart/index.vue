@@ -21,7 +21,7 @@
           <table>
             <tbody>
               <tr v-for="(item, index) in BookList" :key="item.book_id">
-                <td v-if="item.now_avaliable" class="td-check">
+                <td v-if="item.book_available" class="td-check">
                   <button @click="item.select=!item.select" class="check-span" :class="{'check-true':item.select}"></button>选择
                 </td>
                 <td v-else class="td-check">

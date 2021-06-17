@@ -81,7 +81,14 @@ export default {
   },
   methods: {
     searchIndexOf() {
-      console.log(this.searchkey);
+      console.log(this.keyword);
+      if (this.searchkey === 'bookname'){
+        this.bookname = this.keyword;
+      } else if(this.searchkey === 'author') {
+        this.author = this.keyword;
+      } else if(this.searchkey === 'publisher') {
+        this.publisher = this.keyword;
+      }
       let sendData = new FormData()
       sendData.append('option', this.searchkey)
       sendData.append('bookname', this.bookname)
@@ -110,13 +117,13 @@ export default {
 
     selectKey(event){
       this.searchkey = event.target.value; //获取option对应的value值
-      if (this.searchkey === 'bookname'){
-        this.bookname = this.keyword;
-      } else if(this.searchkey === 'author') {
-        this.author = this.keyword;
-      } else if(this.searchkey === 'publisher') {
-        this.publisher = this.keyword;
-      }
+      // if (this.searchkey === 'bookname'){
+      //   this.bookname = this.keyword;
+      // } else if(this.searchkey === 'author') {
+      //   this.author = this.keyword;
+      // } else if(this.searchkey === 'publisher') {
+      //   this.publisher = this.keyword;
+      // }
     },
     Logout() {
       request({

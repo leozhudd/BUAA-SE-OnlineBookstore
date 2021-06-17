@@ -16,9 +16,9 @@
 			<div class="pro" v-for="item in books" :key="item.book_name">
 				<div class="product-attr">
 					<div class="product-name fl">
-						<div class="pic-thumb fl"><img class="middle" :src="item.book_image" @click="toDetails"></div>
+						<div class="pic-thumb fl"><img class="middle" :src="item.book_image" @click="toDetails(item)"></div>
 						<div class="product-title fl">
-							<a class="ellipsis" @click="toDetails">{{item.book_name}}</a><br>
+							<a class="ellipsis" @click="toDetails(item)">{{item.book_name}}</a><br>
 							<!-- <span>传播学院</span> -->
 						</div>
 					</div>

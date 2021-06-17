@@ -72,7 +72,7 @@ export default {
     }
   },
   created() {
-    //this.getBooks();
+    this.getBooks();
   },
   methods: {
     getBooks() {
