@@ -84,34 +84,35 @@ import {request} from "@/network/request.js";
         data() {
           return {
             emptylist: false, 
-            BookList:[
-            {
-              book_id:'1',
-              book_name:'csapp',
-              book_author:'Author',
-              book_price:39.00,
-              book_count:2,
-              book_img:'',
-              book_available:true
-            },
-            {
-              book_id:'2',
-              book_name:'csapp',
-              book_author:'Author',
-              book_price:39.00,
-              book_count:2,
-              book_img:'',
-              book_available:false
-            },
-            {
-              book_id:'3',
-              book_name:'csapp',
-              book_author:'Author',
-              book_price:39.00,
-              book_count:2,
-              book_img:'',
-              book_available:true
-            }]
+            BookList:[],
+            // BookList:[
+            // {
+            //   book_id:'1',
+            //   book_name:'csapp',
+            //   book_author:'Author',
+            //   book_price:39.00,
+            //   book_count:2,
+            //   book_img:'',
+            //   book_available:true
+            // },
+            // {
+            //   book_id:'2',
+            //   book_name:'csapp',
+            //   book_author:'Author',
+            //   book_price:39.00,
+            //   book_count:2,
+            //   book_img:'',
+            //   book_available:false
+            // },
+            // {
+            //   book_id:'3',
+            //   book_name:'csapp',
+            //   book_author:'Author',
+            //   book_price:39.00,
+            //   book_count:2,
+            //   book_img:'',
+            //   book_available:true
+            // }]
           }
         },
 
