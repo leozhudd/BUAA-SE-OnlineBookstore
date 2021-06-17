@@ -22,7 +22,7 @@
             <tbody>
               <tr v-for="(item, index) in BookList" :key="item.book_id">
                 <td v-if="item.book_available" class="td-check">
-                  <button @click="item.select=!item.select" class="check-span" :class="{'check-true':item.select}"></button>选择
+                  <button @click="selectItem(item)" class="check-span" :class="{'check-true':item.select}"></button>选择
                 </td>
                 <td v-else class="td-check">
                   <button class="check-span"></button>库存不足
@@ -37,9 +37,9 @@
                 </td>
                 <td class="td-num">
                     <div class="product-num">
-                      <a href="javascript:;" class="num-reduce num-do fl" @click='item.book_count--'><span>-</span></a>
+                      <a href="javascript:;" class="num-reduce num-do fl" @click='countSub(item)'><span>-</span></a>
                       <input type="text" class="num-input" v-model="item.book_count">
-                      <a href="javascript:;" class="num-add num-do fr" @click='item.book_count++'><span>+</span></a>
+                      <a href="javascript:;" class="num-add num-do fr" @click='countAdd(item)'><span>+</span></a>
                     </div>
                 </td>
                 <td class="td-price">
@@ -86,37 +86,38 @@ import {request} from "@/network/request.js";
             emptylist: false, 
             BookList:[
             {
-              'book_id':'1',
-              'book_name':'csapp',
-              'book_author':'Author',
-              'book_price':39.00,
-              'book_count':2,
-              'book_img':'',
-              'book_available':true
+              book_id:'1',
+              book_name:'csapp',
+              book_author:'Author',
+              book_price:39.00,
+              book_count:2,
+              book_img:'',
+              book_available:true
             },
             {
-              'book_id':'2',
-              'book_name':'csapp',
-              'book_author':'Author',
-              'book_price':39.00,
-              'book_count':2,
-              'book_img':'',
-              'book_available':false
+              book_id:'2',
+              book_name:'csapp',
+              book_author:'Author',
+              book_price:39.00,
+              book_count:2,
+              book_img:'',
+              book_available:false
             },
             {
-              'book_id':'3',
-              'book_name':'csapp',
-              'book_author':'Author',
-              'book_price':39.00,
-              'book_count':2,
-              'book_img':'',
-              'book_available':true
+              book_id:'3',
+              book_name:'csapp',
+              book_author:'Author',
+              book_price:39.00,
+              book_count:2,
+              book_img:'',
+              book_available:true
             }]
           }
         },
 
         created() {
-          if (this.$store.state.isLogin) {
+          console.log(localStorage.getItem('isLogin'));
+          if (localStorage.getItem('isLogin')) {
             this.getBooks();
           }else{
             this.$message({
@@ -161,6 +162,10 @@ import {request} from "@/network/request.js";
           }
         },
         methods:{
+          selectItem(item) {
+            console.log(item.select);
+            item.select=!item.select;
+          },
           getBooks() {
             request({
               method: 'get',
@@ -169,6 +174,7 @@ import {request} from "@/network/request.js";
               console.log(res);
               if (!res.error_num) {
                 this.BookList = res.data;
+                this.beSelectable();
                 if (this.BookList.length === 0) {
                   this.emptylist = true;
                 } else {
@@ -206,12 +212,12 @@ import {request} from "@/network/request.js";
           },
           countAdd(item) {
             item.book_count++;
-            updateCount(item);
+            this.updateCount(item);
           },
           countSub(item) {
             if (item.book_count>1){
                 item.book_count--;
-                updateCount(item);
+                this.updateCount(item);
             }
           },
           delBook(index, item) {
@@ -261,21 +267,21 @@ import {request} from "@/network/request.js";
                 orderlist.push(this.BookList[i]);
               }
             }
-            this.$router.push({path:'/order', query:{orderlist: JSON.stringify(orderlist)}});
+            this.$router.push({path:'/order', query:{comefrom:'cart',orderlist: JSON.stringify(orderlist)}});
           },
           toDetails(item) {
             //发送id，在详情页加载信息
             this.$router.push({path: '/details', query: {book_id: item.book_id}});
           },
-
-        },
-        mounted() {
+          beSelectable() {
           //为BookList添加select属性（是否选中字段）默认为false
           let _this=this;
           for (let i in this.BookList) {
               _this.$set(this.BookList[i],'select',false);
             }
-        }
+          }
+
+        },
     }
 </script>
 

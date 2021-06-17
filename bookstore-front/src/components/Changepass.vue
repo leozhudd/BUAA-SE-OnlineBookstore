@@ -15,10 +15,14 @@
 		    </div>
 	    </div>
 	    <div class="help-r fr">
-        <div>输入旧密码:<input v-model="oldpass"></div>
-        <div>输入新密码:<input v-model="newpass1"></div>
-        <div>确认新密码:<input v-model="newpass2"></div>
-        <button @click="submitChange">确认修改</button>
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="旧密码" prop="oldpass" style="width: 40%; margin:20px auto"><el-input type="password" v-model="ruleForm.oldpass" auto-complete="off" clearable></el-input></el-form-item>
+          <el-form-item label="新密码" prop="newpass" style="width: 40%; margin:20px auto"><el-input type="password" v-model="ruleForm.newpass" auto-complete="off" clearable></el-input></el-form-item>
+          <el-form-item label="确认新密码" prop="newpass2" style="width: 40%; margin:20px auto"><el-input type="password" v-model="ruleForm.newpass2" auto-complete="off" clearable></el-input></el-form-item>
+          <el-form-item>
+          <el-button type="primary" @click="submitForm('ruleForm')">确认修改</el-button>
+          </el-form-item>
+        </el-form>
       </div>
     </div>
   </div>
@@ -30,13 +34,51 @@ import {request} from "@/network/request.js";
 export default{
   name:'Changepass',
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'));
+      } else {
+        if (this.ruleForm.checkPass !== '') {
+          this.$refs.ruleForm.validateField('checkPass');
+        }
+        callback();
+      }
+    };
+
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'));
+      } else if (value !== this.ruleForm.newpass) {
+        callback(new Error('两次输入密码不一致!'));
+      } else {
+        callback();
+      }
+    };
+
     return {
-      oldpass: '',
-      newpass1: '',
-      newpass2: '',
+      ruleForm: {
+        oldpass: '',
+        newpass: '',
+        newpass2: ''
+      },
+      rules: {
+        oldpass: [{ required: true, message: '请输入您的名称', trigger: 'blur' }],
+        newpass: [{ required: true, validator: validatePass, trigger: 'blur' }],
+        newpass2: [{ required: true, validator: validatePass2, trigger: 'blur' }]
+      }
     }
   },
   methods:{
+    submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.submitChange();
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
     submitChange() {
       let sendData = new FormData()
       sendData.append('password',this.oldpass)

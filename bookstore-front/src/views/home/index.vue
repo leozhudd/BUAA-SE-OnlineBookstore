@@ -1,33 +1,30 @@
 <template>
   <div id="home">
-    <!-- <div style="margin-top: 15px;">
-      <el-input placeholder="请输入关键字" v-model="keyword" size="small" class="input-with-select">
-        <el-select v-model="select_key" slot="prepend" placeholder="请选择搜索类型">
-         <el-option label="书名" value="book_name"></el-option>
-         <el-option label="作者" value="book_author"></el-option>
-        </el-select>
-        <el-button slot="append" icon="el-icon-search"></el-button>
-      </el-input>
-    </div> -->
-    <div>
-      <table>
-        <tbody>
-          <tr v-for="item in Allbooks" :key="item.pk">
-            <td class="td-product">
-              <img :src="item.fields.image" width="120" height="150" @click="toDetails(item)">
-              <div class="product-info">
-                <h6>{{item.fields.name}}</h6>
-                <p>作者：{{item.fields.author}}</p>
-                <p>出版社：{{item.fields.publisher}}</p>
-                <p>单价：￥{{parseFloat(item.fields.price)}}</p>
-                <p>分类：{{item.fields.category}}</p>
-              </div>
-              <div class="clearfix"></div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <div class="list-main">
+	<div class="container">
+		<ul class="select">
+			<li class="select-list">
+				<dl id="select1">
+					<dt>分类：</dt>
+					<dd class="select-all selected"><a href="#">全部</a></dd>
+					<dd><a href="#">计算机</a></dd>
+					<dd><a href="#">轻小说</a></dd>
+					<dd><a href="#">古典</a></dd>
+				</dl>
+			</li>
+		</ul>
+		<div class="tabs book clearfix">
+			<dl v-for="item in Allbooks" :key="item.pk">
+				<dt><a href=""><img src="item.fields.image" /></a></dt>
+				<dd>
+					<p><a href="">{{item.fields.name}}</a></p>
+					<p>作者：{{item.fields.author}}</p>
+					<p>￥{{parseFloat(item.fields.price)}}</p>
+				</dd>
+			</dl>
+		</div>
+	</div>
+  </div>
   </div>
 </template>
 
@@ -68,6 +65,7 @@ export default {
             category: '魔导书',
           }
         },
+        
       ]
     }
   },
@@ -108,14 +106,82 @@ export default {
 </script>
 
 <style>
-  #home {
-      width: 800px;
-      margin: auto;
-  }
-  .el-select .el-input {
-    width: 130px;
-  }
-  .input-with-select  .el-input-group__prepend{
-    background-color: #fff;
-  }
+  	a{ text-decoration:none;  color: #666;}
+	a:hover{ text-decoration:none; color:#46b448;}
+    .fl{
+      float: left;
+    }
+    .fr{
+      float: right;
+    }
+    blockquote, body, dd, div, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, img, input, li, ol, p, table, td, textarea, th, ul {
+      margin: 0;
+      padding: 0;
+    }
+    .clearfix{
+      zoom: 1;
+    }
+	.clearfix:after {
+    content: "";
+    clear: both;
+    display: block;
+}
+	.container {
+    width: 1200px;
+    margin: 0 auto;
+}
+.list-main .container{
+	border:#ddd 1px solid;
+	border-radius:4px;
+	margin-top: 20px;
+}
+.select{padding:5px 10px;width:1180px; font-size: 14px;}
+.select li{list-style:none;padding:10px 0 5px 100px;}
+.select .select-list{border-bottom:#eee 1px dashed}
+.select dl{zoom:1;position:relative;line-height:24px;}
+.select dl:after{content:" ";display:block;clear:both;height:0;overflow:hidden}
+.select dt{width:100px;margin-bottom:5px;position:absolute;top:0;left:-100px;text-align:right;color:#666;height:24px;line-height:24px}
+.select dd{float:left;display:inline;margin:0 0 5px 5px;}
+.select dd.hide{display:none;}
+.select a{display:inline-block;white-space:nowrap;height:24px;padding:0 10px;text-decoration:none;color:#039;border-radius:2px;}
+.select a:hover{color:#f60;background-color:#f3edc2}
+.select .selected a{color:#fff;background-color:#f60}
+.tabs{
+	padding: 5px 27px;
+}
+.book dl{
+	float: left;
+	margin: 10px;
+	width: 143px;
+}
+.book dl dt{
+	border: 1px solid #dee8ef;
+	padding: 7px 10px 5px 10px;
+
+}
+.book dl dt img{
+	width: 123px;
+	height: 177px;
+	font-size: 0;
+}
+.book dl dd{
+	text-align: center;
+	margin-top: 5px;
+}
+.book dl dd p:first-child a{
+	font-size: 14px;
+	color: #333;
+}
+.book dl dd p:nth-child(2){
+	font-size: 14px;
+	color: #999;
+}
+.book dl dd p:nth-child(3){
+	font-size: 16px;
+	color: red;
+}
+.book dl dd p:nth-child(3) s{
+	color: #999;
+	font-size: 12px;
+}
 </style>

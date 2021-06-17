@@ -1,5 +1,5 @@
 <template>
-  <div id="order">
+  <div id="submitted">
     <div class="help-main">
 			<div class="product-item clearfix">
 				<div class="name fl">
@@ -48,7 +48,7 @@
 					</li>
         </ul>
       </div>
-		</div>
+	</div>
   </div>
 </template>
 

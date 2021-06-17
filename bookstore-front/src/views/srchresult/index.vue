@@ -1,22 +1,30 @@
 <template>
   <div id="SearchRes">
-    <table>
-      <tbody>
-        <tr v-for="item in resultlist" :key="item.id">
-          <td class="td-product">
-            <img :src="item.fields.image" width="120" height="150" @click="toDetails(item)">
-            <div class="product-info">
-              <h6>{{item.fields.name}}</h6>
-              <p>作者：{{item.fields.author}}</p>
-              <p>出版社：{{item.fields.publisher}}</p>
-              <p>单价：￥{{parseFloat(item.fields.price)}}</p>
-              <p>分类：{{item.fields.category}}</p>
-            </div>
-            <div class="clearfix"></div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="list-main">
+	<div class="container">
+		<ul class="select">
+			<li class="select-list">
+				<dl id="select1">
+					<dt>分类：</dt>
+					<dd class="select-all selected"><a href="#">全部</a></dd>
+					<dd><a href="#">计算机</a></dd>
+					<dd><a href="#">轻小说</a></dd>
+					<dd><a href="#">古典</a></dd>
+				</dl>
+			</li>
+		</ul>
+		<div class="tabs book clearfix">
+			<dl v-for="item in Allbooks" :key="item.pk">
+				<dt><a href=""><img src="item.fields.image" /></a></dt>
+				<dd>
+					<p><a href="">{{item.fields.name}}</a></p>
+					<p>作者：{{item.fields.author}}</p>
+					<p>￥{{parseFloat(item.fields.price)}}</p>
+				</dd>
+			</dl>
+		</div>
+	</div>
+  </div>
   </div>
 </template>
 
@@ -53,12 +61,16 @@ export default {
           ],
       }
     },
+    //二次搜索不行
+    created() {
+      this.resultlist = JSON.parse(this.$route.query.resultlist);
+    },
     activated() {
       this.resultlist = JSON.parse(this.$route.query.resultlist);
     },
     methods: {
         toDetails(item) {
-          this.$router.push({path: '/details', query: {book_id: item.id}});
+          this.$router.push({path: '/details', query: {book_id: item.pk}});
         }
     }
 }

@@ -128,7 +128,7 @@ export default{
         },
         //立即下单
         orderIt() {
-          if (this.$store.state.isLogin){
+          if (localStorage.getItem('isLogin')){
             let orderlist = [];
             let thisbook = {
               book_id: this.book.id,
@@ -139,17 +139,20 @@ export default{
               book_count: this.book.count,
             }
             orderlist.push(thisbook);
-            this.$router.push({path:'/order', query:{orderlist: JSON.stringify(orderlist)}});
+            this.$router.push({path:'/order', query:{comefrom: 'details',orderlist: JSON.stringify(orderlist)}});
           } else {
             this.$message({
               type: 'info',
               message: '请先登录'
             })
-            this.$router.push({path:'/login', query:{route_bkid: this.book.id}});
+            sessionStorage.setItem('browsingbook',this.book.id);
+            sessionStorage.setItem('browsing',true);
+            this.$router.push({path:'/login'});
           }
         },
         //加购
         addtoCart() {
+          if (localStorage.getItem('isLogin')){
           let sendData = new FormData()
           sendData.append('book_id',this.book.id)
           sendData.append('book_count',this.book.count)
@@ -183,6 +186,15 @@ export default{
               message: error.message
             });
           });
+          } else {
+            this.$message({
+              type: 'info',
+              message: '请先登录'
+            })
+            sessionStorage.setItem('browsingbook',this.book.id);
+            sessionStorage.setItem('browsing',true);
+            this.$router.push({path:'/login'});
+          }
         },
         countAdd() {
           this.book.count++;
