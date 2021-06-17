@@ -78,7 +78,7 @@ export default{
         }
         console.log(booklist);
         let sendData = new FormData()
-        sendData.append('book_list', booklist);
+        sendData.append('book_list', JSON.stringify(booklist));
         sendData.append('memo', this.memo);
         sendData.append('address', this.address);
         sendData.append('contact_name', this.contact_name);
@@ -86,7 +86,7 @@ export default{
 
         request({
           method: 'post',
-          url: '/api/trade/selected_books_preview/',
+          url: '/api/trade/creat_new_order/',
           data: sendData
         }).then(res => {
           console.log(res);

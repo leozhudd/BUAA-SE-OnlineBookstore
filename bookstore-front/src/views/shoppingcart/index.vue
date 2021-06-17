@@ -21,7 +21,7 @@
           <table>
             <tbody>
               <tr v-for="(item, index) in BookList" :key="item.book_id">
-                <td v-if="item.now_avaliable" class="td-check">
+                <td v-if="item.book_available" class="td-check">
                   <button @click="item.select=!item.select" class="check-span" :class="{'check-true':item.select}"></button>选择
                 </td>
                 <td v-else class="td-check">
@@ -62,7 +62,7 @@
         <!-- 最后一行统计 -->
         <div class="cart-product-info">
             <!-- <a href="javascript:;" class="delete-product" @click='deleteBooks'><span></span>删除所选商品</a> -->
-            <a href="#" class="keep-shopping"><span></span>继续购物</a>
+            <a href="#" class="keep-shopping" @click="this.$router.push('/')"><span></span>继续购物</a>
             <a href="javascript:;" class="fr btn-buy" @click='orderBooks'>去结算</a>
             <a href="javascript:;" class="fr product-total"><span>{{getTotal.totalPrice | showPrice}}</span></a>
             <a href="javascript:;" class="fr check-num"><span>{{getTotal.totalNum}}</span>件商品总计（不含运费）:</a>
@@ -92,7 +92,7 @@ import {request} from "@/network/request.js";
               'book_price':39.00,
               'book_count':2,
               'book_img':'',
-              'now_avaliable':true
+              'book_available':true
             },
             {
               'book_id':'2',
@@ -101,7 +101,7 @@ import {request} from "@/network/request.js";
               'book_price':39.00,
               'book_count':2,
               'book_img':'',
-              'now_avaliable':false
+              'book_available':false
             },
             {
               'book_id':'3',
@@ -110,7 +110,7 @@ import {request} from "@/network/request.js";
               'book_price':39.00,
               'book_count':2,
               'book_img':'',
-              'now_avaliable':true
+              'book_available':true
             }]
           }
         },
@@ -131,7 +131,7 @@ import {request} from "@/network/request.js";
           isSelectAll() {
               //如果BookList中每一条数据的select都为true,就返回true,否则返回false
             for (let i in this.BookList) {
-              if (this.BookList[i].now_avaliable && !this.BookList[i].select)
+              if (this.BookList[i].book_available && !this.BookList[i].select)
                 return false;
             }
             return true;
@@ -215,6 +215,7 @@ import {request} from "@/network/request.js";
             }
           },
           delBook(index, item) {
+            alert("确定要删除吗？");
             let sendData = new FormData()
             sendData.append('book_id', item.book_id);
             request({
@@ -224,8 +225,12 @@ import {request} from "@/network/request.js";
             }).then(res => {
               console.log(res);
               if (!res.error_num) {
-                //在数组中删除 不行的话重新请求
-              this.BookList.splice(index,1);
+              //在数组中删除 不行的话重新请求
+                this.$message({
+                  type: 'success',
+                  message: '删除成功'
+                })
+                this.BookList.splice(index,1);
               } else {
                 this.$message({
                   type: 'error',
@@ -244,13 +249,9 @@ import {request} from "@/network/request.js";
           selectAll(_isSelect){
             //遍历BookList,全部取反
             for (let i in this.BookList) {
-              if (this.BookList[i].now_avaliable)
+              if (this.BookList[i].book_available)
                 this.BookList[i].select = !_isSelect;
             }
-          },
-          //删除选中的产品
-          deleteBooks(){
-            this.BookList = this.BookList.filter(item => {return !item.select});
           },
           //下单选中的产品
           orderBooks(){
@@ -337,8 +338,8 @@ import {request} from "@/network/request.js";
     }
     
     /* 点击时改变勾选 */
-    .page-shopping-cart .check-span.check-true{
-      background-color: #42b983;
+    .check-true{
+      background-color: #3ad68e;
     } 
     .page-shopping-cart .td-check{
       width:70px;

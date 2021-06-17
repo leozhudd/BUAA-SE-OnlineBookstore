@@ -164,8 +164,7 @@ export default {
               localStorage.setItem("username",this.ruleForm.name);
               this.$store.commit('login');
               console.log(this.$store.state.isLogin);
-              //this.$router.push('/');
-              //this.$router.go(0);
+              this.$router.push('/');
             }
             else
             {

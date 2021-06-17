@@ -108,7 +108,7 @@ export default {
       }
     },
     created() {
-      //this.getOrders();
+      this.getOrders();
       this.display = this.allorders;
     },
     methods: {
@@ -137,11 +137,11 @@ export default {
           }) 
         },
         indexOfSigned() {
-          let list = [];
+          let list1 = [];
           let list2 = [];
           for (let i in this.allorders) {
             if (this.allorders[i].is_signed) {
-              list.push(this.allorders[i]);
+              list1.push(this.allorders[i]);
             }else {
               list2.push(this.allorders[i]);
             }
