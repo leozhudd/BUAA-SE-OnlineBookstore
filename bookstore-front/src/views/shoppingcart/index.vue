@@ -62,10 +62,10 @@
         <!-- 最后一行统计 -->
         <div class="cart-product-info">
             <!-- <a href="javascript:;" class="delete-product" @click='deleteBooks'><span></span>删除所选商品</a> -->
-            <a href="#" class="keep-shopping" @click="this.$router.push('/')"><span></span>继续购物</a>
+            <a herf="javascript:;" class="keep-shopping" @click="this.$router.push('/')">继续购物</a>
             <a href="javascript:;" class="fr btn-buy" @click='orderBooks'>去结算</a>
-            <a href="javascript:;" class="fr product-total"><span>{{getTotal.totalPrice | showPrice}}</span></a>
-            <a href="javascript:;" class="fr check-num"><span>{{getTotal.totalNum}}</span>件商品总计（不含运费）:</a>
+            <a class="fr product-total"><span>{{getTotal.totalPrice | showPrice}}</span></a>
+            <a class="fr check-num"><span>{{getTotal.totalNum}}</span>件商品总计（不含运费）:</a>
         </div>
     
         <!-- <div class="cart-worder clearfix">
@@ -117,14 +117,14 @@ import {request} from "@/network/request.js";
 
         created() {
           console.log(localStorage.getItem('isLogin'));
-          if (localStorage.getItem('isLogin')) {
+          if (this.$store.state.isLogin) {
             this.getBooks();
           }else{
             this.$message({
               type: "info",
               message: "请先登录",
             })
-            //this.$router.push('/login');
+            this.$router.push('/login');
           }
         },
         computed:{
