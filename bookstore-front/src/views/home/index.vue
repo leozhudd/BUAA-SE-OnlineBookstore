@@ -7,18 +7,18 @@
 				<dl id="select1">
 					<dt>分类：</dt>
 					<dd class="select-all selected"><a href="#">全部</a></dd>
-					<dd><a href="#">计算机</a></dd>
+					<dd @click="change(index)" :class='{active: selected}'><a href="#" >计算机</a></dd>
 					<dd><a href="#">轻小说</a></dd>
 					<dd><a href="#">古典</a></dd>
 				</dl>
 			</li>
 		</ul>
 		<div class="tabs book clearfix">
-			<dl v-for="item in Allbooks" :key="item.pk">
+			<dl v-for="item in Allbooks" :key="item.pk" class="book-display">
 				<dt><img :src="item.fields.image" @click="toDetails(item)"/></dt>
 				<dd>
-					<p><a href="" @click="toDetails(item)">{{item.fields.name}}</a></p>
-					<p>作者：{{item.fields.author}}</p>
+					<p><a @click="toDetails(item)">{{item.fields.name | ellipsis}}</a></p>
+					<p>作者：{{item.fields.author | ellipsis}}</p>
 					<p>￥{{parseFloat(item.fields.price)}}</p>
 				</dd>
 			</dl>
@@ -36,9 +36,52 @@ export default {
     return {
       keyword: '',
       select_key: '',
+
       Allbooks: [
         {
           pk: '1',
+          fields:{
+            name: '魔理沙的魔法书',
+            description: 'daze',
+            price: 39.99,
+            sold_count: 999,
+            image: '',
+            stock_count: 99,
+            author: '雾雨魔理沙fvdaweyvdjwbra vbrwevryvebwfbewfbweb vfbewb',
+            publisher: '雾雨魔法店',
+            category: '魔导书',
+          }
+        },
+        {
+          pk: '2',
+          fields:{
+            name: '魔理沙的魔法书',
+            description: 'daze',
+            price: 39.99,
+            sold_count: 999,
+            image: '',
+            stock_count: 99,
+            author: '雾雨魔理沙bhbaschjgvwdjkuvwqykr',
+            publisher: '雾雨魔法店',
+            category: '魔导书',
+          }
+        },
+        {
+          pk: '2',
+          fields:{
+            name: '魔理沙的魔法书hjafueyvgWYEGFEWIF',
+            description: 'daze',
+            price: 39.99,
+            sold_count: 999,
+            image: '',
+            stock_count: 99,
+            author: '雾雨魔理沙',
+            publisher: '雾雨魔法店',
+            category: '魔导书',
+          }
+        },
+        {
+          pk: '2',
           fields:{
             name: '魔理沙的魔法书',
             description: 'daze',
@@ -65,12 +108,90 @@ export default {
             category: '魔导书',
           }
         },
-        
+        {
+          pk: '2',
+          fields:{
+            name: '魔理沙的魔法书',
+            description: 'daze',
+            price: 39.99,
+            sold_count: 999,
+            image: '',
+            stock_count: 99,
+            author: '雾雨魔理沙',
+            publisher: '雾雨魔法店',
+            category: '魔导书',
+          }
+        },
+        {
+          pk: '2',
+          fields:{
+            name: '魔理沙的魔法书',
+            description: 'daze',
+            price: 39.99,
+            sold_count: 999,
+            image: '',
+            stock_count: 99,
+            author: '雾雨魔理沙',
+            publisher: '雾雨魔法店',
+            category: '魔导书',
+          }
+        },
+        {
+          pk: '2',
+          fields:{
+            name: '魔理沙的魔法书',
+            description: 'daze',
+            price: 39.99,
+            sold_count: 999,
+            image: '',
+            stock_count: 99,
+            author: '雾雨魔理沙',
+            publisher: '雾雨魔法店',
+            category: '魔导书',
+          }
+        },
+        {
+          pk: '2',
+          fields:{
+            name: '魔理沙的魔法书',
+            description: 'daze',
+            price: 39.99,
+            sold_count: 999,
+            image: '',
+            stock_count: 99,
+            author: '雾雨魔理沙',
+            publisher: '雾雨魔法店',
+            category: '魔导书',
+          }
+        },
+        {
+          pk: '2',
+          fields:{
+            name: '魔理沙的魔法书',
+            description: 'daze',
+            price: 39.99,
+            sold_count: 999,
+            image: '',
+            stock_count: 99,
+            author: '雾雨魔理沙',
+            publisher: '雾雨魔法店',
+            category: '魔导书',
+          }
+        },
       ]
     }
   },
   created() {
     this.getBooks();
+  },
+  filters: {
+    ellipsis (value) {
+      if (!value) return ''
+      if (value.length > 10) {
+        return value.slice(0,10) + '...'
+      }
+      return value
+    }
   },
   methods: {
     getBooks() {
@@ -135,6 +256,7 @@ export default {
 	border-radius:4px;
 	margin-top: 20px;
 }
+
 .select{padding:5px 10px;width:1180px; font-size: 14px;}
 .select li{list-style:none;padding:10px 0 5px 100px;}
 .select .select-list{border-bottom:#eee 1px dashed}
@@ -151,8 +273,9 @@ export default {
 }
 .book dl{
 	float: left;
-	margin: 10px;
+	margin: 10px 10px 10px 10px;
 	width: 143px;
+  height:280px;
 }
 .book dl dt{
 	border: 1px solid #dee8ef;
