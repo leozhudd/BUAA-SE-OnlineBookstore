@@ -320,9 +320,9 @@ export default{
   width: 60px;
 }
 #glist a:hover{
-	border: #f73a3a solid 1px;
+	border: #42b983 solid 1px;
 	text-decoration: none;
-	color: #f73a3a;
+	color: #42b983;
 }
 .gcIpt{
 	height: 70px;
@@ -371,7 +371,6 @@ export default{
 	line-height: 50px;
 }
 
-/* 商品评价 */
 .gdetail{
 	width:1240px;
 	margin: 0 auto;
@@ -412,7 +411,7 @@ top: 0;
 	width:300px;
 	margin:0 auto;
 	margin-bottom: 20px;
-	border-bottom:#e4393c solid 1px;
+	border-bottom:#42b983 solid 1px;
 	height:37px;
 	line-height:37px;
 	background:#f7f7f7;	
@@ -433,7 +432,7 @@ top: 0;
 }
 
 .act_active{
-	background:#e4393c;
+	background:#42b983;
 	border-bottom:none !important;
 }
 .act_active a{color:#ffffff; font-size: 14px;}

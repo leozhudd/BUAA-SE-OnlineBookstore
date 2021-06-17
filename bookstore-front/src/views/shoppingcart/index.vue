@@ -322,10 +322,10 @@ import {request} from "@/network/request.js";
       margin:40px auto;
       font-size: 14px;
       border:1px solid #e3e3e3;
-      border-top:2px solid #317ee7;
+      border-top:1px solid #42b983;
     }
     .page-shopping-cart .cart-title{
-      color:#317ee7;
+      color:#42b983;
       font-size: 16px;
       text-align: left;
       padding-left: 20px;

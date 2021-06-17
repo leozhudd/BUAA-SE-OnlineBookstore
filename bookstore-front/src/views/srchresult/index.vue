@@ -14,10 +14,10 @@
 			</li>
 		</ul>
 		<div class="tabs book clearfix">
-			<dl v-for="item in Allbooks" :key="item.pk">
-				<dt><a href=""><img src="item.fields.image" /></a></dt>
+			<dl v-for="item in resultlist" :key="item.pk">
+				<dt><img :src="item.fields.image" @click="toDetails(item)"/></dt>
 				<dd>
-					<p><a href="">{{item.fields.name}}</a></p>
+					<p><a @click="toDetails(item)">{{item.fields.name}}</a></p>
 					<p>作者：{{item.fields.author}}</p>
 					<p>￥{{parseFloat(item.fields.price)}}</p>
 				</dd>

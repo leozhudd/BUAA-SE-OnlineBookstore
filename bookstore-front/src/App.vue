@@ -5,7 +5,7 @@
 		    <ul id="SiteNavBdL" class="site-nav-bd-l">
 			    <li id="LoginInfo" class="menu">
 				    <div class="menu-hd" v-if="!isLogin"><router-link to ="/login">登录/注册</router-link></div>
-            <div v-else>{{user_name}} | <a herf="javascript:;" @click="Logout">注销</a></div>  
+            <div class="menu-hd" v-else>{{user_name}} | <a herf="javascript:;" @click="Logout">注销</a></div>  
 			    </li>
           <li class="menu">
             <div class="menu-hd">
@@ -155,7 +155,7 @@ div {
 	}
 .navbar_con{
 	height:40px;
-    border-bottom:2px solid #37ab30;
+    border-bottom:2px solid #42b983;
     /*background: red;*/
 }
 .site-nav{
@@ -200,7 +200,7 @@ div {
 .search_con{
 	width:660px;
     height:38px;
-    border:1px solid #37ab40;
+    border:1px solid #42b983;
     margin:34px 0 0 123px;
     /* background:url(../images/icons.png) 10px -335px no-repeat; */
 }
@@ -214,7 +214,7 @@ div {
 .search_con .input_btn{
     width:90px;
     height:39px;
-    background-color: #37ab40;
+    background-color: #42b983;
     border:0;
     font:14px/38px 'Microsoft YaHei UI';
     color:#fff;
@@ -225,7 +225,7 @@ div {
   height:39px;
   width:80px;
   font-size:14px;
-  border:1px solid #37ab40;
+  border:1px solid #42b983;
 }
 
 #app {

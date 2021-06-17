@@ -38,8 +38,8 @@ export default{
       if (value === '') {
         callback(new Error('请输入密码'));
       } else {
-        if (this.ruleForm.checkPass !== '') {
-          this.$refs.ruleForm.validateField('checkPass');
+        if (this.ruleForm.newpass2 !== '') {
+          this.$refs.ruleForm.validateField('newpass2');
         }
         callback();
       }
@@ -78,11 +78,11 @@ export default{
             return false;
           }
         });
-      },
+    },
     submitChange() {
       let sendData = new FormData()
-      sendData.append('password',this.oldpass)
-      sendData.append('new_password', this.newpass2)
+      sendData.append('password',this.ruleForm.oldpass)
+      sendData.append('new_password', this.ruleForm.newpass2)
 
           request({
             method: 'post',
