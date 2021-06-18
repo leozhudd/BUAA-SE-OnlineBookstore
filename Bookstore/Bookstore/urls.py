@@ -27,6 +27,6 @@ urlpatterns = [
 
     # Vue
     path('', TemplateView.as_view(template_name='index.html')),
-    re_path(r'.*', TemplateView.as_view(template_name='index.html')),
+    re_path(r'.*', TemplateView.as_view(template_name='index.html')),  # 如果部署到nginx，就不需要这行了
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
