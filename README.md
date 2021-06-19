@@ -1,43 +1,24 @@
 # 软工大作业 - 小型网上书店
 
 #### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+在网络覆盖全球的情形下，网上书店可以让众多读者更加方便的寻找到自己需要的书籍，可以随时查阅，更加便捷，而且网上书店可以为读者节约大量时间，网上书店有发展的潜力，可以为书店和读者带来双赢的局面。网上书店售书的理念也很简单，就是读者可以自己寻找自己喜爱的书，替读者找寻他们想要的书。对于读者来说，可以随时随地自由地查询和订购图书，读者无需亲临书店，开机上网即可买到所需书籍，网上购书节省了大量时间，这对于那些没有时间经常逛传统书店或其住所离传统书店较远的读者来说，具有实际意义。因此网上售书必将有长足的发展。其基本功能有登录注册、浏览商品、商品管理、购买商品和系统管理。
 
 [![simpleui](https://img.shields.io/badge/developing%20with-Simpleui-2077ff.svg)](https://github.com/newpanjing/simpleui)
 
 #### 软件架构
-2021.5.24 新建仓库
+前端：Vue
 
-2021.5.31 初始化Django框架
+后端：Django
+
+数据库：MySQL
+
+代理：Nginx/Uwsgi
 
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+参见《部署文档》
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+参见《用户使用说明书》
