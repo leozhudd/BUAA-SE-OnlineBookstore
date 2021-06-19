@@ -13,20 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, re_path, include
-from django.views.static import serve
+from django.urls import path, include, re_path
+from django.views.generic import TemplateView
 
-from Bookstore.settings import MEDIA_ROOT
-from storeApp.views import *
-from storeApp import urls
+from Bookstore import settings
 
 urlpatterns = [
-    path('api/', include(urls)),
-
+    path('api/base/', include('storeApp.urls')),
+    path('api/trade/', include('trade.urls')),
     path('admin/', admin.site.urls),
-    path('', index),
 
-    # 设置 通过url的方式访问用户上传的图片/文件/视频
-    path('media/<path:path>', serve, {'document_root': MEDIA_ROOT}),
-]
+    # Vue
+    path('', TemplateView.as_view(template_name='index.html')),
+    # todo 使用repath让网站能刷新页面，但会导致图片一段时间后无法加载，目前尚未解决。
+    re_path(r'.*', TemplateView.as_view(template_name='index.html')),  # 如果部署到nginx，就不需要这行了
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
