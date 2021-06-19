@@ -228,5 +228,5 @@ def delete_book(request):
 
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
 """
-# todo 第二次搜索不显示
+# todo 第二次搜索不显示（展示的时候已经好了
 # todo 找回密码 发邮箱

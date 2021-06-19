@@ -11,7 +11,6 @@ from django.http import JsonResponse
 
 
 # Create your views here.
-# todo 前端点选择钮后能选择但图像没变化
 @require_http_methods(["GET"])
 def show_shoppingcart(request):
     """返回当前用户的购物车中的全部商品，并根据库存量更新状态
@@ -64,13 +63,13 @@ def add_to_shoppingcart(request):
         book_count = request.POST.get('book_count')
         # 判断这本书是否已经存在于购物车，如果已经有了，就不新建条目，而是直接修改数量
         # 查询存不存在必须用filter方法，因为get如果不存在会报错！
-        item_exist = ShoppingCart.objects.filter(user=request.user, book=Books.objects.get(id=book_id))
-        if not item_exist.exists():
+        item_exist = ShoppingCart.objects.filter(user=request.user, book=Books.objects.get(id=book_id)).first()
+        if item_exist is None:
             sc_new = ShoppingCart(user=request.user, book=Books.objects.get(id=book_id), book_count=book_count)
             sc_new.save()
         else:
-            item_exist[0].book_count += int(book_count)
-            item_exist[0].save()
+            item_exist.book_count += int(book_count)
+            item_exist.save()
         response = {"message": "success", "error_num": 0}
     except Exception as e:
         response = {"message": str(e), "error_num": 1}
@@ -318,6 +317,3 @@ def all_orders_with_details(request):
         response = {"message": str(e), "error_num": 1}
 
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})
-
-
-# @require_http_methods(["GET"])
