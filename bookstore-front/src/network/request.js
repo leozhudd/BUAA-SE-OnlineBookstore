@@ -2,6 +2,7 @@ import axios from 'axios'
 
 export function request(config){
     const instance = axios.create({
+        // baseURL: 'https://store.leozd.cn',
         baseURL: 'http://127.0.0.1:8008',
         timeout: 5000
     })
